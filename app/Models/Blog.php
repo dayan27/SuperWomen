@@ -15,7 +15,9 @@ class Blog extends Model
         'share',
         'like',
         'view',
+        'posted_date',
         'time_take_to_read',
+        'content_writer_id',
     ];
     public function blogImages(){
         return $this->hasMany(BlogImage::class);

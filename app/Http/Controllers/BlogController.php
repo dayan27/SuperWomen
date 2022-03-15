@@ -14,18 +14,10 @@ class BlogController extends Controller
      */
     public function index()
     {
-        //
+        return Blog::all();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +27,18 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $request->validate([
+            'title'=>'required',
+            'content'=>'required',
+            'posted_date'=>'required',
+            'content_writer_id'=>'required',
+            'time_take_to_read'=>'required',
+         
+        ]);
+        $data=$request->all();
+        $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
+        return Blog::create($data);
     }
 
     /**
@@ -46,19 +49,10 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        //
+        return $blog;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Blog  $blog
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Blog $blog)
-    {
-        //
-    }
+   
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +63,8 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
-        //
+        $blog->update($request->all());
+        return $blog;
     }
 
     /**
@@ -80,6 +75,6 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-        //
+        $blog->delete();
     }
 }

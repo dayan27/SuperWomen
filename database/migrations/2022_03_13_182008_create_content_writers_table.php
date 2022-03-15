@@ -21,7 +21,7 @@ class CreateContentWritersTable extends Migration
             $table->string('phone_no')->unique();
             $table->boolean('is_active')->default(0);
             $table->string('profile_picture')->unique();
-            $table->string('password')->unique();
+            $table->string('password');
 
             $table->timestamps();
         });

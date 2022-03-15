@@ -14,18 +14,9 @@ class ContentWriterController extends Controller
      */
     public function index()
     {
-        //
+        return ContentWriter::all();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +26,13 @@ class ContentWriterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'first_name'=>'required',
+            'last_name'=>'required',
+         
+        ]);
+       
+        return ContentWriter::create($request->all());
     }
 
     /**
@@ -46,19 +43,10 @@ class ContentWriterController extends Controller
      */
     public function show(ContentWriter $contentWriter)
     {
-        //
+        return $contentWriter;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ContentWriter  $contentWriter
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ContentWriter $contentWriter)
-    {
-        //
-    }
+  
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +57,8 @@ class ContentWriterController extends Controller
      */
     public function update(Request $request, ContentWriter $contentWriter)
     {
-        //
+        $contentWriter->update($request->all());
+        return $contentWriter;
     }
 
     /**
@@ -80,6 +69,6 @@ class ContentWriterController extends Controller
      */
     public function destroy(ContentWriter $contentWriter)
     {
-        //
+        $contentWriter->delete();
     }
 }

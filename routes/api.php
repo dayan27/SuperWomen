@@ -7,6 +7,7 @@ use App\Http\Controllers\FieldController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\RoleModelController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,8 @@ Route::apiResource('/users',UserController::class);
 Route::apiResource('/contacts',ContactController::class);
 Route::apiResource('/fields',FieldController::class);
 Route::apiResource('/mentors',MentorController::class);
+Route::apiResource('/tags',TagController::class);
+
 Route::apiResource('/blogs',BlogController::class);
 Route::apiResource('/content_writers',ContentWriterController::class);
 Route::apiResource('/role_models',RoleModelController::class);

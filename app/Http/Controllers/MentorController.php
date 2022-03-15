@@ -32,11 +32,7 @@ class MentorController extends Controller
             'last_name'=>'required',
             'phone_no'=>'required',
             'biography'=>'required',
-            
-             
-
-
-
+       
          ]);
          return Mentor::create($request->all());
     }

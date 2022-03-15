@@ -14,17 +14,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Admin::all();
     }
 
     /**
@@ -35,7 +25,14 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'first_name'=>'required',
+            'last_name'=>'required',
+            'phone_no'=>'required',
+         
+        ]);
+       
+        return Admin::create($request->all());
     }
 
     /**
@@ -46,19 +43,10 @@ class AdminController extends Controller
      */
     public function show(Admin $admin)
     {
-        //
+        return $admin;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Admin  $admin
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Admin $admin)
-    {
-        //
-    }
+  
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +57,8 @@ class AdminController extends Controller
      */
     public function update(Request $request, Admin $admin)
     {
-        //
+        $admin->update($request->all());
+        return $admin;
     }
 
     /**
@@ -80,6 +69,6 @@ class AdminController extends Controller
      */
     public function destroy(Admin $admin)
     {
-        //
+        $admin->delete();
     }
 }

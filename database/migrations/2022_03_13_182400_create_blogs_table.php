@@ -15,11 +15,11 @@ class CreateBlogsTable extends Migration
     {
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
-            $table->String("title");
-            $table->String("content");
-            $table->integer("share");
-            $table->integer("like");
-            $table->integer("view");
+            $table->text("title");
+            $table->text("content");
+            $table->integer("share")->default(0);
+            $table->integer("like")->default(0);
+            $table->integer("view")->default(0);
             $table->date("posted_date");
             $table->integer("time_take_to_read");
             $table->foreignId('content_writer_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
