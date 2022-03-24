@@ -31,12 +31,6 @@ class CreateUsersTable extends Migration
             $table->foreignId('mentor_id');
 
 
-
-
-
-
-
-
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
