@@ -17,7 +17,6 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-
             $table->string('email')->unique();
             $table->string('phone_no')->unique();
             $table->string('city');
@@ -27,10 +26,7 @@ class CreateUsersTable extends Migration
             $table->boolean('is_active')->default(0);
             $table->boolean('is_subscribe')->default(0);
             $table->string('profile_picture')->unique();
-
             $table->foreignId('mentor_id');
-
-
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

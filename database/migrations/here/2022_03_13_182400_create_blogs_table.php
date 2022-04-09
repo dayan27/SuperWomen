@@ -22,7 +22,7 @@ class CreateBlogsTable extends Migration
             $table->integer("view")->default(0);
             $table->date("posted_date");
             $table->integer("time_take_to_read");
-            $table->foreignId('content_writer_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('employee_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
 
 

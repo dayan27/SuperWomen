@@ -17,8 +17,10 @@ class CreateRoleModelReplaysTable extends Migration
             $table->id();
             $table->text("content");
             $table->foreignId('role_model_comment_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('content_writer_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+           // $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+           // $table->foreignId('content_writer_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            //why not using username only
+            $table->string("replied_user");
 
             $table->date('replied_date');
             $table->timestamps();

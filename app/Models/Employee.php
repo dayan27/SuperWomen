@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Admin extends Model
+class Employee extends Model
 {
     use HasFactory;
     protected $fillable = [
@@ -14,13 +14,14 @@ class Admin extends Model
         'phone_no',
         'email',
         'city',
+        'role',
         'intereset',
         'password',
         'profile_picture',
     ];
     protected $hidden = [
         'password',
-       
+
     ];
 
     public function mentor(){

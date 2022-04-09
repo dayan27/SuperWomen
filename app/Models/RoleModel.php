@@ -11,11 +11,8 @@ class RoleModel extends Model
     public $fillable=[
         'title',
         'content',
-        'like',
-        'share',
-        'view',
+        'employee_id',
         'video',
-        'posted_date',
         'time_take_to_read',
     ];
 }

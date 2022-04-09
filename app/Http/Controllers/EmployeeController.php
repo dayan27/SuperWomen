@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
-class AdminController extends Controller
+class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return Admin::all();
+        return Employee::where('role' ,'!=','admin')->get();
     }
 
     /**
@@ -29,24 +30,24 @@ class AdminController extends Controller
             'first_name'=>'required',
             'last_name'=>'required',
             'phone_no'=>'required',
-         
+
         ]);
-       
-        return Admin::create($request->all());
+
+        return Employee::create($request->all());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Admin  $admin
+     * @param  \App\Models\Employee  $Employee
      * @return \Illuminate\Http\Response
      */
-    public function show(Admin $admin)
+    public function show(Employee $employee)
     {
-        return $admin;
+        return $employee;
     }
 
-  
+
 
     /**
      * Update the specified resource in storage.
@@ -55,10 +56,10 @@ class AdminController extends Controller
      * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Admin $admin)
+    public function update(Request $request, Employee $employee)
     {
-        $admin->update($request->all());
-        return $admin;
+        $employee->update($request->all());
+        return $employee;
     }
 
     /**
@@ -67,8 +68,8 @@ class AdminController extends Controller
      * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Admin $admin)
+    public function destroy(Employee $employee)
     {
-        $admin->delete();
+        $employee->delete();
     }
 }

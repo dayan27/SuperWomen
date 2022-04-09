@@ -17,14 +17,13 @@ class CreateRoleModelsTable extends Migration
             $table->id();
             $table->text('title');
             $table->text('content');
-            $table->integer("like");
-            $table->integer("view");
-            $table->integer("share");
-            $table->string("video");
-            $table->date('posted_date');
-            $table->foreignId('content_writer_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->integer("share")->default(0);
+            $table->integer("like")->default(0);
+            $table->integer("view")->default(0);
+            $table->string("video")->nullable();
+            // $table->date('posted_date');
+            $table->foreignId('employee_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('time_take_to_read');
-
 
             $table->timestamps();
         });

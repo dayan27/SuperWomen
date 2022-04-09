@@ -15,10 +15,10 @@ class CreateContactsTable extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->string('website')->unique();
-            $table->string('facebook')->unique();
-            $table->text('linkedin')->unique();
-            $table->text('twitter')->unique();
+            $table->string('website')->unique()->nullable();
+            $table->string('facebook')->unique()->nullable();
+            $table->text('linkedin')->unique()->nullable();
+            $table->text('twitter')->unique()->nullable();
 
 
             $table->timestamps();
