@@ -24,13 +24,6 @@ class CreateBlogsTable extends Migration
             $table->integer("time_take_to_read");
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
-
-
-
-
-
-
-
             $table->timestamps();
         });
     }

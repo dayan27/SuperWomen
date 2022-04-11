@@ -17,7 +17,7 @@ class FieldController extends Controller
         return Field::all();
     }
 
-    
+
 
     /**
      * Store a newly created resource in storage.
@@ -31,7 +31,7 @@ class FieldController extends Controller
            'title'=>'required',
         ]);
         return Field::create($request->all());
-        
+
     }
 
     /**
@@ -45,7 +45,7 @@ class FieldController extends Controller
         return $field;
     }
 
-  
+
 
     /**
      * Update the specified resource in storage.
@@ -59,7 +59,8 @@ class FieldController extends Controller
         $request->validate([
             'title'=>'required',
          ]);
-         return $field->update($request->all());
+          $field->update($request->all());
+          return $field;
     }
 
     /**
@@ -70,6 +71,8 @@ class FieldController extends Controller
      */
     public function destroy(Field $field)
     {
+        $field->role_models()->delete();
+        $field->mentors()->delete();
         $field->delete();
     }
 }

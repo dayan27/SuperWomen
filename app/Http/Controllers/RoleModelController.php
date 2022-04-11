@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RoleModel;
+use App\Models\RoleModelImage;
 use App\Models\Tag;
 use App\ReusedModule\ImageUpload;
 use Illuminate\Http\Request;
@@ -16,6 +17,11 @@ class RoleModelController extends Controller
      */
     public function index()
     {
+        $likes=RoleModel::sum('like');
+        $shares=RoleModel::sum('share');
+        $views=RoleModel::sum('view');
+
+        
         return RoleModel::with(['tags','fields'])
                   ->when(request('search'),function($query){
 
@@ -43,6 +49,8 @@ class RoleModelController extends Controller
 
         $data=$request->all();
         $data['employee_id']=$request->user()->id;
+        $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
+
         $model=RoleModel::create($data);
 
         $tags=$request->tags;
@@ -104,6 +112,7 @@ class RoleModelController extends Controller
         ]);
 
         $data=$request->all();
+        $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
         $data['employee_id']=$request->user()->id;
         $roleModel->update($data);
 
@@ -138,6 +147,52 @@ class RoleModelController extends Controller
     {
         $roleModel->tags()->detach();
         $roleModel->fields()->detach();
+        $path= public_path().'/rolemodelimages/';
+    //    return $post->images;
+        foreach ($roleModel->role_model_images as $image) {
+
+            if($image->path && file_exists($path.$image->path)){
+              //  return $image->path;
+               // Storage::delete('images/'.$image->path);
+                unlink($path.$image->path);
+            }
+
+            $image->delete();
+
+        }
+
         $roleModel->delete();
+        return response()->json('sucessfully delete',200);
+
+    }
+
+    public function deleteImage($id){
+
+        $image=RoleModelImage::find($id);
+        $path= public_path().'/rolemodelimages/';
+
+     //   return $path.$image->path;
+        if($image->path && file_exists($path.$image->path)){
+         // return true;
+             //Storage::delete('images/'.$image->path);
+             unlink($path.$image->path);
+        }
+
+        $image->delete();
+        return response()->json('sucessfully deleted',200);
+
+
+    }
+
+    public function updateImage(Request $request){
+        $iu=new ImageUpload();
+        $upload= $iu->multipleImageUpload($request->images,$request->role_model_id);
+        if (count($upload) > 0) {
+            return response()->json($upload,201);
+        }else{
+            return response()->json('error while uploading',401);
+
+        }
+
     }
 }

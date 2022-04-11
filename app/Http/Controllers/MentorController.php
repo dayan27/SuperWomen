@@ -17,7 +17,7 @@ class MentorController extends Controller
         return Mentor::all();
     }
 
-   
+
 
     /**
      * Store a newly created resource in storage.
@@ -32,7 +32,7 @@ class MentorController extends Controller
             'last_name'=>'required',
             'phone_no'=>'required',
             'biography'=>'required',
-       
+
          ]);
          return Mentor::create($request->all());
     }
@@ -48,7 +48,7 @@ class MentorController extends Controller
         return $mentor;
     }
 
-  
+
 
     /**
      * Update the specified resource in storage.
@@ -59,14 +59,14 @@ class MentorController extends Controller
      */
     public function update(Request $request, Mentor $mentor)
     {
-        
+
         // $request->validate([
         //     'first_name'=>'required',
         //     'last_name'=>'required',
         //     'phone_no'=>'required',
         //     'biography'=>'required',
         //     'biography'=>'required',
-             
+
 
 
 
@@ -84,4 +84,6 @@ class MentorController extends Controller
     {
         $mentor->delete();
     }
+
+    
 }

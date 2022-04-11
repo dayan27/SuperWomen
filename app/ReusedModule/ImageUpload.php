@@ -1,5 +1,7 @@
 <?php
 namespace App\ReusedModule;
+
+use App\Models\BlogImage;
 use App\Models\Image;
 use App\Models\NewsImage;
 use App\Models\RoleModelImage;
@@ -14,14 +16,14 @@ Class ImageUpload{
             foreach ($files as $file) {
 
                $name = Str::random(5).time().'.'.$file->extension();
-               $file->move(public_path().'/images/', $name);
+               $file->move(public_path().'/rolemodelimages/', $name);
                $image=new RoleModelImage();
                $image->path=$name;
                $image->role_model_id=$post_id;
                $image->save();
                $image->refresh();
                $img['id'] = $image->id;
-               $img['path'] = asset('/images').'/'.$image->path;
+               $img['path'] = asset('/rolemodelimages').'/'.$image->path;
                $images[]=$img;
         }
 
@@ -36,7 +38,7 @@ Class ImageUpload{
 
  }
 
- public function newsMultipleImageUpload($files,$news_id){
+ public function blogMultipleImageUpload($files,$blog_id){
 
     try {
         $images=[];
@@ -44,14 +46,14 @@ Class ImageUpload{
         foreach ($files as $file) {
 
             $name = Str::random(5).time().'.'.$file->extension();
-            $file->move(public_path().'/images/', $name);
-           $image=new NewsImage();
+            $file->move(public_path().'/blogimages/', $name);
+           $image=new BlogImage();
            $image->path=$name;
-           $image->news_id=$news_id;
+           $image->blog_id=$blog_id;
            $image->save();
            $image->refresh();
            $img['id'] = $image->id;
-           $img['path'] = asset('/images').'/'.$image->path;
+           $img['path'] = asset('/blogimages').'/'.$image->path;
            $images[]=$img;
     }
 
