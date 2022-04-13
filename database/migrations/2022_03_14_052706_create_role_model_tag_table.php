@@ -13,7 +13,7 @@ class CreateRoleModelTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('role_model_tags', function (Blueprint $table) {
+        Schema::create('role_model_tag', function (Blueprint $table) {
             $table->id();
             $table->foreignId('role_model_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('tag_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();

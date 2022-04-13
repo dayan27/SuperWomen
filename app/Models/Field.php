@@ -14,4 +14,9 @@ class Field extends Model
     public function mentor(){
         return $this->hasOne(Mentor::class);
     }
+
+    public function role_models(){
+        return $this->belongsToMany(RoleModel::class);
+    }
+
 }

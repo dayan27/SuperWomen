@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
 {
@@ -33,6 +34,8 @@ class EmployeeController extends Controller
 
         ]);
 
+        $data=$request->all();
+        $data['password']=Hash::make($request->last_name.'1234');
         return Employee::create($request->all());
     }
 

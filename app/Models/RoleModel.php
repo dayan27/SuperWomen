@@ -15,5 +15,18 @@ class RoleModel extends Model
         'video',
         'time_take_to_read',
     ];
+
+
+    public function fields(){
+        return $this->belongsToMany(Field::class);
+    }
+
+    public function tags(){
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function images(){
+        return $this->hasMany(RoleModelImage::class);
+    }
 }
 

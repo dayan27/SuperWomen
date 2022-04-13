@@ -13,7 +13,7 @@ class CreateRoleModelFieldsTable extends Migration
      */
     public function up()
     {
-        Schema::create('role_model_fields', function (Blueprint $table) {
+        Schema::create('field_role_model', function (Blueprint $table) {
             $table->id();
             $table->foreignId('role_model_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('field_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();

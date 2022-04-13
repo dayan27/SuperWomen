@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\request as ModelsRequest;
 use App\Models\RoleModel;
 use App\Models\RoleModelImage;
 use App\Models\Tag;
 use App\ReusedModule\ImageUpload;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 class RoleModelController extends Controller
 {
     /**
@@ -17,12 +19,13 @@ class RoleModelController extends Controller
      */
     public function index()
     {
+       // return Hash::make('Beza1234');
         $likes=RoleModel::sum('like');
         $shares=RoleModel::sum('share');
         $views=RoleModel::sum('view');
 
         
-        return RoleModel::with(['tags','fields'])
+        return RoleModel::with(['tags','fields','images'])
                   ->when(request('search'),function($query){
 
                   })
@@ -48,8 +51,9 @@ class RoleModelController extends Controller
         ]);
 
         $data=$request->all();
-        $data['employee_id']=$request->user()->id;
-        $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
+        // $data['employee_id']=$request->user()->id;
+        $data['employee_id']=1;
+      //  $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
 
         $model=RoleModel::create($data);
 
@@ -68,7 +72,7 @@ class RoleModelController extends Controller
             }
 
         }
-        $model->fields()->attach($request->fields);
+        $model->fields()->attach($request->interests);
         $model->tags()->attach($tag_ids);
 
                 //calling image upload method from php class
@@ -76,11 +80,12 @@ class RoleModelController extends Controller
         $iu=new ImageUpload();
         $upload= $iu->multipleImageUpload($request->images,$model->id);
         if (count($upload) > 0) {
-        return response()->json($model->load('images'),201);
+        return response()->json($model,201);
         }else{
         return response()->json('error while uploading..',401);
         }
       //  return response()->json($model,201);
+
 
     }
 
@@ -195,4 +200,26 @@ class RoleModelController extends Controller
         }
 
     }
+
+
+
+
+public function contentImageUpload(){
+
+    try {
+
+      //  return request()->upload;
+        $file=request()->upload;
+           $name = Str::random(5).time().'.'.$file->extension();
+           $file->move(public_path().'/rolemodelimages/', $name);
+   
+
+         return response()->json(['url'=>asset('/rolemodelimages').'/'.$name],201);
+        } catch (\Throwable $th) {
+
+            return $th;
+    }
+
+  }
+ 
 }
