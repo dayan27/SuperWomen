@@ -13,11 +13,9 @@ class Employee extends Model
         'last_name',
         'phone_no',
         'email',
-        'city',
-        'role',
-        'intereset',
         'password',
-        'profile_picture',
+        'role',
+     
     ];
     protected $hidden = [
         'password',
@@ -26,6 +24,10 @@ class Employee extends Model
 
     public function mentor(){
         return $this->hasOne(mentor::class);
+    }
+
+    public function role_models(){
+        return $this->hasMany(RoleModel::class);
     }
 
 }

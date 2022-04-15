@@ -19,17 +19,17 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->string('email')->unique();
             $table->string('phone_no')->unique();
-            $table->string('city');
-            $table->string('interest');
+            $table->string('city')->nullable();
+            $table->string('interest')->nullable();
             $table->date('date_of_birth');
-            $table->string('education_level');
-            $table->boolean('is_active')->default(0);
+           // $table->string('education_level');
+            $table->boolean('is_active')->default(1);
             $table->boolean('is_subscribe')->default(0);
-            $table->string('profile_picture')->unique();
-            $table->foreignId('mentor_id');
+            $table->string('profile_picture')->nullable();
+            $table->foreignId('mentor_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('education_level_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
             $table->timestamps();
         });
     }

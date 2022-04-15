@@ -46,18 +46,26 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
         //blog  related
 
-        Route::apiResource('/blogs',BlogController::class);
         Route::delete('/delete_blog_image/{id}',[BlogController::class,'deleteImage']);
         Route::post('/update_blog_images',[BlogController::class,'updateImage']);
 
         // end blog related
-        Route::apiResource('/users',UserController::class);
+       // Route::apiResource('/users',UserController::class);
     });
     //=================== end auth route  ========
 
     Route::apiResource('/role_models',RoleModelController::class);
     Route::post('/content_image',[RoleModelController::class,'contentImageUpload']);
+    Route::get('/summary',[RoleModelController::class,'getTotalData']);
+    Route::post('/rm_verify/{id}',[RoleModelController::class,'verify']);
+    
 
+    ////
+    Route::apiResource('/blogs',BlogController::class);
+    Route::post('/blog_content_image',[BlogController::class,'contentImageUpload']);
+    Route::get('/blog_summary',[BlogController::class,'getTotalData']);
+    Route::post('/blog_verify/{id}',[BlogController::class,'verify']);
+ 
             ///////////////======verification and forgot password
             Route::get('/verify',[EmailVerificationController::class,'verify'])->name('verification.verify');
             //  ->middleware('signed');

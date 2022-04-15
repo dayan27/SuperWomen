@@ -17,10 +17,24 @@ class Blog extends Model
         'view',
         'posted_date',
         'time_take_to_read',
-        'content_writer_id',
+        'employee_id',
     ];
-    public function blogImages(){
+  
+
+    public function tags(){
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function images(){
         return $this->hasMany(BlogImage::class);
+    }
+
+    public function comments(){
+        return $this->hasMany(BlogComment::class);
+    }
+
+    public function employee(){
+        return $this->belongsTo(Employee::class);
     }
     
 }

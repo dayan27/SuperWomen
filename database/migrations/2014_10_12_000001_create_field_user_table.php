@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRoleModelTagTable extends Migration
+class CreateFieldUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateRoleModelTagTable extends Migration
      */
     public function up()
     {
-        Schema::create('role_model_tag', function (Blueprint $table) {
+        Schema::create('field_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_model_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('tag_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('field_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateRoleModelTagTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('role_model_tags');
+        Schema::dropIfExists('field_users');
     }
 }

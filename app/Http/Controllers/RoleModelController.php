@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Admin\RoleModel as AdminRoleModel;
+use App\Http\Resources\Admin\RoleModelDetailResource;
+use App\Http\Resources\Admin\RoleModelResource;
+use App\Models\Blog;
 use App\Models\request as ModelsRequest;
 use App\Models\RoleModel;
 use App\Models\RoleModelImage;
 use App\Models\Tag;
 use App\ReusedModule\ImageUpload;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -19,23 +24,43 @@ class RoleModelController extends Controller
      */
     public function index()
     {
-       // return Hash::make('Beza1234');
-        $likes=RoleModel::sum('like');
-        $shares=RoleModel::sum('share');
-        $views=RoleModel::sum('view');
 
-        
-        return RoleModel::with(['tags','fields','images'])
-                  ->when(request('search'),function($query){
+    //    return RoleModelResource::collection(RoleModel::paginate()); 
+        $query= RoleModel::query();
 
+               $query=$query->when(request('search'),function($query){
+                          
+                  $query->where('title','LIKE','%'.request('search').'%')
+                        ->orWhere('content','LIKE','%'.request('search').'%');
                   })
                   ->when(request('filter'),function($query){
+                    $query = $query->whereHas('fields', function (Builder $query) {
+                        $query->where('fields.id', '=', request('filter'));
+                    });
+                });
+                return RoleModelResource::collection($query->paginate()); 
 
-                })
-
-              ->paginate(20);
     }
 
+    public function getTotalData(){
+               // return Hash::make('Beza1234');
+               $likes=RoleModel::sum('like');
+               $shares=RoleModel::sum('share');
+               $views=RoleModel::sum('view');
+                $count=0;
+               foreach (RoleModel::withCount('comments') as $roleModel) {
+                   
+                 $count+=$roleModel->comments_count;
+               }
+
+
+               return response()->json([
+                   'likes'=>$likes,
+                   'shares'=>$shares,
+                   'views'=>$views,
+                   'comments'=>$count
+               ],200);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -97,7 +122,7 @@ class RoleModelController extends Controller
      */
     public function show(RoleModel $roleModel)
     {
-        //
+        return new RoleModelDetailResource($roleModel->load('images','employee'));
     }
 
 
@@ -202,6 +227,13 @@ class RoleModelController extends Controller
     }
 
 
+    public function verify($id){
+
+        $blog=Blog::find($id);
+        $blog->is_verified=1;
+        $blog->save();
+        return response()->json('verified',200);
+    }
 
 
 public function contentImageUpload(){

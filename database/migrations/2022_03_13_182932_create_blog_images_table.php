@@ -15,7 +15,7 @@ class CreateBlogImagesTable extends Migration
     {
         Schema::create('blog_images', function (Blueprint $table) {
             $table->id();
-            $table->String("path");
+            $table->string("path");
             $table->foreignId('blog_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->timestamps();

@@ -20,9 +20,10 @@ class CreateBlogsTable extends Migration
             $table->integer("share")->default(0);
             $table->integer("like")->default(0);
             $table->integer("view")->default(0);
-            $table->date("posted_date");
+            // $table->date("posted_date");
             $table->integer("time_take_to_read");
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->boolean('is_verified')->default(0);
 
             $table->timestamps();
         });

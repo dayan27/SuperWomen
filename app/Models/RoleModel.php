@@ -28,5 +28,13 @@ class RoleModel extends Model
     public function images(){
         return $this->hasMany(RoleModelImage::class);
     }
+
+    public function comments(){
+        return $this->hasMany(RoleModelComment::class);
+    }
+
+    public function employee(){
+        return $this->belongsTo(Employee::class);
+    }
 }
 

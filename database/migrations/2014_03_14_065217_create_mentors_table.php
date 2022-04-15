@@ -20,11 +20,11 @@ class CreateMentorsTable extends Migration
             $table->string('email')->unique();
             $table->string('phone_no')->unique();
             $table->string('password');
-            $table->text('biography');
-            $table->foreignId('field_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('contact_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->text('biography')->nullable();
+            // $table->foreignId('field_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('contact_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->boolean('is_active')->default(0);
-            $table->string('profile_picture')->unique();
+            $table->string('profile_picture')->nullable();
 
             $table->timestamps();
         });

@@ -36,7 +36,9 @@ class EmployeeController extends Controller
 
         $data=$request->all();
         $data['password']=Hash::make($request->last_name.'1234');
-        return Employee::create($request->all());
+        $data['role']='writer';
+        $emp= Employee::create($data);
+        return response()->json($emp,201);
     }
 
     /**
@@ -73,6 +75,6 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        $employee->delete();
+        // $employee->delete();
     }
 }

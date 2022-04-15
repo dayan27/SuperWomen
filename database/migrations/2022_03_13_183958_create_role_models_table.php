@@ -24,7 +24,7 @@ class CreateRoleModelsTable extends Migration
             // $table->date('posted_date');
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('time_take_to_read');
-
+            $table->boolean('is_verified')->default(0);
             $table->timestamps();
         });
     }
