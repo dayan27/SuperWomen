@@ -17,6 +17,8 @@ class CreateRequestsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('mentor_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->boolean('is_accepeted')->default(0);
+
             $table->timestamps();
         });
     }

@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AdminNotification;
 use App\Http\Resources\Admin\RoleModel as AdminRoleModel;
 use App\Http\Resources\Admin\RoleModelDetailResource;
 use App\Http\Resources\Admin\RoleModelResource;
 use App\Models\Blog;
+use App\Models\Employee;
 use App\Models\request as ModelsRequest;
 use App\Models\RoleModel;
 use App\Models\RoleModelImage;
 use App\Models\Tag;
+use App\Notifications\NewNotification;
 use App\ReusedModule\ImageUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -26,6 +29,8 @@ class RoleModelController extends Controller
     {
 
     //    return RoleModelResource::collection(RoleModel::paginate()); 
+       $per_page=request('per_page');
+
         $query= RoleModel::query();
 
                $query=$query->when(request('search'),function($query){
@@ -38,7 +43,7 @@ class RoleModelController extends Controller
                         $query->where('fields.id', '=', request('filter'));
                     });
                 });
-                return RoleModelResource::collection($query->paginate()); 
+                return RoleModelResource::collection($query->paginate($per_page)); 
 
     }
 
@@ -105,7 +110,12 @@ class RoleModelController extends Controller
         $iu=new ImageUpload();
         $upload= $iu->multipleImageUpload($request->images,$model->id);
         if (count($upload) > 0) {
-        return response()->json($model,201);
+
+            $emp=Employee::find(1);
+            $emp->notify(new NewNotification($emp->notifications->count() +1,'new role model created'));
+            event(new AdminNotification($emp->notifications->count()));
+       
+         return response()->json($model,201);
         }else{
         return response()->json('error while uploading..',401);
         }
@@ -142,8 +152,8 @@ class RoleModelController extends Controller
         ]);
 
         $data=$request->all();
-        $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
-        $data['employee_id']=$request->user()->id;
+        // $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
+        $data['employee_id']=1;
         $roleModel->update($data);
 
         $tags=$request->tags;
@@ -214,11 +224,11 @@ class RoleModelController extends Controller
 
     }
 
-    public function updateImage(Request $request){
+    public function updateImage(Request $request,$role_model_id){
         $iu=new ImageUpload();
-        $upload= $iu->multipleImageUpload($request->images,$request->role_model_id);
+        $upload= $iu->multipleImageUpload($request->images,$role_model_id);
         if (count($upload) > 0) {
-            return response()->json($upload,201);
+            return response()->json($upload,200);
         }else{
             return response()->json('error while uploading',401);
 
@@ -229,9 +239,9 @@ class RoleModelController extends Controller
 
     public function verify($id){
 
-        $blog=Blog::find($id);
-        $blog->is_verified=1;
-        $blog->save();
+        $rm=RoleModel::find($id);
+        $rm->is_verified=1;
+        $rm->save();
         return response()->json('verified',200);
     }
 
@@ -241,11 +251,10 @@ public function contentImageUpload(){
     try {
 
       //  return request()->upload;
-        $file=request()->upload;
-           $name = Str::random(5).time().'.'.$file->extension();
-           $file->move(public_path().'/rolemodelimages/', $name);
+       $file=request()->upload;
+        return   $name = Str::random(5).time().'.'.$file->extension();
+         //  $file->move(public_path().'/rolemodelimages/', $name);
    
-
          return response()->json(['url'=>asset('/rolemodelimages').'/'.$name],201);
         } catch (\Throwable $th) {
 

@@ -24,6 +24,7 @@ class RoleModelDetailResource extends JsonResource
             'like'=>$this->like,
             'comment'=>$this->comments()->count(),
             'is_verified'=>$this->is_verified,
+            'time_take_to_read'=>$this->time_take_to_read,
             'written_by'=>$this->employee()->select('id','first_name','last_name')->first(),
             'tags'=>$this->tags,
             'fields'=>$this->fields

@@ -23,7 +23,7 @@ Class ImageUpload{
                $image->save();
                $image->refresh();
                $img['id'] = $image->id;
-               $img['path'] = asset('/rolemodelimages').'/'.$image->path;
+               $img['path'] = asset('/rolemodelimages').'/'.$name;
                $images[]=$img;
         }
 

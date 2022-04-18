@@ -46,13 +46,17 @@ class Mentor extends Model
     public function users(){
         return $this->hasMany(User::class);
     }
+    public function user_requests(){
+        return $this->belongsToMany(User::class,'requests');
+    }
+
     public function tags(){
         return $this->belongsToMany(Tag::class);
     }
     public function contact(){
         return $this->belongsTo(Contact::class);
     }
-    public function field(){
-        return $this->belongsTo(Field::class);
+    public function fields(){
+        return $this->belongsToMany(Field::class);
     }
 }

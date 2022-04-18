@@ -25,6 +25,10 @@ class Blog extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function fields(){
+        return $this->belongsToMany(Field::class,'field_blog');
+    }
+
     public function images(){
         return $this->hasMany(BlogImage::class);
     }

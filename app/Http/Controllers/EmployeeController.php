@@ -16,7 +16,12 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return Employee::where('role' ,'!=','admin')->get();
+        return Employee::where('role' ,'!=','admin')
+              ->when(request('search'),function($query){
+                          
+                   $query->where('first_name','LIKE','%'.request('search').'%')
+                  ->orWhere('last_name','LIKE','%'.request('search').'%');
+            })->get();
     }
 
     /**
@@ -63,8 +68,18 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
-        $employee->update($request->all());
-        return $employee;
+        $request->validate([
+            'first_name'=>'required',
+            'last_name'=>'required',
+            'phone_no'=>'required',
+
+        ]);
+
+        $data=$request->all();
+        $data['password']=Hash::make($request->last_name.'1234');
+        $data['role']='writer';
+        $employee->update($data);
+        return response()->json($employee,200);
     }
 
     /**
@@ -76,5 +91,11 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         // $employee->delete();
+       
+        $employee->is_active=request('state');
+        $employee->save();
+ 
+        return response()->json($employee->is_active,200);
+     
     }
 }

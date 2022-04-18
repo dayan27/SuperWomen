@@ -6,6 +6,7 @@ use App\Http\Resources\Admin\BlogDetailResource;
 use App\Http\Resources\Admin\BlogResource;
 use App\Models\Blog;
 use App\Models\BlogImage;
+use App\Models\request as ModelsRequest;
 use App\Models\RoleModel;
 use App\Models\Tag;
 use App\ReusedModule\ImageUpload;
@@ -21,6 +22,7 @@ class BlogController extends Controller
      */
     public function index()
     {
+        $per_page=request('per_page');
         $query= Blog::query();
 
         $query=$query->when(request('search'),function($query){
@@ -33,7 +35,7 @@ class BlogController extends Controller
                 $query->where('fields.id', '=', request('filter'));
             });
          });
-         return BlogResource::collection($query->paginate()); 
+         return BlogResource::collection($query->paginate($per_page)); 
 
     }
 
@@ -96,6 +98,7 @@ class BlogController extends Controller
 
         }
         $blog->tags()->attach($tag_ids); //attaching blog with tags
+        $blog->fields()->attach($request->interests);
 
         //saving blog images
 
@@ -137,7 +140,6 @@ class BlogController extends Controller
         $request->validate([
             'title'=>'required',
             'content'=>'required',
-            'posted_date'=>'required',
             'time_take_to_read'=>'required',
 
         ]);
@@ -201,25 +203,21 @@ class BlogController extends Controller
 
             $image=BlogImage::find($id);
             $path= public_path().'/blogimages/';
-
-         //   return $path.$image->path;
             if($image->path && file_exists($path.$image->path)){
-             // return true;
-                 //Storage::delete('images/'.$image->path);
+ 
                  unlink($path.$image->path);
             }
 
             $image->delete();
             return response()->json('sucessfully deleted',200);
 
-
         }
 
-        public function updateImage(Request $request){
+        public function updateImage(Request $request,$blog_id){
             $iu=new ImageUpload();
-            $upload= $iu->blogmultipleImageUpload($request->images,$request->blog_id);
+            $upload= $iu->blogmultipleImageUpload($request->images,$blog_id);
             if (count($upload) > 0) {
-                return response()->json($upload,201);
+                return response()->json($upload,200);
             }else{
                 return response()->json('error while uploading',401);
             }
@@ -228,9 +226,9 @@ class BlogController extends Controller
 
         public function verify($id){
 
-            $rmodel=RoleModel::find($id);
-            $rmodel->is_verified=1;
-            $rmodel->save();
+            $blog=Blog::find($id);
+            $blog->is_verified=1;
+            $blog->save();
             return response()->json('verified',200);
         }
 
