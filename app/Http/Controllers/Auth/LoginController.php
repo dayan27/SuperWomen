@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,7 +20,7 @@ class LoginController extends Controller
 
         ]);
 
-        $user=Admin::where('email',$request->email)->first();
+        $user=Employee::where('email',$request->email)->first();
         if (! $user ) {
             return response()->json([
                 'message'=>' incorrect email and password',
@@ -36,9 +36,11 @@ class LoginController extends Controller
         }
 
         $token=$user->createToken('auth_token')->plainTextToken;
+        $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
+       // return response()->json($employee,200);
         return response()->json([
             'access_token'=>$token,
-            'user'=>$user->load('role'),
+            'user'=>$user,
         ],200);
 
      }
@@ -60,7 +62,7 @@ class LoginController extends Controller
 
             ]);
 
-            $user=Admin::where('email',$request->user()->email)->first();
+            $user=Employee::where('email',$request->user()->email)->first();
             if (! $user ) {
                 return response()->json([
                     'message'=>' incorrect credentials ',

@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\ReusedModule\ImageUpload;
 
 class EmployeeController extends Controller
 {
@@ -16,6 +17,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
+        //return Hash::make('12345678');
         return Employee::where('role' ,'!=','admin')->get();
     }
 
@@ -76,5 +78,18 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         // $employee->delete();
+    }
+
+     public function changeProfilePicture($user_id){
+
+        $employee=Employee::find($user_id);
+
+        $iu=new ImageUpload();
+        $name= $iu->profileImageUpload(request('profile'));
+        $employee->profile_picture=$name;
+        $employee->save();
+
+        $employee->profile_picture=asset('/profilepictures').'/'.$name;
+        return response()->json($employee,200);
     }
 }

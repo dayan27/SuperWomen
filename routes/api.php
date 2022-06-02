@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContentWriterController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\MentorController;
@@ -34,6 +36,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         //Route::post('/resend',[EmailVerificationController::class,'resend']);
         Route::post('/logout',[LoginController::class,'logout']);
         Route::post('/change_password',[LoginController::class,'changePassword']);
+        Route::post('/change_profile/{id}',[EmployeeController::class,'changeProfilePicture']);
 
 
         //-------start role_model related---------
@@ -58,21 +61,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('/content_image',[RoleModelController::class,'contentImageUpload']);
     Route::get('/summary',[RoleModelController::class,'getTotalData']);
     Route::post('/rm_verify/{id}',[RoleModelController::class,'verify']);
-    
+
 
     ////
     Route::apiResource('/blogs',BlogController::class);
     Route::post('/blog_content_image',[BlogController::class,'contentImageUpload']);
     Route::get('/blog_summary',[BlogController::class,'getTotalData']);
     Route::post('/blog_verify/{id}',[BlogController::class,'verify']);
- 
+
             ///////////////======verification and forgot password
             Route::get('/verify',[EmailVerificationController::class,'verify'])->name('verification.verify');
             //  ->middleware('signed');
-            Route::post('/login',[LoginController::class,'login'])->middleware('verified');
+            Route::post('/login',[LoginController ::class,'login']);
+            //->middleware('verified');
             Route::post('/forgot',[ForgotPasswordController::class,'forgot']);
             Route::post('/reset/{token}',[ResetPasswordController::class,'resetPassword']);
 
+            Route::get('/dash_board',[DashboardController::class,'getData']);
 
             Route::apiResource('/users',UserController::class);
             Route::apiResource('/contacts',ContactController::class);
@@ -80,7 +85,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
             Route::apiResource('/mentors',MentorController::class);
             Route::apiResource('/tags',TagController::class);
 
-                Route::apiResource('/employees',EmployeeController::class);
+            Route::apiResource('/employees',EmployeeController::class);
 
             Route::apiResource('/partners',PartnerController::class);
 

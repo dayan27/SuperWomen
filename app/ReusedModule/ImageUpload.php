@@ -14,7 +14,7 @@ Class ImageUpload{
             $images=[];
 
             foreach ($files as $file) {
-                    
+
                $name = Str::random(5).time().'.'.$file->extension();
                $file->move(public_path().'/rolemodelimages/', $name);
                $image=new RoleModelImage();
@@ -76,9 +76,29 @@ public function contentImageUpload($file){
 
            $name = Str::random(5).time().'.'.$file->extension();
            $file->move(public_path().'/rolemodelimages/', $name);
-   
+
 
          return asset('/rolemodelimages').$name;
+        } catch (\Throwable $th) {
+
+            return $th;
+    }
+
+  }
+
+
+  public function profileImageUpload($file){
+
+    try {
+        $images=[];
+
+
+           $name = Str::random(5).time().'.'.$file->extension();
+           $file->move(public_path().'/profilepictures/', $name);
+
+
+        //    return asset('/profilepictures').$name;
+           return $name;
         } catch (\Throwable $th) {
 
             return $th;
