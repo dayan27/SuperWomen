@@ -73,6 +73,9 @@ class FieldController extends Controller
     {
         $field->role_models()->delete();
         $field->mentors()->delete();
+        $field->blogs()->delete();
         $field->delete();
+        return response()->json('deleted',200);
+
     }
 }

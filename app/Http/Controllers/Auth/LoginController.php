@@ -30,7 +30,7 @@ class LoginController extends Controller
         $check=Hash::check($request->password, $user->password);
         if (! $check ) {
             return response()->json([
-                'message'=>' incorrect email and password',
+                'message'=>' incorrect  and password',
                 ]
                ,404 );
         }
@@ -56,6 +56,7 @@ class LoginController extends Controller
 
         public function changePassword(Request $request){
 
+           // return $request;
             $request->validate([
                 'old_password'=>'required',
                 'new_password'=>'required',

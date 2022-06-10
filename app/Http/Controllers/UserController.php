@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\request as ModelsRequest;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -14,7 +16,21 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::with('education_level','fields','mentor')->paginate();
+        $query= User::query();
+   
+        $query=$query->when(request('search'),function($query){
+                   
+           $query->where('first_name','LIKE','%'.request('search').'%')
+                 ->orWhere('last_name','LIKE','%'.request('search').'%');
+           })
+           ->when(request('filter'),function($query){
+              
+             $query = $query->whereHas('fields', function (Builder $q) {
+                 $q->where('fields.id', '=', request('filter'));
+             });
+         });
+         return $query->with('education_level','fields','mentor')->paginate(); 
+
     }
 
     /**
@@ -72,5 +88,14 @@ class UserController extends Controller
     public function destroy(User $user)
     {
        $user->delete();
+    }
+
+    public function changeUserState($user_id){
+
+       $user= User::find($user_id);
+       $user->is_active=request('state');
+       $user->save();
+
+       return response()->json($user->is_active,200);
     }
 }

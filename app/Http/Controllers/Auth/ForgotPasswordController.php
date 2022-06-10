@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
+use App\Models\Employee;
 use App\Notifications\NewPasswordNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ class ForgotPasswordController extends Controller
 {
     public function forgot(Request $request){
         //You can add validation login here
-            $user = DB::table('admins')->where('email', '=', $request->email)
+            $user = DB::table('Employees')->where('email', '=', $request->email)
             ->first();
             //Check if the user exists
             if (! $user) {
@@ -40,7 +40,7 @@ class ForgotPasswordController extends Controller
     private function sendResetEmail($email, $token)
         {
         //Retrieve the user from the database
-        $user = Admin::where('email', $email)->first();
+        $user = Employee::where('email', $email)->first();
         //Generate, the password reset link. The token generated is embedded in the link
         $link = env('FRONTEND_URL') . '/reset-password' .'/'. $token . '?email=' . urlencode($user->email);
 

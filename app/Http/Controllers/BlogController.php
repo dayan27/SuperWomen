@@ -6,11 +6,14 @@ use App\Http\Resources\Admin\BlogDetailResource;
 use App\Http\Resources\Admin\BlogResource;
 use App\Models\Blog;
 use App\Models\BlogImage;
+use App\Models\request as ModelsRequest;
 use App\Models\RoleModel;
 use App\Models\Tag;
+use App\Notifications\toAdmin\BlogAdded;
 use App\ReusedModule\ImageUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
 {
@@ -21,10 +24,11 @@ class BlogController extends Controller
      */
     public function index()
     {
+        $per_page=request('per_page');
         $query= Blog::query();
 
         $query=$query->when(request('search'),function($query){
-                   
+
            $query->where('title','LIKE','%'.request('search').'%')
                  ->orWhere('content','LIKE','%'.request('search').'%');
            })
@@ -33,7 +37,7 @@ class BlogController extends Controller
                 $query->where('fields.id', '=', request('filter'));
             });
          });
-         return BlogResource::collection($query->paginate()); 
+         return BlogResource::collection($query->paginate($per_page));
 
     }
 
@@ -45,7 +49,7 @@ class BlogController extends Controller
         $views=Blog::sum('view');
          $count=0;
         foreach (Blog::withCount('comments') as $blog) {
-            
+
           $count+=$blog->comments_count;
         }
 
@@ -66,48 +70,67 @@ class BlogController extends Controller
     public function store(Request $request)
     {
 
+
+       // return $request->title;
         $request->validate([
             'title'=>'required',
             'content'=>'required',
             'time_take_to_read'=>'required',
 
         ]);
-        $data=$request->all();
-        // $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
-        //$data['employee_id']=$request->user()->id;
-        $data['employee_id']=1;
-       // return $data;
-        $blog=Blog::create($data);  //creating blog
 
-        // collecting tag ids
-        $tags=$request->tags;
-        $tag_ids=[];
-        foreach ($tags as $splited) {
-            $check=Tag::where('title',$splited)->first();
-            if ($check) {
-                $tag_ids[]=$check->id;
-            }else {
-                $tag=new Tag();
-                $tag->title=$splited;
-                $tag->save();
-                $tag_ids[]=$tag->id;
+        try {
+            DB::beginTransaction();
+
+            $data=$request->all();
+            // $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
+             $data['employee_id']=$request->user()->id;
+        //    $data['employee_id']=1;
+           // return $data;
+            $blog=Blog::create($data);  //creating blog
+
+            // collecting tag ids
+            $tags=$request->tags;
+            $tag_ids=[];
+            foreach ($tags as $splited) {
+                $check=Tag::where('title',$splited)->first();
+                if ($check) {
+                    $tag_ids[]=$check->id;
+                }else {
+                    $tag=new Tag();
+                    $tag->title=$splited;
+                    $tag->save();
+                    $tag_ids[]=$tag->id;
+
+                }
 
             }
+            $blog->tags()->attach($tag_ids); //attaching blog with tags
+            $blog->fields()->attach($request->interests);
 
+            //saving blog images
+
+            //calling image upload method from php class
+
+            $iu=new ImageUpload();
+            $upload= $iu->blogMultipleImageUpload($request->images,$blog->id);
+            if (count($upload) > 0) {
+
+                $request->user()->notify(new BlogAdded($blog));
+                DB::commit();
+            return response()->json($blog,201);
+            }else{
+            return response()->json('error while uploading..',401);
+            }
+
+
+
+        } catch (\Throwable $th) {
+
+            DB::rollBack();
+            return $th;
         }
-        $blog->tags()->attach($tag_ids); //attaching blog with tags
 
-        //saving blog images
-
-        //calling image upload method from php class
-
-        $iu=new ImageUpload();
-        $upload= $iu->blogMultipleImageUpload($request->images,$blog->id);
-        if (count($upload) > 0) {
-        return response()->json($blog,201);
-        }else{
-        return response()->json('error while uploading..',401);
-        }
 
     }
 
@@ -137,7 +160,6 @@ class BlogController extends Controller
         $request->validate([
             'title'=>'required',
             'content'=>'required',
-            'posted_date'=>'required',
             'time_take_to_read'=>'required',
 
         ]);
@@ -201,25 +223,21 @@ class BlogController extends Controller
 
             $image=BlogImage::find($id);
             $path= public_path().'/blogimages/';
-
-         //   return $path.$image->path;
             if($image->path && file_exists($path.$image->path)){
-             // return true;
-                 //Storage::delete('images/'.$image->path);
+
                  unlink($path.$image->path);
             }
 
             $image->delete();
             return response()->json('sucessfully deleted',200);
 
-
         }
 
-        public function updateImage(Request $request){
+        public function updateImage(Request $request,$blog_id){
             $iu=new ImageUpload();
-            $upload= $iu->blogmultipleImageUpload($request->images,$request->blog_id);
+            $upload= $iu->blogmultipleImageUpload($request->images,$blog_id);
             if (count($upload) > 0) {
-                return response()->json($upload,201);
+                return response()->json($upload,200);
             }else{
                 return response()->json('error while uploading',401);
             }
@@ -228,9 +246,9 @@ class BlogController extends Controller
 
         public function verify($id){
 
-            $rmodel=RoleModel::find($id);
-            $rmodel->is_verified=1;
-            $rmodel->save();
+            $blog=Blog::find($id);
+            $blog->is_verified=1;
+            $blog->save();
             return response()->json('verified',200);
         }
 

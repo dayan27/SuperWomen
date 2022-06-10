@@ -23,7 +23,10 @@ class BlogDetailResource extends JsonResource
             'share'=>$this->share,
             'like'=>$this->like,
             'comment'=>$this->comments()->count(),
+            'tags'=>$this->tags,
+            'fields'=>$this->fields,
             'is_verified'=>$this->is_verified,
+            'time_take_to_read'=>$this->time_take_to_read,
             'written_by'=>$this->employee()->select('id','first_name','last_name')->first(),
         ];  
       }

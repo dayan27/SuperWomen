@@ -19,10 +19,14 @@ class Blog extends Model
         'time_take_to_read',
         'employee_id',
     ];
-  
+
 
     public function tags(){
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function fields(){
+        return $this->belongsToMany(Field::class);
     }
 
     public function images(){
@@ -36,6 +40,6 @@ class Blog extends Model
     public function employee(){
         return $this->belongsTo(Employee::class);
     }
-    
+
 }
 

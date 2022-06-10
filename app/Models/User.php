@@ -60,6 +60,12 @@ class User extends Authenticatable
     public function mentor(){
         return $this->belongsTo(Mentor::class);
     }
+
+    public function mentor_requests(){
+        return $this->belongsToMany(Mentor::class,'requests');
+    }
+
+
     public function education_level(){
         return $this->belongsTo(EducationLevel::class);
     }

@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AdminNotification;
 use App\Http\Resources\Admin\RoleModel as AdminRoleModel;
 use App\Http\Resources\Admin\RoleModelDetailResource;
 use App\Http\Resources\Admin\RoleModelResource;
 use App\Models\Blog;
+use App\Models\Employee;
 use App\Models\request as ModelsRequest;
 use App\Models\RoleModel;
 use App\Models\RoleModelImage;
 use App\Models\Tag;
+use App\Notifications\NewNotification;
+use App\Notifications\toAdmin\RoleModelAdded;
 use App\ReusedModule\ImageUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 class RoleModelController extends Controller
@@ -25,11 +30,13 @@ class RoleModelController extends Controller
     public function index()
     {
 
-    //    return RoleModelResource::collection(RoleModel::paginate()); 
+    //    return RoleModelResource::collection(RoleModel::paginate());
+       $per_page=request('per_page');
+
         $query= RoleModel::query();
 
                $query=$query->when(request('search'),function($query){
-                          
+
                   $query->where('title','LIKE','%'.request('search').'%')
                         ->orWhere('content','LIKE','%'.request('search').'%');
                   })
@@ -38,7 +45,7 @@ class RoleModelController extends Controller
                         $query->where('fields.id', '=', request('filter'));
                     });
                 });
-                return RoleModelResource::collection($query->paginate()); 
+                return RoleModelResource::collection($query->paginate($per_page));
 
     }
 
@@ -49,7 +56,7 @@ class RoleModelController extends Controller
                $views=RoleModel::sum('view');
                 $count=0;
                foreach (RoleModel::withCount('comments') as $roleModel) {
-                   
+
                  $count+=$roleModel->comments_count;
                }
 
@@ -69,15 +76,21 @@ class RoleModelController extends Controller
      */
     public function store(Request $request)
     {
+
+        // return $request->title;
         $request->validate([
             'title'=>'required',
             'content'=>'required',
 
         ]);
 
+        try {
+            DB::beginTransaction();
+
+
         $data=$request->all();
-        // $data['employee_id']=$request->user()->id;
-        $data['employee_id']=1;
+        $data['employee_id']=$request->user()->id;
+        // $data['employee_id']=1;
       //  $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
 
         $model=RoleModel::create($data);
@@ -105,12 +118,20 @@ class RoleModelController extends Controller
         $iu=new ImageUpload();
         $upload= $iu->multipleImageUpload($request->images,$model->id);
         if (count($upload) > 0) {
-        return response()->json($model,201);
+
+            $request->user()->notify(new RoleModelAdded($model));
+            DB::commit();
+
+         return response()->json($model,201);
         }else{
         return response()->json('error while uploading..',401);
         }
-      //  return response()->json($model,201);
 
+    } catch (\Throwable $th) {
+
+        DB::rollBack();
+        return $th;
+    }
 
     }
 
@@ -142,8 +163,8 @@ class RoleModelController extends Controller
         ]);
 
         $data=$request->all();
-        $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
-        $data['employee_id']=$request->user()->id;
+        // $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
+        $data['employee_id']=1;
         $roleModel->update($data);
 
         $tags=$request->tags;
@@ -214,11 +235,11 @@ class RoleModelController extends Controller
 
     }
 
-    public function updateImage(Request $request){
+    public function updateImage(Request $request,$role_model_id){
         $iu=new ImageUpload();
-        $upload= $iu->multipleImageUpload($request->images,$request->role_model_id);
+        $upload= $iu->multipleImageUpload($request->images,$role_model_id);
         if (count($upload) > 0) {
-            return response()->json($upload,201);
+            return response()->json($upload,200);
         }else{
             return response()->json('error while uploading',401);
 
@@ -229,9 +250,9 @@ class RoleModelController extends Controller
 
     public function verify($id){
 
-        $blog=Blog::find($id);
-        $blog->is_verified=1;
-        $blog->save();
+        $rm=RoleModel::find($id);
+        $rm->is_verified=1;
+        $rm->save();
         return response()->json('verified',200);
     }
 
@@ -241,10 +262,9 @@ public function contentImageUpload(){
     try {
 
       //  return request()->upload;
-        $file=request()->upload;
-           $name = Str::random(5).time().'.'.$file->extension();
-           $file->move(public_path().'/rolemodelimages/', $name);
-   
+       $file=request()->upload;
+        return   $name = Str::random(5).time().'.'.$file->extension();
+         //  $file->move(public_path().'/rolemodelimages/', $name);
 
          return response()->json(['url'=>asset('/rolemodelimages').'/'.$name],201);
         } catch (\Throwable $th) {
@@ -253,5 +273,5 @@ public function contentImageUpload(){
     }
 
   }
- 
+
 }

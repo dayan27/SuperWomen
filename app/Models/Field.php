@@ -11,12 +11,17 @@ class Field extends Model
     public $fillable=[
         'title',
     ];
-    public function mentor(){
-        return $this->hasOne(Mentor::class);
-    }
 
+    public function mentors(){
+        return $this->belongsToMany(Mentor::class);
+    }
     public function role_models(){
         return $this->belongsToMany(RoleModel::class);
     }
 
+    public function blogs(){
+        // return $this->belongsToMany(Blog::class);
+        return $this->belongsToMany(Blog::class,'field_blog');
+
+    }
 }

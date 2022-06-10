@@ -24,6 +24,8 @@ class BlogResource extends JsonResource
             'like'=>$this->like,
             'comment'=>$this->comments()->count(),
             'is_verified'=>$this->is_verified,
+            'created_at'=>$this->created_at,
+
         ];
     }
 }

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Admin\MentorResource;
 use App\Models\Mentor;
+use App\Models\MentorRequest;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class MentorController extends Controller
@@ -14,7 +17,19 @@ class MentorController extends Controller
      */
     public function index()
     {
-        return Mentor::all();
+        $query=Mentor::query();
+
+        $query=$query->when(request('search'),function($query){
+                          
+            $query->where('first_name','LIKE','%'.request('search').'%')
+           ->orWhere('last_name','LIKE','%'.request('search').'%');
+     })  ->when(request('filter'),function($query){
+              
+        $query = $query->whereHas('fields', function (Builder $q) {
+            $q->where('fields.id', '=', request('filter'));
+        });
+    });
+        return MentorResource::collection(Mentor::paginate(15));
     }
 
 
@@ -85,5 +100,11 @@ class MentorController extends Controller
         $mentor->delete();
     }
 
+    public function getMentorRquests(){
+
+       return MentorRequest::where('is_accepeted',0)
+                      ->with('mentor')
+                       ->get();
+    }
     
 }

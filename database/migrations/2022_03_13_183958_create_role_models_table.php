@@ -15,8 +15,8 @@ class CreateRoleModelsTable extends Migration
     {
         Schema::create('role_models', function (Blueprint $table) {
             $table->id();
-            $table->text('title');
-            $table->text('content');
+            $table->text("title");
+            $table->text("content");
             $table->integer("share")->default(0);
             $table->integer("like")->default(0);
             $table->integer("view")->default(0);
