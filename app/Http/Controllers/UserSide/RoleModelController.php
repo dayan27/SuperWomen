@@ -23,6 +23,9 @@ class RoleModelController extends Controller
                         $query->where('fields.id', '=', request('filter'));
                     });
                 });
+
+                //
+            
                 return RoleModelResource::collection($query->latest()->paginate()); 
 
     }
