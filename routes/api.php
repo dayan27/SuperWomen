@@ -15,6 +15,8 @@ use App\Http\Controllers\RoleModelController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSide\RoleModelController as UserSideRoleModelController;
+use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -52,7 +54,8 @@ use Illuminate\Support\Facades\Route;
 
            // return ['blog'=>$blog,'rolemodel'=>$role,'mentor'=>$mentor];
 
-           return $request->user()->notifications;
+           //return Employee::find(1)->notifications;
+          return $request->user()->notifications;
         });
 
 

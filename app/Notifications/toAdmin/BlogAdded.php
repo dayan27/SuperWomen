@@ -70,7 +70,7 @@ class BlogAdded extends Notification
     public function toBroadcast($notifiable)
 {
     return new BroadcastMessage([
-        'invoice_id' => 1,
+        'notifications' => request()->user()->notifications,
         'amount' => 32,
     ]);
 }

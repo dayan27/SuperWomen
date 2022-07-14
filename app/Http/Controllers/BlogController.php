@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AdminNotification;
 use App\Http\Resources\Admin\BlogDetailResource;
 use App\Http\Resources\Admin\BlogResource;
 use App\Models\Blog;
@@ -117,6 +118,7 @@ class BlogController extends Controller
             if (count($upload) > 0) {
 
                 $request->user()->notify(new BlogAdded($blog));
+                event(new AdminNotification($request->user()->notifications));
                 DB::commit();
             return response()->json($blog,201);
             }else{
