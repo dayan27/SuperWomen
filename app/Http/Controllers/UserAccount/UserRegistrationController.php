@@ -23,11 +23,18 @@ class UserRegistrationController extends Controller
         $data['date_of_birth']=date('Y-m-d',strtotime($request->date_of_birth));
         $user= User::create($data);
        
-        $otp=rand(1000,9999);
+        $otp=rand(100000,999999);
 
         $user->verification_code=$otp;
         $user->save();
         $this->sendResetToken($otp,$user->phone_number);
     
+    }
+
+    public function addUserInterest(Request $request, $user_id){
+
+        $user=User::find($user_id);
+        $user->interests()->sync($request->interests);
+        return response()->json('succsses',200);
     }
 }

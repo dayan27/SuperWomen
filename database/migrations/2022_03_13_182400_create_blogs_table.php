@@ -15,8 +15,7 @@ class CreateBlogsTable extends Migration
     {
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
-            $table->text("title");
-            $table->text("content");
+          
             $table->integer("share")->default(0);
             $table->integer("like")->default(0);
             $table->integer("view")->default(0);

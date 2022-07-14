@@ -25,6 +25,8 @@ class CreateUsersTable extends Migration
            // $table->string('education_level');
             $table->boolean('is_active')->default(1);
             $table->boolean('is_subscribe')->default(0);
+            //when user register for the first time they have to verify their phone no
+            $table->string('otp');
             $table->string('profile_picture')->nullable();
             $table->foreignId('mentor_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('education_level_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();

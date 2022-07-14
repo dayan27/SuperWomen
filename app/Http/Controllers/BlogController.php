@@ -16,7 +16,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class BlogController extends Controller
+
+class BlogController extends Controller 
 {
     /**
      * Display a listing of the resource.

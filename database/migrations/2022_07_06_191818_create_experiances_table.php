@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRequestsTable extends Migration
+class CreateExperiancesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,16 @@ class CreateRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('requests', function (Blueprint $table) {
+        Schema::create('experiances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('position');
+            $table->string('organization');
+            $table->date('from');
+            $table->date('to');
+            $table->boolean('is_current')->default(0);
             $table->foreignId('mentor_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->boolean('state')->default('open');
-            $table->text('request_message');
+
+
 
             $table->timestamps();
         });
@@ -31,6 +35,6 @@ class CreateRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('requests');
+        Schema::dropIfExists('experiances');
     }
 }
