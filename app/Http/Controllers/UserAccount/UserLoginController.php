@@ -74,34 +74,7 @@ class UserLoginController extends Controller
 
 
 
-        public function checkResetOtp(Request $request,$token){
-            $tokenData = DB::table('user_password_resets')->where('token', $token)->first();
-
-            if (!$tokenData )
-            //&& ($tokenData->phone_number != $request->phone_number)
-            return response()->json('Invalide token',201);
-
-
-            //     $to = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $tokenData->created_at);
-            //      $from = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', Carbon::now());
-    
-    
-            //  // $diff_in_minutes = $to->diffInMinutes($from);
-            // Redirect the user back to the password reset request form if the token is invalid
-            $time_to_expire= \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',\Carbon\Carbon::now() )->diffInMinutes($tokenData->created_at);
-            
-            if($time_to_expire > 5){
-                return response()->json('The expired token',201);
-
-            }  
-          
-                 return response()->json([
-                     'code'=>$token,
-                    
-                 ],200);
-             
-     }  
-         
+  
  
         
 

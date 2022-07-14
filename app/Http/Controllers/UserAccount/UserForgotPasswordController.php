@@ -33,7 +33,7 @@ class UserForgotPasswordController extends Controller
             DB::table('user_password_resets')->where('phone_number', '=', $request->phone_number)
                ->delete();
 
-            $otp=rand(1000,9999);
+            $otp=rand(100000,999999);
             //Create Password Reset Token
             DB::table('user_password_resets')->insert([
             'phone_number' => $request->phone_number,
@@ -52,24 +52,27 @@ class UserForgotPasswordController extends Controller
                  }
     }
 
+    public function verifyResetOtp(Request $request,$token){
+        $tokenData = DB::table('user_password_resets')->where('token', $token)->first();
 
-    //     public function sendResetToken($code,$phone){
-    //         // Send an SMS using Twilio's REST API and PHP
-    //     $sid = "AC0428dd1cb20e48b25054618dd910df17"; // Your Account SID from www.twilio.com/console
-    //     $token = "49feea1cc785bbecefc404be7a9545e2"; // Your Auth Token from www.twilio.com/console
+        if (!$tokenData )
+        //&& ($tokenData->phone_number != $request->phone_number)
+        return response()->json('Invalide token',201);
 
-    //       $client = new Client($sid, $token);
-    //       $message = $client->messages->create(
-    //        $phone, // Text this number
-    //   [
-    //     'from' => '+15733759362', // From a valid Twilio number
-    //     'body' => 'your verfication number is '.$code,
-    //   ]
-    // );
+        $time_to_expire= \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',\Carbon\Carbon::now() )->diffInMinutes($tokenData->created_at);
+        
+        if($time_to_expire > 5){
+            return response()->json('The expired token',201);
 
-    //    return true;
-    //     }
-
+        }  
+      
+             return response()->json([
+                 'code'=>$token,
+                
+             ],200);
+         
+ }  
+   
         public function resetPassword(Request $request,$token){
             //Validate input
             $validator = FacadesValidator::make($request->all(), [

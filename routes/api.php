@@ -122,3 +122,9 @@ use Illuminate\Support\Facades\Route;
             Route::get('/user_role_models',[UserSideRoleModelController::class,'getRoleModels']);
             Route::get('/user_home_role_models',[UserSideRoleModelController::class,'getRecentRoleModels']);
 
+            /////////User Side Routes
+                  //.....User Account related
+                  Route::post('/verify_otp', [UserLoginController::class, 'verifyPhone']);
+                  Route::post('/verify_reset_otp/{token}', [UserLoginController::class, 'checkResetOtp']);
+                  Route::post('/subscribe', [SubscriptionEmailController::class, 'subscribe_email']);
+
