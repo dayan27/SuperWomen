@@ -21,7 +21,7 @@ class UserLoginController extends Controller
         $request->validate([
 
             'phone_number'=>'required',
-            'password'=>'required',
+            // 'password'=>'required',
 
         ]);
 
@@ -29,28 +29,21 @@ class UserLoginController extends Controller
         $user=User::where('phone_number',$request->phone_number)->first();
         if (! $user ) {
             return response()->json([
-                'message'=>' incorrect email and password',
+                'message'=>' incorrect Account',
                 ]
                ,404 );
         }
 
-        $check=Hash::check($request->password, $user->password);
-        if (! $check ) {
-            return response()->json(
-                 'incorrect  and password'
-               ,404 );
-        }
 
-        if(!$user->verified){
 
             $otp=rand(1000,9999);
 
-            $user->verification_code=$otp;
+            $user->otp=$otp;
             $user->save();
             $this->sendResetToken($otp,$request->phone_number);
             return response()->json(
-                 'unverified',201 );
-        }
+                 'otp sent',200 );
+        
 
         $token=$user->createToken('auth_token')->plainTextToken;
       //  $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
