@@ -20,12 +20,9 @@ use App\Http\Controllers\RoleModelTranslationController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSide\RoleModelController as UserSideRoleModelController;
-<<<<<<< HEAD
 use App\Models\RoleModelTranslation;
-=======
 use App\Models\Employee;
 use App\Models\User;
->>>>>>> 8721b7cf32c86b42a4bf08e715b2162912c7188d
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -135,14 +132,15 @@ use Illuminate\Support\Facades\Route;
             Route::get('/user_home_role_models',[UserSideRoleModelController::class,'getRecentRoleModels']);
   
 
-<<<<<<< HEAD
             //admn dayan
             Route::apiResource('/languages',AdminLanguageController::class);
-=======
+            Route::get('/search_role_models',[RoleModelController::class,'search']);
+            Route::get('/search_blogs',[BlogController::class,'search']);
+
+
             /////////User Side Routes
                   //.....User Account related
                   Route::post('/verify_otp', [UserLoginController::class, 'verifyPhone']);
                   Route::post('/verify_reset_otp/{token}', [UserLoginController::class, 'checkResetOtp']);
                   Route::post('/subscribe', [SubscriptionEmailController::class, 'subscribe_email']);
 
->>>>>>> 8721b7cf32c86b42a4bf08e715b2162912c7188d

@@ -7,11 +7,13 @@ use App\Events\AdminNotification;
 use App\Http\Resources\Admin\RoleModel as AdminRoleModel;
 use App\Http\Resources\Admin\RoleModelDetailResource;
 use App\Http\Resources\Admin\RoleModelResource;
+use App\Http\Resources\RoleModelSearchResource;
 use App\Models\Blog;
 use App\Models\Employee;
 use App\Models\request as ModelsRequest;
 use App\Models\RoleModel;
 use App\Models\RoleModelImage;
+use App\Models\RoleModelTranslation;
 use App\Models\Tag;
 use App\Notifications\NewNotification;
 use App\Notifications\toAdmin\RoleModelAdded;
@@ -48,6 +50,22 @@ class RoleModelController extends Controller
                 });
                 return RoleModelResource::collection($query->paginate($per_page));
 
+    }
+    /**
+     * search rolemodel
+     */
+    
+    public function search(){
+        $per_page=request()->per_page;
+
+        $query=RoleModelTranslation::query();
+        $query=$query->when(request('search'),function($query){
+
+            $query->where('title','LIKE','%'.request('search').'%')
+                        ->orWhere('content','LIKE','%'.request('search').'%')
+                        ->orWhere('intro','LIKE','%'.request('search').'%');
+            });
+            return RoleModelSearchResource::collection($query->paginate($per_page));
     }
 
     public function getTotalData(){
@@ -97,7 +115,6 @@ class RoleModelController extends Controller
       //  $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
 
         $model=RoleModel::create($data);
-          return $model;
         $tags=$request->tags;
         $tag_ids=[];
         foreach ($tags as $splited) {
@@ -147,7 +164,7 @@ class RoleModelController extends Controller
     public function show(RoleModel $roleModel)
     {
       //  return $roleModel;
-        return  $roleModelTrans=$roleModel->translate(request('lang'));
+          $roleModelTrans=$roleModel->translate(request('lang'));
         return new RoleModelDetailResource($roleModelTrans);
         //load('images','employee'));
     }
@@ -206,7 +223,7 @@ class RoleModelController extends Controller
         $roleModel->fields()->detach();
         $path= public_path().'/rolemodelimages/';
     //    return $post->images;
-        foreach ($roleModel->role_model_images as $image) {
+        foreach ($roleModel->images as $image) {
 
             if($image->path && file_exists($path.$image->path)){
               //  return $image->path;

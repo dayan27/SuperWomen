@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Events\AdminNotification;
 use App\Http\Resources\Admin\BlogDetailResource;
 use App\Http\Resources\Admin\BlogResource;
+use App\Http\Resources\BlogSearchResource;
 use App\Models\Blog;
 use App\Models\BlogImage;
+use App\Models\BlogTranslation;
 use App\Models\request as ModelsRequest;
 use App\Models\RoleModel;
 use App\Models\Tag;
@@ -42,6 +44,22 @@ class BlogController extends Controller
          });
          return BlogResource::collection($query->paginate($per_page));
 
+    }
+     /**
+     * search rolemodel
+     */
+    
+    public function search(){
+        $per_page=request()->per_page;
+
+        $query=BlogTranslation::query();
+        $query=$query->when(request('search'),function($query){
+
+            $query->where('blog_title','LIKE','%'.request('search').'%')
+                        ->orWhere('blog_content','LIKE','%'.request('search').'%')
+                        ->orWhere('blog_intro','LIKE','%'.request('search').'%');
+            });
+            return BlogSearchResource::collection($query->paginate($per_page));
     }
 
 
@@ -209,7 +227,7 @@ class BlogController extends Controller
         $blog->tags()->detach();
         $path= public_path().'/blogimages/';
         //    return $post->images;
-            foreach ($blog->blog_images as $image) {
+            foreach ($blog->images as $image) {
 
                 if($image->path && file_exists($path.$image->path)){
                   //  return $image->path;
