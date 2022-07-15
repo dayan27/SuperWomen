@@ -10,7 +10,7 @@ class Blog extends Model  implements TranslatableContract
 {
     use HasFactory;
     use Translatable;    
-    public $translatedAttributes = ['title','content','intro'];
+    public $translatedAttributes = ['blog_title','blog_content','blog_intro'];
 
     public $fillable=[
         'title',

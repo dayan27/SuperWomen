@@ -15,19 +15,20 @@ class BlogDetailResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
-            'title'=>$this->title,
-            'content'=>$this->content,
-            'images'=> BlogImageResource::collection($this->images) ?? null,
-            'view'=>$this->view,
-            'share'=>$this->share,
-            'like'=>$this->like,
-            'comment'=>$this->comments()->count(),
-            'tags'=>$this->tags,
-            'fields'=>$this->fields,
-            'is_verified'=>$this->is_verified,
-            'time_take_to_read'=>$this->time_take_to_read,
-            'written_by'=>$this->employee()->select('id','first_name','last_name')->first(),
+            //'id'=>$this->id,
+            'blog_title'=>$this->blog_title,
+            'blog_intro'=>$this->blog_intro,
+            'blog_content'=>$this->blog_content,
+            'images'=> BlogImageResource::collection($this->blog->images) ?? null,
+            'view'=>$this->blog->view,
+            'share'=>$this->blog->share,
+            'like'=>$this->blog->like,
+            'comment'=>$this->blog->comments()->count(),
+            'tags'=>$this->blog->tags,
+            'fields'=>$this->blog->fields,
+            'is_verified'=>$this->blog->is_verified,
+            'time_take_to_read'=>$this->blog->time_take_to_read,
+            'written_by'=>$this->blog->employee()->select('id','first_name','last_name')->first(),
         ];  
       }
 }

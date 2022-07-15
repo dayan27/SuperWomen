@@ -18,6 +18,9 @@ class CreateRoleModelTranslationsTable extends Migration
             $table->text("title");
             $table->text("intro");
             $table->text("content");
+            $table->string('locale');
+            $table->foreignId('role_model_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unique(['role_model_id','locale']);
             $table->timestamps();
         });
     }

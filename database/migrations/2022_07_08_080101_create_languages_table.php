@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBlogFieldTable extends Migration
+class CreateLanguagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateBlogFieldTable extends Migration
      */
     public function up()
     {
-        Schema::create('blog_field', function (Blueprint $table) {
+        Schema::create('languages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('blog_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('field_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('name');
+            $table->string('code');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateBlogFieldTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('field_blogs');
+        Schema::dropIfExists('languages');
     }
 }

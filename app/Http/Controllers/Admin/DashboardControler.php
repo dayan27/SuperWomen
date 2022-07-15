@@ -6,7 +6,7 @@ use App\Models\Blog;
 use App\Models\Mentor;
 use App\Models\RoleModel;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request; 
 
 class DashboardControler extends Controller
 {

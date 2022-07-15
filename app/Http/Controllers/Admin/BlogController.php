@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 
 use App\Http\Resources\Admin\BlogDetailResource;
 use App\Http\Resources\Admin\BlogResource;
@@ -74,14 +75,15 @@ class BlogController extends Controller
 
        // return $request->title;
         $request->validate([
-            'title'=>'required',
-            'content'=>'required',
+            'blog_title'=>'required',
+            'blog_content'=>'required',
+            'blog_intro'=>'required',
             'time_take_to_read'=>'required',
 
         ]);
 
-        try {
-            DB::beginTransaction();
+        // try {
+        //     DB::beginTransaction();
 
             $data=$request->all();
             // $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
@@ -126,11 +128,11 @@ class BlogController extends Controller
 
 
 
-        } catch (\Throwable $th) {
+        // } catch (\Throwable $th) {
 
-            DB::rollBack();
-            return $th;
-        }
+        //     DB::rollBack();
+        //     return $th;
+        // }
 
 
     }
@@ -143,7 +145,9 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        return new BlogDetailResource($blog->load('images','employee'));
+        
+        $blogTrans=$blog->translate(request('lang'));
+        return new BlogDetailResource($blogTrans);
     }
 
 

@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 
 use App\Events\AdminNotification;
 use App\Http\Resources\Admin\RoleModel as AdminRoleModel;
@@ -81,20 +82,22 @@ class RoleModelController extends Controller
         $request->validate([
             'title'=>'required',
             'content'=>'required',
+            'intro'=>'required',
 
         ]);
 
-        try {
-            DB::beginTransaction();
+        // try {
+        //     DB::beginTransaction();
 
 
         $data=$request->all();
+        // $data;
         $data['employee_id']=$request->user()->id;
         // $data['employee_id']=1;
       //  $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
 
         $model=RoleModel::create($data);
-
+          return $model;
         $tags=$request->tags;
         $tag_ids=[];
         foreach ($tags as $splited) {
@@ -127,11 +130,11 @@ class RoleModelController extends Controller
         return response()->json('error while uploading..',401);
         }
 
-    } catch (\Throwable $th) {
+    // } catch (\Throwable $th) {
 
-        DB::rollBack();
-        return $th;
-    }
+    //     DB::rollBack();
+    //     return $th;
+    // }
 
     }
 
@@ -143,7 +146,10 @@ class RoleModelController extends Controller
      */
     public function show(RoleModel $roleModel)
     {
-        return new RoleModelDetailResource($roleModel->load('images','employee'));
+      //  return $roleModel;
+        return  $roleModelTrans=$roleModel->translate(request('lang'));
+        return new RoleModelDetailResource($roleModelTrans);
+        //load('images','employee'));
     }
 
 
