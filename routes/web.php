@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Hash;
 */
 
 Route::get('/', function () {
-    return Hash::make('12345678');
-    event(new AdminNotification('hello world'));
-   // return view('welcome');
+    //return Hash::make('12345678');
+    //$data='helloplease work  hard';
+    return event(new AdminNotification());
+    return 'sent';
 });

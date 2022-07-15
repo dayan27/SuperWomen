@@ -20,8 +20,15 @@ class NotificationController extends Controller
     }
     public function markOneAsRead($id){
         $emp=request()->user();
-        $emp->unreadNotifications()->where('id',$id)->first()->markAsRead();
-        return response()->json('success',200);
+        $noti=$emp->unreadNotifications()->where('id',$id)->first();
+        if ($noti) {
+         $noti->markAsRead();
+         return response()->json('success',200);
+
+        }else{
+            return response()->json('already marked',201);
+
+        }
 
     }
 
@@ -32,7 +39,7 @@ class NotificationController extends Controller
         $notifications=  $emp->notifications;
 
         foreach($notifications as $not){
-            
+            $not->seen=1;
         }
 
 

@@ -9,28 +9,28 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Symfony\Contracts\EventDispatcher\Event;
 
-class AdminNotification extends Event implements ShouldBroadcast
+class MessagePublished
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
-  
+    /**
+     * Create a new event instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
-        $this->message = 'new blog Created';
+        //
     }
-  
+
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return \Illuminate\Broadcasting\Channel|array
+     */
     public function broadcastOn()
     {
-        return new Channel('comment-channel');
+        return new PrivateChannel('channel-name');
     }
-
-    public function broadcastAs()
-    {
-        return 'newComment';
-    }
-
-  
 }
