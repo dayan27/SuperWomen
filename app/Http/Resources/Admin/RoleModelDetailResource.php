@@ -15,19 +15,21 @@ class RoleModelDetailResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
+            'id'=>$this->role_model->id,
             'title'=>$this->title,
             'content'=>$this->content,
-            'images'=> RoleModelImageResource::collection($this->images) ?? null,
-            'view'=>$this->view,
-            'share'=>$this->share,
-            'like'=>$this->like,
-            'comment'=>$this->comments()->count(),
-            'is_verified'=>$this->is_verified,
-            'time_take_to_read'=>$this->time_take_to_read,
-            'written_by'=>$this->employee()->select('id','first_name','last_name')->first(),
-            'tags'=>$this->tags,
-            'fields'=>$this->fields
+            'intro'=>$this->intro,
+
+             'images'=> RoleModelImageResource::collection($this->role_model->images) ?? null,
+             'view'=>$this->role_model->view,
+            'share'=>$this->role_model->share,
+            'like'=>$this->role_model->like,
+            'comment'=>$this->role_model->comments()->count(),
+            'is_verified'=>$this->role_model->is_verified,
+            'time_take_to_read'=>$this->role_model->time_take_to_read,
+            'written_by'=>$this->role_model->employee()->select('id','first_name','last_name')->first(),
+             'tags'=>$this->role_model->tags,
+             'fields'=>$this->role_model->fields
         ];
     }
 }

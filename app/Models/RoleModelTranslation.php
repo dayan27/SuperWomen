@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class RoleModelTranslation extends Model
 {
     use HasFactory;
-    protected $fillable = ['role_model_title','role_model_intro','role_model_content'];
+    protected $fillable = ['title','intro','content'];
     public $timestamps = false;
+
+     
+    public function role_model()
+    {
+        return $this->belongsTo(RoleModel::class);
+    }
 }

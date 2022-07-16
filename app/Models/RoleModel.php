@@ -11,12 +11,12 @@ class RoleModel extends Model implements TranslatableContract
 {
     use HasFactory;
     use Translatable;    
-    public $translatedAttributes = ['role_model_title','role_model_content','role_model_intro'];
+    public $translatedAttributes = ['title','content','intro'];
 
     public $fillable=[
-        'role_model_title',
-        'role_model_content',
-        'role_model_intro',
+        'title',
+        'content',
+        'intro',
         'employee_id',
         'video',
         'time_take_to_read',

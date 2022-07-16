@@ -15,9 +15,13 @@ class CreateBlogTranslationsTable extends Migration
     {
         Schema::create('blog_translations', function (Blueprint $table) {
             $table->id();
-            $table->text("title");
-            $table->text("intro");
-            $table->text("content");
+            $table->text("blog_title");
+            $table->text("blog_intro");
+            $table->text("blog_content");
+            $table->string('locale');
+
+            $table->foreignId('blog_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unique(['blog_id','locale']);
             $table->timestamps();
         });
     }
