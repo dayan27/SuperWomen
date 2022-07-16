@@ -143,12 +143,7 @@ use Illuminate\Support\Facades\Route;
             Route::post('/assign_permission/{id}',[RoleController::class,'assignPermissions']);
             Route::post('/assign_role/{id}',[EmployeeController::class,'assignRoleToEmployee']);
 
-
-            
-
-
-
-            /////////User Side Routes
+         /////////User Side Routes
                   //.....User Account related
                   Route::post('/verify_otp', [UserLoginController::class, 'verifyPhone']);
                   Route::post('/verify_reset_otp/{token}', [UserLoginController::class, 'checkResetOtp']);
