@@ -7,6 +7,7 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\ReusedModule\ImageUpload;
+use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
 {
@@ -111,5 +112,17 @@ class EmployeeController extends Controller
 
         $employee->profile_picture=asset('/profilepictures').'/'.$name;
         return response()->json($employee,200);
+    }
+    /**
+     * assign role to a certian employee
+     */
+
+    public function assignRoleToEmployee(Request $request,$id){
+           $user=Employee::find($id);
+          $user->syncRoles($request->role_id);
+          return Role::find($request->role_id)->name;
+        //  $user->assignRole(['writer', 'admin']);
+
+
     }
 }

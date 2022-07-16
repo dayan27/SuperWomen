@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\BlogTranslationController;
 use App\Http\Controllers\Admin\LanguageController as AdminLanguageController;
+use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoleModelController;
 use App\Http\Controllers\Admin\RoleModelTranslationController as AdminRoleModelTranslationController;
 use App\Http\Controllers\Auth\LoginController;
@@ -136,6 +138,14 @@ use Illuminate\Support\Facades\Route;
             Route::apiResource('/languages',AdminLanguageController::class);
             Route::get('/search_role_models',[RoleModelController::class,'search']);
             Route::get('/search_blogs',[BlogController::class,'search']);
+            Route::apiResource('/permissions',PermissionController::class);
+            Route::apiResource('/roles',RoleController::class);
+            Route::post('/assign_permission/{id}',[RoleController::class,'assignPermissions']);
+            Route::post('/assign_role/{id}',[EmployeeController::class,'assignRoleToEmployee']);
+
+
+            
+
 
 
             /////////User Side Routes
