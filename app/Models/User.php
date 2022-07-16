@@ -27,6 +27,7 @@ class User extends Authenticatable
         'is_active',
         'profile_picture',
         'mentor_id',
+        'bio'
     ];
     
     /**
@@ -68,6 +69,10 @@ class User extends Authenticatable
 
     public function interests(){
         return $this->belongsToMany(Field::class);
+    }
+
+    public function messages(){
+        return $this->belongsToMany(Mentor::class,'messages');
     }
 
 }

@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\UserAccount;
+namespace App\Http\Controllers\MentorAccount;
 
 use App\Http\Controllers\Controller;
+use App\Models\Experiance;
+use App\Models\Mentor;
 use App\Models\User;
 use App\Traits\SendToken;
 use Illuminate\Http\Request;
 
-class UserRegistrationController extends Controller
+class MentorRegistrationController extends Controller
 {
     use SendToken;
     public function registerUser(Request $request){
@@ -20,7 +22,7 @@ class UserRegistrationController extends Controller
         ]);
         $data=$request->all();
         $data['date_of_birth']=date('Y-m-d',strtotime($request->date_of_birth));
-        $user= User::create($data);
+        $user= Mentor::create($data);
        
         $otp=rand(100000,999999);
 
@@ -35,18 +37,20 @@ class UserRegistrationController extends Controller
          }
     }
 
-    public function addUserInterest(Request $request){
+    public function addMentorExperiance(Request $request, $mentor_id){
 
-        $user=$request->user();
-        $user->interests()->sync($request->interests);
+        $mentor=$request->user();
+        $data=$request->all();
+        $data['mentor_id']=$mentor->id;
+        Experiance::create($data);
         return response()->json('succsses',200);
     }
 
 
     public function updateProfile(Request $request){
 
-        $user=$request->user();
-        $user->update($request->all());
-        return $user;
+        $mentor=$request->user();
+        $mentor->update($request->all());
+        return $mentor;
     }
 }

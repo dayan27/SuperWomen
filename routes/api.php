@@ -127,7 +127,7 @@ use Illuminate\Support\Facades\Route;
 
             /////////User Side Routes
                   //.....User Account related
-                  Route::post('/verify_otp', [UserLoginController::class, 'verifyPhone']);
-                  Route::post('/verify_reset_otp/{token}', [UserLoginController::class, 'checkResetOtp']);
-                  Route::post('/subscribe', [SubscriptionEmailController::class, 'subscribe_email']);
+                  // Route::post('/verify_otp', [UserLoginController::class, 'verifyPhone']);
+                  // Route::post('/verify_reset_otp/{token}', [UserLoginController::class, 'checkResetOtp']);
+               //   Route::post('/subscribe', [SubscriptionEmailController::class, 'subscribe_email']);
 

@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\UserAccount;
+namespace App\Http\Controllers\MentorAccount;
 
 use App\Http\Controllers\Controller;
+use App\Models\Mentor;
 use App\Models\User;
 use App\Traits\SendToken;
 use Illuminate\Http\Request;
 
-class UserVerificationController extends Controller
+class MentorVerificationController extends Controller
 {
     //
     use SendToken;
     public function verifyPhone(Request $request){
-        $user=User::where('phone_number',$request->phone_number)->where('otp',$request->otp)->first();
+        $user=Mentor::where('phone_number',$request->phone_number)->where('verification_code',$request->otp)->first();
         if($user){
         // return $user;
            $user->otp=null;
@@ -34,7 +35,7 @@ class UserVerificationController extends Controller
 
     public function resend(Request $request){
         $otp=rand(1000,9999);
-        $user=User::where('phone_number',$request->phone_number)->first();
+        $user=Mentor::where('phone_number',$request->phone_number)->first();
         $user->otp=$otp;
         $user->save();
         $success= $this->sendResetToken($otp,$user->phone_number);
