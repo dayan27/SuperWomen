@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\BlogTranslationController;
 use App\Http\Controllers\Admin\LanguageController as AdminLanguageController;
@@ -7,7 +11,6 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoleModelController;
 use App\Http\Controllers\Admin\RoleModelTranslationController as AdminRoleModelTranslationController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContentWriterController;
 use App\Http\Controllers\DashboardControler;
@@ -145,7 +148,7 @@ use Illuminate\Support\Facades\Route;
 
          /////////User Side Routes
                   //.....User Account related
-                  Route::post('/verify_otp', [UserLoginController::class, 'verifyPhone']);
-                  Route::post('/verify_reset_otp/{token}', [UserLoginController::class, 'checkResetOtp']);
-                  Route::post('/subscribe', [SubscriptionEmailController::class, 'subscribe_email']);
+                  // Route::post('/verify_otp', [UserLoginController::class, 'verifyPhone']);
+                  // Route::post('/verify_reset_otp/{token}', [UserLoginController::class, 'checkResetOtp']);
+               //   Route::post('/subscribe', [SubscriptionEmailController::class, 'subscribe_email']);
 

@@ -23,9 +23,8 @@ public function sendResetToken($code,$phone){
   
          return true;
 
-            return true;
         } catch (\Throwable $th) {
-          return false;
+          return $th;
         }
       
         }

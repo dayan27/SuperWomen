@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\UserAccount;
 
 use App\Http\Controllers\Controller;
 use App\Models\Account;
@@ -21,7 +21,7 @@ class UserLoginController extends Controller
         $request->validate([
 
             'phone_number'=>'required',
-            'password'=>'required',
+            // 'password'=>'required',
 
         ]);
 
@@ -29,36 +29,32 @@ class UserLoginController extends Controller
         $user=User::where('phone_number',$request->phone_number)->first();
         if (! $user ) {
             return response()->json([
-                'message'=>' incorrect email and password',
+                'message'=>' incorrect Account',
                 ]
                ,404 );
         }
 
-        $check=Hash::check($request->password, $user->password);
-        if (! $check ) {
-            return response()->json(
-                 'incorrect  and password'
-               ,404 );
-        }
 
-        if(!$user->verified){
 
-            $otp=rand(1000,9999);
+            $otp=rand(100000,999999);
 
-            $user->verification_code=$otp;
+            $user->otp=$otp;
             $user->save();
-            $this->sendResetToken($otp,$request->phone_number);
-            return response()->json(
-                 'unverified',201 );
-        }
+            $success= $this->sendResetToken($otp,$user->phone_number);
+            if($success){
+                return response()->json('otp sent',201);
+            }else{
+               return response()->json($success,200);
+   
+            }
 
-        $token=$user->createToken('auth_token')->plainTextToken;
-      //  $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
-       // return response()->json($Manager,200);
-        return response()->json([
-            'access_token'=>$token,
-            'user'=>$user,
-        ],200);
+    //     $token=$user->createToken('auth_token')->plainTextToken;
+    //   //  $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
+    //    // return response()->json($Manager,200);
+    //     return response()->json([
+    //         'access_token'=>$token,
+    //         'user'=>$user,
+    //     ],200);
 
      }
 
@@ -71,44 +67,39 @@ class UserLoginController extends Controller
             ],200);
 
         }
+   
 
-
-
-  
- 
-        
-
-        public function changePassword(Request $request){
+        public function changePhoneNumber(Request $request,$user_id){
 
            // return $request;
             $request->validate([
-                'old_password'=>'required',
-                'new_password'=>'required',
+                'new_phone_number'=>'required',
 
             ]);
 
-            $user=User::where('phone_number',$request->user()->phone_number)->first();
+            $user=User::find($user_id);
             if (! $user ) {
                 return response()->json([
-                    'message'=>' incorrect credentials ',
+                    'message'=>' undefined user ',
                     ]
                    ,404 );
             }
-
-            $check=Hash::check($request->old_password, $user->password);
-            if (! $check ) {
-                return response()->json([
-                    'message'=>' incorrect old password ',
-                    ]
-                   ,404 );
-            }
-
-            $user->password=Hash::make($request->new_password);
+      
+            $otp=rand(100000,999999);
+            $user->phone_number=$request->new_phone_number;
+            $user->otp=$otp;
             $user->save();
-            return response()->json([
-                'message'=>'Successfully  Reset',
-                ]
-               ,200 );
+            // Revoke all tokens...
+            $user->tokens()->delete();
+            
+
+            $success= $this->sendResetToken($otp,$user->phone_number);
+            if($success){
+                return response()->json('otp sent',201);
+            }else{
+               return response()->json($success,200);
+   
+            }
         }
 
 

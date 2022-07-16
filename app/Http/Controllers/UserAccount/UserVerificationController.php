@@ -12,11 +12,10 @@ class UserVerificationController extends Controller
     //
     use SendToken;
     public function verifyPhone(Request $request){
-        $user=User::where('phone_number',$request->phone_number)->where('verification_code',$request->code)->first();
+        $user=User::where('phone_number',$request->phone_number)->where('otp',$request->otp)->first();
         if($user){
         // return $user;
-           $user->verification_code=null;
-           $user->verified=1;
+           $user->otp=null;
            $user->save();
            //$request->session()->put('verified', true);
            $token=$user->createToken('auth_token')->plainTextToken;
@@ -36,8 +35,16 @@ class UserVerificationController extends Controller
     public function resend(Request $request){
         $otp=rand(1000,9999);
         $user=User::where('phone_number',$request->phone_number)->first();
-        $user->verification_code=$otp;
+        $user->otp=$otp;
         $user->save();
-        $this->sendResetToken($otp,$request->phone_number);
-       }
+        $success= $this->sendResetToken($otp,$user->phone_number);
+         if($success){
+             return response()->json('otp sent',201);
+         }else{
+            return response()->json($success,200);
+
+         }    
+        
+        
+    }
 }

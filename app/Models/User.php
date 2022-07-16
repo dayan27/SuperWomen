@@ -20,17 +20,14 @@ class User extends Authenticatable
     protected $fillable = [
         'first_name',
         'last_name',
-        'phone_no',
+        'phone_number',
         'email',
-        'city',
-        'interest',
-        'password',
         'date_of_birth',
-        'education_level',
+        'education_level_id',
         'is_active',
-        'is_subscribe',
         'profile_picture',
         'mentor_id',
+        'bio'
     ];
     
     /**
@@ -70,8 +67,12 @@ class User extends Authenticatable
         return $this->belongsTo(EducationLevel::class);
     }
 
-    public function fields(){
+    public function interests(){
         return $this->belongsToMany(Field::class);
+    }
+
+    public function messages(){
+        return $this->belongsToMany(Mentor::class,'messages');
     }
 
 }

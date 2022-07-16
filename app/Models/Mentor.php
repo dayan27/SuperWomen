@@ -59,4 +59,9 @@ class Mentor extends Model
     public function fields(){
         return $this->belongsToMany(Field::class);
     }
+
+    public function messages(){
+        return $this->belongsToMany(User::class,'messages');
+    }
 }
+
