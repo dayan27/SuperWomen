@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMentorRequestsTable extends Migration
+class CreateRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateMentorRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('mentor_requests', function (Blueprint $table) {
+        Schema::create('requests', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('mentor_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->boolean('is_accepeted')->default(0);
+            $table->string('state')->default('open');
+            $table->text('request_message');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ class CreateMentorRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mentor_requests');
+        Schema::dropIfExists('requests');
     }
 }

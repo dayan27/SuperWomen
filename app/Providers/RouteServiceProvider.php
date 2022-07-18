@@ -55,6 +55,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/user.php'));
 
 
+                Route::middleware('api')
+                ->namespace($this->namespace)
+                ->prefix('mentor')
+                ->group(base_path('routes/mentor.php'));
+
         });
     }
 

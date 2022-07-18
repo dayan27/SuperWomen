@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use App\Models\request;
+namespace App\Http\Controllers\MentorSide;
+use App\Http\Controllers\Controller;
+use App\Models\Availability;
 use Illuminate\Http\Request;
 
-class RequestController extends Controller
+class AvailabilityController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,17 +14,7 @@ class RequestController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Availability::all();
     }
 
     /**
@@ -35,27 +25,20 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $mentor=$request->user();
+        $data=$request->all();
+        $data['mentor_id']=1;
+        Availability::create($data);
+        return response()->json('succsses',201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(request $request)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(request $request)
+    public function show($id)
     {
         //
     }
@@ -64,22 +47,22 @@ class RequestController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, request $request)
+    public function update(Request $request, $id)
     {
-        //
+        Availability::find($id)->update($request->all());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(request $request)
+    public function destroy($id)
     {
-        //
+        Availability::find($id)->delete();
     }
 }

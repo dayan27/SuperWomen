@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\MentorSide;
+use App\Http\Controllers\Controller;
+use App\Models\Experiance;
+use App\Models\request as ModelsRequest;
 use Illuminate\Http\Request;
 
-class Availability extends Controller
+class ExperianceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +15,7 @@ class Availability extends Controller
      */
     public function index()
     {
-        //
+        return Experiance::where('mentor_id',1)->get();
     }
 
     /**
@@ -24,7 +26,11 @@ class Availability extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $mentor=$request->user();
+        $data=$request->all();
+        $data['mentor_id']=1;
+        Experiance::create($data);
+        return response()->json('succsses',201);
     }
 
     /**
@@ -35,7 +41,7 @@ class Availability extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -47,7 +53,7 @@ class Availability extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+       $experiannce= Experiance::find($id)->update($request->all());
     }
 
     /**
@@ -58,6 +64,6 @@ class Availability extends Controller
      */
     public function destroy($id)
     {
-        //
+        Experiance::find($id)->delete();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\UserAccount;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\ReusedModule\ImageUpload;
 use App\Traits\SendToken;
 use Illuminate\Http\Request;
 
@@ -26,11 +27,11 @@ class UserRegistrationController extends Controller
 
         $user->otp=$otp;
         $user->save();
-        $success= $this->sendResetToken($otp,$user->phone_number);
+       return $success= $this->sendResetToken($otp,$user->phone_number);
          if($success){
              return response()->json('otp sent',201);
          }else{
-            return response()->json($success,200);
+            return response()->json('error',200);
 
          }
     }
@@ -49,4 +50,29 @@ class UserRegistrationController extends Controller
         $user->update($request->all());
         return $user;
     }
+
+    public function changeProfilePicture(Request $request){
+
+        $user=$request->user();
+        
+        $path= public_path().'/profilepictures/';
+    
+                if(($user->profile_picture != '') && file_exists($path.$user->profile_picture)){
+             
+                    unlink($path.$user->profile_picture);
+                }
+
+                $user->profile_picture='';
+
+            
+
+        $iu=new ImageUpload();
+        $name= $iu->profileImageUpload(request('profile'));
+        $user->profile_picture=$name;
+        $user->save();
+
+        $user->profile_picture=asset('/profilepictures').'/'.$name;
+        return response()->json($user,200);
+    }
+
 }

@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Availability extends Model
 {
     use HasFactory;
+    protected $fillable=['day','to','from','mentor_id'];
 }

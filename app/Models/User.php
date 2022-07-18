@@ -59,7 +59,7 @@ class User extends Authenticatable
     }
 
     public function mentor_requests(){
-        return $this->belongsToMany(Mentor::class,'requests');
+        return $this->belongsToMany(Mentor::class,'requests')->withPivot(['request_message','user_id','mentor_id','state','created_at']);
     }
 
 
@@ -72,7 +72,7 @@ class User extends Authenticatable
     }
 
     public function messages(){
-        return $this->belongsToMany(Mentor::class,'messages');
+        return $this->belongsToMany(Mentor::class,'messages')->withPivot(['message','user_id','mentor_id']);
     }
 
 }

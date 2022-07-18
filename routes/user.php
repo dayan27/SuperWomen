@@ -5,11 +5,13 @@
 
 use App\Http\Controllers\UserAccount\UserForgotPasswordController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\UserAccount\AccountController;
 use App\Http\Controllers\UserAccount\SubscriptionEmailController;
 use App\Http\Controllers\UserAccount\UserLoginController;
 use App\Http\Controllers\UserAccount\UserRegistrationController;
 use App\Http\Controllers\UserAccount\UserVerificationController;
 use App\Http\Controllers\UserSide\ChattingController;
+use App\Http\Controllers\UserSide\RequestController;
 use App\Models\EducationLevel;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 
     Route::post('/register', [UserRegistrationController::class, 'registerUser']);
     Route::post('/verify_phone', [UserVerificationController::class, 'verifyPhone']);
-    Route::post('/resend',[UserLoginController::class,'resend']);
+    Route::post('/resend',[UserVerificationController::class,'resend']);
     Route::post('/login',[UserLoginController ::class,'login']);
   
     Route::middleware(['auth:sanctum'])->group(function () {
@@ -29,6 +31,15 @@ use Illuminate\Support\Facades\Route;
         Route::post('/change_phone',[UserLoginController ::class,'changePhoneNumber']);
         Route::post('/send_message',[ChattingController ::class,'sendMessage']);
         Route::get('/messages',[ChattingController ::class,'getMessages']);
+
+        Route::get('/my_mentor',[AccountController ::class,'myMentor']);
+        Route::get('/my_interests',[AccountController ::class,'myInterests']);
+       
+        Route::get('/my_requests',[RequestController ::class,'myRequests']);
+        Route::post('/send_request',[RequestController ::class,'sendRequest']);
+        Route::post('/change_profile',[UserRegistrationController::class,'changeProfilePicture']);
+
+
 });
 
     ////////========below routes are not imp't here because of otp====///

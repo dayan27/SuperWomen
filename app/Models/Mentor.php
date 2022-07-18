@@ -61,7 +61,15 @@ class Mentor extends Model
     }
 
     public function messages(){
-        return $this->belongsToMany(User::class,'messages');
+        return $this->belongsToMany(User::class,'messages')->withPivot(['message','user_id','mentor_id']);
+    }
+
+    public function experiances(){
+        return $this->hasMany(Experiance ::class);
+    }
+
+    public function availabilities(){
+        return $this->hasMany(Availability::class);
     }
 }
 

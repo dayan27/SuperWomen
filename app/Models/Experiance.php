@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Experiance extends Model
 {
     use HasFactory;
+    protected $fillable=['organization','position','to','from','mentor_id'];
+
 }

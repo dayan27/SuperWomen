@@ -48,13 +48,6 @@ class UserLoginController extends Controller
    
             }
 
-    //     $token=$user->createToken('auth_token')->plainTextToken;
-    //   //  $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
-    //    // return response()->json($Manager,200);
-    //     return response()->json([
-    //         'access_token'=>$token,
-    //         'user'=>$user,
-    //     ],200);
 
      }
 

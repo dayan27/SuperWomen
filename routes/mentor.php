@@ -1,23 +1,60 @@
 <?php
 
 use App\Events\AdminNotification;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MentorAccount\AccountController;
+use App\Http\Controllers\MentorAccount\MentorLoginController;
+use App\Http\Controllers\MentorAccount\MentorRegistrationController;
+use App\Http\Controllers\MentorAccount\MentorVerificationController;
+use App\Http\Controllers\MentorSide\AvailabilityController;
+use App\Http\Controllers\MentorSide\ChattingController;
+use App\Http\Controllers\MentorSide\ExperianceController;
+use App\Http\Controllers\MentorSide\RequestController;
+use App\Models\EducationLevel;
 use Illuminate\Support\Facades\Hash;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    //return Hash::make('12345678');
-    //$data='helloplease work  hard';
-    return event(new AdminNotification());
-    return 'sent';
+
+
+  
+
+    Route::post('/register', [MentorRegistrationController::class, 'registerUser']);
+    Route::post('/verify_phone', [MentorVerificationController::class, 'verifyPhone']);
+    Route::post('/resend',[MentorVerificationController::class,'resend']);
+    Route::post('/login',[MentorLoginController ::class,'login']);
+  
+
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::post('/logout',[MentorLoginController::class,'logout']);
+        Route::post('/set_experiance', [MentorRegistrationController::class, 'addMentorExperiance']);
+        Route::post('/update_profile', [MentorRegistrationController::class, 'updateProfile']);
+        Route::post('/change_phone',[MentorLoginController ::class,'changePhoneNumber']);
+        Route::post('/send_message',[ChattingController ::class,'sendMessage']);
+        Route::get('/messages',[ChattingController ::class,'getMessages']);
+
+        Route::apiResource('/availabilities',AvailabilityController::class);
+        Route::apiResource('/experiances',ExperianceController::class);
+
+
+        Route::get('/my_mentees',[AccountController ::class,'myMentees']);
+        Route::get('/chats',[ChattingController ::class,'getChates']);
+       
+        Route::get('/mentee_requests',[RequestController ::class,'userRequests']);
+        Route::post('/accept_request',[RequestController ::class,'acceptRequest']);
+        Route::post('/reject_request',[RequestController ::class,'rejectRequest']);
+        
 });
+
+    ////////========below routes are not imp't here because of otp====///
+    Route::post('/forgot',[UserForgotPasswordController::class,'forgot']);
+    Route::post('/verify_reset/{token}', [UserForgotPasswordController::class, 'verifyResetOtp']);
+    Route::post('/reset/{token}',[UserForgotPasswordController::class,'resetPassword']);
+
+    Route::post('/subscribe', [SubscriptionEmailController::class, 'subscribe_email']);
+
+
+    Route::get('/education_levels', function () {
+        //return Hash::make('12345678');
+        //$data='helloplease work  hard';
+        return EducationLevel::all(['id','level']);
+    });

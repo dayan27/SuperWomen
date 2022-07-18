@@ -24,14 +24,10 @@ class ChattingController extends Controller
 
     public function getMessages(Request $request){
 
-        // $messages=Message::where('user_id',$user_id)
-        //                  ->where('mentor_id',$request->mentor_id)
-        //                  ->get();
-
-      //  return $request->user()->id;
-        $messages=Message::where('user_id',$request->user()->id)
-                         ->where('mentor_id',$request->user()->mentor_id)
-                         ->get();
+        $user= $request->user();
+        $messages=Message::where('mentor_id',$user->mentor_id)
+                           ->where('user_id',$user->id)
+                           ->get();
 
         return $messages;
     }

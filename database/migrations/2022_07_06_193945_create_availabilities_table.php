@@ -16,8 +16,8 @@ class CreateAvailabilitiesTable extends Migration
         Schema::create('availabilities', function (Blueprint $table) {
             $table->id();
             $table->string('day');
-            $table->date('from');
-            $table->date('to');
+            $table->dateTime('from');
+            $table->dateTime('to');
             $table->foreignId('mentor_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
