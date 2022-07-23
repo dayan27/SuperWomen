@@ -39,9 +39,9 @@ class UserVerificationController extends Controller
         $user->save();
         $success= $this->sendResetToken($otp,$user->phone_number);
          if($success){
-             return response()->json('otp sent',201);
+             return response()->json('otp sent',200);
          }else{
-            return response()->json($success,200);
+            return response()->json($success,400);
 
          }    
         

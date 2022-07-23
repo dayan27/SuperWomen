@@ -27,11 +27,11 @@ class UserRegistrationController extends Controller
 
         $user->otp=$otp;
         $user->save();
-       return $success= $this->sendResetToken($otp,$user->phone_number);
-         if($success){
+        $success= $this->sendResetToken($otp,$user->phone_number);
+         if($success == 'sent'){
              return response()->json('otp sent',201);
          }else{
-            return response()->json('error',200);
+            return response()->json($success,401);
 
          }
     }
