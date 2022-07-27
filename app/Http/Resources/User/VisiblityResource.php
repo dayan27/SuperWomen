@@ -15,6 +15,7 @@ class VisiblityResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id'=>$this->id,
             'day'=>$this->day,
             'to'=>$this->to,
             'from'=>$this->from,

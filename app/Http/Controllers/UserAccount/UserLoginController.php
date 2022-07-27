@@ -40,8 +40,11 @@ class UserLoginController extends Controller
 
             $user->otp=$otp;
             $user->save();
+
+            
+
             $success= $this->sendResetToken($otp,$user->phone_number);
-            if($success){
+            if($success == 'sent'){
                 return response()->json('otp sent',201);
             }else{
                return response()->json($success,200);
@@ -62,7 +65,7 @@ class UserLoginController extends Controller
         }
    
 
-        public function changePhoneNumber(Request $request,$user_id){
+        public function changePhoneNumber(Request $request){
 
            // return $request;
             $request->validate([
@@ -70,7 +73,7 @@ class UserLoginController extends Controller
 
             ]);
 
-            $user=User::find($user_id);
+            $user=$request->user();
             if (! $user ) {
                 return response()->json([
                     'message'=>' undefined user ',
@@ -83,7 +86,7 @@ class UserLoginController extends Controller
             $user->otp=$otp;
             $user->save();
             // Revoke all tokens...
-            $user->tokens()->delete();
+           // $user->tokens()->delete();
             
 
             $success= $this->sendResetToken($otp,$user->phone_number);

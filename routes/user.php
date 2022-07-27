@@ -11,6 +11,7 @@ use App\Http\Controllers\UserAccount\UserLoginController;
 use App\Http\Controllers\UserAccount\UserRegistrationController;
 use App\Http\Controllers\UserAccount\UserVerificationController;
 use App\Http\Controllers\UserSide\ChattingController;
+use App\Http\Controllers\UserSide\MentorControler;
 use App\Http\Controllers\UserSide\RequestController;
 use App\Models\EducationLevel;
 use Illuminate\Support\Facades\Route;
@@ -32,15 +33,19 @@ use Illuminate\Support\Facades\Route;
         Route::post('/send_message',[ChattingController ::class,'sendMessage']);
         Route::get('/messages',[ChattingController ::class,'getMessages']);
 
+        Route::get('/disconnect_mentor',[AccountController ::class,'DisconnectMentor']);
+
         Route::get('/my_mentor',[AccountController ::class,'myMentor']);
         Route::get('/my_interests',[AccountController ::class,'myInterests']);
        
         Route::get('/my_requests',[RequestController ::class,'myRequests']);
-        Route::post('/send_request',[RequestController ::class,'sendRequest']);
-        Route::post('/change_profile',[UserRegistrationController::class,'changeProfilePicture']);
+        Route::post('/send_mentor_request/{mentor_id}',[RequestController ::class,'sendRequest']);
+        Route::post('/change_profile_picture',[UserRegistrationController::class,'changeProfilePicture']);
 
 
 });
+
+Route::get('/mentors',[MentorControler ::class,'getMentors']);
 
     ////////========below routes are not imp't here because of otp====///
     // Route::post('/forgot',[UserForgotPasswordController::class,'forgot']);

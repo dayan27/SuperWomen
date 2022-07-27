@@ -18,5 +18,10 @@ class AccountController extends Controller
 
     }
 
+    public function disconnectMentor(){
+        request()->user()->mentor_id=null;
+        return response()->json('disconnected',200);
+    }
+
 
 }
