@@ -10,8 +10,7 @@ use Illuminate\Http\Request;
 class AccountController extends Controller
 {
     public function myMentees(Request $request){
-
-       return   MenteeResource::collection($request->user()->users);
+       return MenteeResource::collection($request->user()->users);
     }
 
     public function myExperiances(Request $request){

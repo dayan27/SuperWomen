@@ -18,7 +18,6 @@ class MentorRegistrationController extends Controller
             'last_name'=>'required',
             'phone_number'=>'required',
             'date_of_birth'=>'required',
-            'education_level_id'=>'required',
         ]);
         $data=$request->all();
         $data['date_of_birth']=date('Y-m-d',strtotime($request->date_of_birth));

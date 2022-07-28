@@ -15,6 +15,8 @@ class RequestController extends Controller
         $men_req->user_id=$user->id;
         $men_req->mentor_id=$mentor_id;
         $men_req->request_message=$request->message;
+        $men_req->state='opened';
+
         $men_req->save();
 
         return response()->json('success',200);

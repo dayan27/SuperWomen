@@ -20,8 +20,8 @@ class MentorVerificationController extends Controller
            $user->save();
            //$request->session()->put('verified', true);
            $token=$user->createToken('auth_token')->plainTextToken;
-           //  $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
-            // return response()->json($Manager,200);
+             $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
+
              return response()->json([
                  'access_token'=>$token,
                  'user'=>$user,
@@ -39,7 +39,7 @@ class MentorVerificationController extends Controller
         $user->otp=$otp;
         $user->save();
         $success= $this->sendResetToken($otp,$user->phone_number);
-         if($success){
+         if($success == 'sent'){
              return response()->json('otp sent',201);
          }else{
             return response()->json($success,200);

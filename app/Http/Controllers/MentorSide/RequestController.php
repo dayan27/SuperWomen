@@ -18,11 +18,15 @@ class RequestController extends Controller
         $user=User::find($men_req->user_id);
         $user->mentor_id=$mentor->id;
         
+        //updating other request status
+        MentorRequest::where('user_id',$men_req->user_id)
+                     ->where('state','opened')
+                     ->update('state','closed');
         return response()->json('success',200);
               
     }
 
-    public function rejecttRequest(Request $request,$req_id){
+    public function rejectRequest(Request $request,$req_id){
 
         //$user=$request->user();
         $men_req= MentorRequest::find($req_id);
