@@ -26,6 +26,12 @@ use Illuminate\Support\Facades\Route;
     Route::post('/login',[UserLoginController ::class,'login']);
   
     Route::middleware(['auth:sanctum'])->group(function () {
+
+        Route::get('/user', function () {
+            //return Hash::make('12345678');
+            //$data='helloplease work  hard';
+            return request()->user();
+        });
         Route::post('/logout',[UserLoginController::class,'logout']);
         Route::post('/set_interest', [UserRegistrationController::class, 'addUserInterest']);
         Route::post('/update_profile', [UserRegistrationController::class, 'updateProfile']);
