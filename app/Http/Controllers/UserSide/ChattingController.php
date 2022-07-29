@@ -25,7 +25,7 @@ class ChattingController extends Controller
         $message->message=$request->message;
         $message->save();
        // event(new AdminNotification());
-        event(new MessagePublished($this->getMessages($request)));
+        event(new MessagePublished($message));
         return 'success';
     }
 
@@ -37,8 +37,8 @@ class ChattingController extends Controller
         $messages=Message::where('mentor_id',$user->mentor_id)
                            ->where('user_id',$user->id)
                            ->get();
-                           event(new MessagePublished($this->getMessages($request)));
+                        //   event(new MessagePublished($this->getMessages($request)));
 
-       // return $messages;
+        return $messages;
     }
 }
