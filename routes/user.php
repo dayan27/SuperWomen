@@ -39,6 +39,7 @@ use Illuminate\Support\Facades\Route;
         Route::post('/send_message',[ChattingController ::class,'sendMessage']);
         Route::get('/messages',[ChattingController ::class,'getMessages']);
 
+        
         Route::get('/disconnect_mentor',[AccountController ::class,'DisconnectMentor']);
 
         Route::get('/my_mentor',[AccountController ::class,'myMentor']);
