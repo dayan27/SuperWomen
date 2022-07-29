@@ -1,6 +1,8 @@
 <?php
 
 use App\Events\AdminNotification;
+use App\Events\MessagePublished;
+use App\Models\Message;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,6 +20,7 @@ use Illuminate\Support\Facades\Hash;
 Route::get('/', function () {
     //return Hash::make('12345678');
     //$data='helloplease work  hard';
-    return event(new AdminNotification());
+    return event(new MessagePublished('hello'));
+  //  return event(new AdminNotification());
     return 'sent';
 });

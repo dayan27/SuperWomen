@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -18,4 +19,9 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 Broadcast::channel('comment-channel', function () {
     return true;
+});
+
+Broadcast::channel('chat', function ($user) {
+    return true;
+    return Auth::check();
 });

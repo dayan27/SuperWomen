@@ -21,7 +21,7 @@ class RequestController extends Controller
         //updating other request status
         MentorRequest::where('user_id',$men_req->user_id)
                      ->where('state','opened')
-                     ->update('state','closed');
+                     ->update(['state'=>'closed']);
         return response()->json('success',200);
               
     }

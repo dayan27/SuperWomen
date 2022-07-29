@@ -32,7 +32,7 @@ class MessagePublished implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('getMessage');
+        return new Channel('chat');
     }
 
     public function broadcastAs()

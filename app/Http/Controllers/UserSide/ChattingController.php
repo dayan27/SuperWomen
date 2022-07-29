@@ -7,17 +7,26 @@ use App\Events\MessagePublished;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
+use DateTime;
 
 class ChattingController extends Controller
 {
     public function sendMessage(Request $request){
 
-        $data=$request->all();
-        $data['sender']='user';
-        $message= Message::create($data);
+        $user= $request->user();
+
+       // $data=$request->all();
+        
+        
+        $message= new Message;
+        $message->sender='user';
+        $message->user_id=$user->id;
+        $message->mentor_id=$user->mentor_id;
+        $message->message=$request->message;
+        $message->save();
        // event(new AdminNotification());
-        event(new MessagePublished($message));
-        return $message;
+        event(new MessagePublished($this->getMessages($request)));
+        return 'success';
     }
 
 
@@ -28,7 +37,8 @@ class ChattingController extends Controller
         $messages=Message::where('mentor_id',$user->mentor_id)
                            ->where('user_id',$user->id)
                            ->get();
+                           event(new MessagePublished($this->getMessages($request)));
 
-        return $messages;
+       // return $messages;
     }
 }
