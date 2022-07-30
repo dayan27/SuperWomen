@@ -24,3 +24,12 @@ Route::get('/', function () {
   //  return event(new AdminNotification());
     return 'sent';
 });
+
+Route::fallback(function ()
+{
+    # To Specific Controller
+   //.. return Redirect::to('homeController'); # ('/') if defined 
+
+    # To Specific View
+    return response()->json('Invalide url', 404);
+});

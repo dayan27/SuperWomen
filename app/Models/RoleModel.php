@@ -36,7 +36,7 @@ class RoleModel extends Model implements TranslatableContract
     }
 
     public function comments(){
-        return $this->hasMany(RoleModelComment::class);
+        return $this->belongsToMany(User::class,'role_model_comments')->withPivot('content');
     }
 
     public function employee(){

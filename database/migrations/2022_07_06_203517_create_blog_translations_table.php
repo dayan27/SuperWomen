@@ -19,7 +19,6 @@ class CreateBlogTranslationsTable extends Migration
             $table->text("blog_intro");
             $table->text("blog_content");
             $table->string('locale');
-
             $table->foreignId('blog_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->unique(['blog_id','locale']);
             $table->timestamps();

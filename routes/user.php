@@ -10,9 +10,11 @@ use App\Http\Controllers\UserAccount\SubscriptionEmailController;
 use App\Http\Controllers\UserAccount\UserLoginController;
 use App\Http\Controllers\UserAccount\UserRegistrationController;
 use App\Http\Controllers\UserAccount\UserVerificationController;
+use App\Http\Controllers\UserSide\BlogController as UserSideBlogController;
 use App\Http\Controllers\UserSide\ChattingController;
 use App\Http\Controllers\UserSide\MentorControler;
 use App\Http\Controllers\UserSide\RequestController;
+use App\Http\Controllers\UserSide\RoleModelController;
 use App\Models\EducationLevel;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +56,8 @@ use Illuminate\Support\Facades\Route;
         Route::post('/change_profile_picture',[UserRegistrationController::class,'changeProfilePicture']);
 
 
+        Route::post('/add_comment/{id}', [RoleModelController::class, 'addComment']);
+        Route::post('/add_like/{id}', [RoleModelController::class, 'addLike']);
 });
 
 Route::get('/mentors',[MentorControler ::class,'getMentors']);
@@ -71,3 +75,23 @@ Route::get('/mentors',[MentorControler ::class,'getMentors']);
         //$data='helloplease work  hard';
         return EducationLevel::all(['id','level']);
     });
+
+
+    //Dayan user's side
+    Route::get('/get_blogs', [UserSideBlogController::class, 'getBlogs']);
+    Route::get('/get_recent_blogs', [UserSideBlogController::class, 'getRecentBlogs']);
+
+    Route::get('/get_recent_role_models', [RoleModelController::class, 'getRecentRoleModels']);
+    Route::get('/get_role_models', [RoleModelController::class, 'getRoleModels']);
+    Route::get('/get_detail_role_models/{id}', [RoleModelController::class, 'getRoleModelDetail']);   
+     Route::get('/get_related_role_models/{id}', [RoleModelController::class, 'getRelatedRoleModels']);   
+
+
+     Route::fallback(function ()
+{
+    # To Specific Controller
+   //.. return Redirect::to('homeController'); # ('/') if defined 
+
+    # To Specific View
+    return response()->json('Invalide url', 404);
+});

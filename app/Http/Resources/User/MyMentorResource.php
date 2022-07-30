@@ -19,7 +19,7 @@ class MyMentorResource extends JsonResource
             'id'=>$this->id,
             'first_name'=>$this->first_name,
             'last_name'=>$this->last_name,
-            'profile_picture'=>asset('/profilepictures').'/'.$this->profile_picture,
+            'profile_picture'=>  $this->profile_picture ? asset('/profilepictures').'/'.$this->profile_picture: null,
             'no_of_mentee'=>$this->users()->count(),
             'experiances'=>$this->when($request->is('user/*'), function() { 
               return  ExperianceResource::collection($this->experiances);

@@ -18,12 +18,12 @@ class MentorControler extends Controller
 
         $query= Mentor::query();
 
-        $query=$query->when(request('search'),function($query){
+        $query=$query->when(filled('search'),function($query){
                    
            $query->where('first_name','LIKE','%'.request('search').'%')
                  ->orWhere('last_name','LIKE','%'.request('search').'%');
            })
-           ->when(request('filter'),function($query){
+           ->when(filled('filter'),function($query){
              $query = $query->whereHas('fields', function (Builder $query) {
                  $query->where('fields.id', '=', request('filter'));
              });
