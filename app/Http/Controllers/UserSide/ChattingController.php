@@ -26,6 +26,8 @@ class ChattingController extends Controller
         $message->save();
        // event(new AdminNotification());
         event(new MessagePublished($message));
+        //broadcast(new MessagePublished($message))->toOthers();
+
         return 'success';
     }
 
@@ -34,9 +36,11 @@ class ChattingController extends Controller
     public function getMessages(Request $request){
 
         $user= $request->user();
+        $per_page=$request->per_page ?? 10;
         $messages=Message::where('mentor_id',$user->mentor_id)
                            ->where('user_id',$user->id)
-                           ->get();
+                           ->orderByDesc('created_at')
+                           ->paginate($per_page);
                         //   event(new MessagePublished($this->getMessages($request)));
 
         return $messages;

@@ -25,3 +25,9 @@ Broadcast::channel('chat', function ($user) {
     return true;
     return Auth::check();
 });
+
+Broadcast::channel('online', function ($user) {
+    if (auth()->check()) {
+        return $user->toArray();
+    }
+});
