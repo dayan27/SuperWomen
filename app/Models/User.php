@@ -67,6 +67,10 @@ class User extends Authenticatable
         return $this->belongsTo(EducationLevel::class);
     }
 
+    public function fields(){
+        return $this->belongsToMany(Field::class);
+    }
+
     public function interests(){
         return $this->belongsToMany(Field::class);
     }

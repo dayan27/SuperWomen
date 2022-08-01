@@ -19,6 +19,7 @@ class RoleModelListResource extends JsonResource
             'id'=>$this->id,
             'image'=>new RoleModelImageResource($this->images()->inRandomOrder()->first()) ?? null,
             'intro'=>$this->translate(request('lang'))->intro ?? $this->translate()->intro,
+            'title'=>$this->translate(request('lang'))->title ?? $this->translate()->intro,
             'view'=>$this->view,
             'share'=>$this->share,
             'like'=>$this->like,

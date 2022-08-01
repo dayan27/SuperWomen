@@ -18,8 +18,8 @@ class CommentResource extends JsonResource
         return [
             'content'=>$this->pivot ? $this->pivot->content :null,
            // 'pp'=>$this->profile_picture,
-            'profile_image'=>asset('/rolemodelimages').'/'. $this->profile_picture,
-            // 'image'=>new RoleModelImageResource(RoleModel::find($this->role_model_id)->images()->inRandomOrder()->first()) ?? null,
+           'profile_image'=>  $this->profile_picture ? asset('/profilepictures').'/'.$this->profile_picture: null,
+           // 'image'=>new RoleModelImageResource(RoleModel::find($this->role_model_id)->images()->inRandomOrder()->first()) ?? null,
             // 'intro'=>RoleModel::find($this->role_model_id)->translate(request('lang'))->intro,
             // 'created_at'=>RoleModel::find($this->role_model_id)->created_at,
         ];

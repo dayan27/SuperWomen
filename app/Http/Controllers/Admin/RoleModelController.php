@@ -165,6 +165,9 @@ class RoleModelController extends Controller
     {
       //  return $roleModel;
           $roleModelTrans=$roleModel->translate(request('lang'));
+          if(!$roleModelTrans){
+            return 'no data';
+        }
         return new RoleModelDetailResource($roleModelTrans);
         //load('images','employee'));
     }

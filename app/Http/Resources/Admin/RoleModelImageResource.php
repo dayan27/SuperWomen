@@ -16,7 +16,7 @@ class RoleModelImageResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'path'=>asset('/rolemodelimages').'/'.$this->image_path,
+            'path'=>$this->image_path ? asset('/rolemodelimages').'/'.$this->image_path :null,
         ];
     }
 }

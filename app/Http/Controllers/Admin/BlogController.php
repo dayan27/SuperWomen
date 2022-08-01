@@ -167,6 +167,9 @@ class BlogController extends Controller
     {
         
         $blogTrans=$blog->translate(request('lang'));
+        if(!$blogTrans){
+            return 'no data';
+        }
         return new BlogDetailResource($blogTrans);
     }
 
