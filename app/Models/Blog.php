@@ -13,9 +13,9 @@ class Blog extends Model  implements TranslatableContract
     public $translatedAttributes = ['blog_title','blog_content','blog_intro'];
 
     public $fillable=[
-        'title',
-        'content',
-        'intro',
+        'blog_title',
+        'blog_content',
+        'blog_intro',
         'share',
         'like',
         'view',

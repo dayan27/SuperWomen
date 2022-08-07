@@ -96,7 +96,7 @@ class RoleModelController extends Controller
     public function store(Request $request)
     {
 
-        // return $request->title;
+     //$request->all();
         $request->validate([
             'title'=>'required',
             'content'=>'required',
@@ -133,7 +133,20 @@ class RoleModelController extends Controller
         $model->fields()->attach($request->interests);
         $model->tags()->attach($tag_ids);
 
-                //calling image upload method from php class
+        //audio file saving 
+
+        if($request->has('audio_path')){
+            $audio=$request->file('audio_path');
+            $name = Str::random(5).time().'.'.$audio->extension();
+            $audio->move(public_path().'/rolemodelaudios/', $name);
+           
+            //$image->refresh();
+            //$img['id'] = $image->id;
+            $model->audio_path = $name;
+            $model->save();
+        }
+  
+      //calling image upload method from php class
 
         $iu=new ImageUpload();
         $upload= $iu->multipleImageUpload($request->images,$model->id);
@@ -142,6 +155,8 @@ class RoleModelController extends Controller
             $request->user()->notify(new RoleModelAdded($model));
             DB::commit();
 
+            //retriving audio path
+            $model->audio_path =asset('/rolemodelimages').'/'.$model->audio_path;
          return response()->json($model,201);
         }else{
         return response()->json('error while uploading..',401);
@@ -182,15 +197,11 @@ class RoleModelController extends Controller
      */
     public function update(Request $request, RoleModel $roleModel)
     {
-        $request->validate([
-            'title'=>'required',
-            'content'=>'required',
 
-        ]);
 
         $data=$request->all();
         // $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
-        $data['employee_id']=1;
+        $data['employee_id']=$request->user()->id;
         $roleModel->update($data);
 
         $tags=$request->tags;

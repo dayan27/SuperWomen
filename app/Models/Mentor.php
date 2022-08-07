@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
 class Mentor extends Model
 {
-    use HasFactory;
+    use HasFactory,HasApiTokens;
      /**
      * The attributes that are mass assignable.
      *
@@ -16,17 +17,15 @@ class Mentor extends Model
     protected $fillable = [
         'first_name',
         'last_name',
-        'phone_no',
+        'phone_number',
         'email',
-        'biography',
+        'bio',
         'field_id',
         'contact_id',
         'city',
         'intereset',
         'password',
-        'is_active',
-        'biograph',
-        'profile_picture',
+        'date_of_birth'
     ];
     
     /**

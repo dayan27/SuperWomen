@@ -17,10 +17,12 @@ class CreateMentorsTable extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('email')->unique();
-            $table->string('phone_no')->unique();
-            $table->string('password');
-            $table->text('biography')->nullable();
+            $table->string('email')->nullable()->unique();
+            $table->string('phone_number')->unique();
+            $table->string('password')->nullable();
+            $table->text('bio')->nullable();
+            $table->date('date_of_birth');
+
             // $table->foreignId('field_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('contact_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->boolean('is_active')->default(0);

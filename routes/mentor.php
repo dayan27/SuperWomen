@@ -18,10 +18,10 @@ use Illuminate\Support\Facades\Route;
 
   
 
-    Route::post('/register', [MentorRegistrationController::class, 'registerUser']);
+    Route::post('/register', [MentorRegistrationController::class, 'register']);
     Route::post('/verify_phone', [MentorVerificationController::class, 'verifyPhone']);
     Route::post('/resend',[MentorVerificationController::class,'resend']);
-    Route::post('/login',[MentorLoginController ::class,'login']);
+    Route::post('/login',[MentorLoginController::class,'login']);
   
 
     Route::middleware(['auth:sanctum'])->group(function () {

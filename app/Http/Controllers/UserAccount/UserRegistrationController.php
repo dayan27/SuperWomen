@@ -67,8 +67,8 @@ class UserRegistrationController extends Controller
     public function updateProfile(Request $request){
 
         $user=$request->user();
-        $user->update($request->all());
-        $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
+        $user->update($request->except('profile_picture'));
+       //$user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
 
         return $user;
     }
@@ -79,12 +79,12 @@ class UserRegistrationController extends Controller
         
         $path= public_path().'/profilepictures/';
     
-                if(($user->profile_picture != '') && file_exists($path.$user->profile_picture)){
+                if(($user->profile_picture) && file_exists($path.$user->profile_picture)){
              
                     unlink($path.$user->profile_picture);
                 }
 
-                $user->profile_picture='';
+              //  $user->profile_picture='';
 
             
 
@@ -92,8 +92,9 @@ class UserRegistrationController extends Controller
         $name= $iu->profileImageUpload(request('profile'));
         $user->profile_picture=$name;
         $user->save();
+        $user->profile_picture=$user->profile_picture? asset('/profilepictures').'/'.$user->profile_picture : null;
 
-        $user->profile_picture=asset('/profilepictures').'/'.$name;
+       // $user->profile_picture=asset('/profilepictures').'/'.$name;
         return response()->json($user,200);
     }
 

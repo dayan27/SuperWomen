@@ -19,8 +19,8 @@ class UserVerificationController extends Controller
            $user->otp=null;
            $user->save();
            //$request->session()->put('verified', true);
-           $token=$user->createToken('auth_token')->plainTextToken;
-             $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
+             $token=$user->createToken('auth_token')->plainTextToken;
+             $user->profile_picture=$user->profile_picture? asset('/profilepictures').'/'.$user->profile_picture : null;
             // return response()->json($Manager,200);
 
             

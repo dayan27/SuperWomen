@@ -90,26 +90,29 @@ class RoleModelController extends Controller
     public function addLike(Request $request,$role_model_id){
       
        
-            $action = $request->get('action');
+         //   $action = $request->get('action');
             $user=$request->user();
             $rmlike= new RoleModelLike();
             $rmlike->role_model_id=$role_model_id;
             $rmlike->user_id=$user->id;
             $rmlike->save();
 
-            switch ($action) {
-                case 'Like':
-                    RoleModel::where('id', $role_model_id)->increment('like');
-                    break;
-                case 'Unlike':
-                    RoleModel::where('id', $role_model_id)->decrement('like');
-                    break;
+            // switch ($action) {
+            //     case 'Like':
+            //         RoleModel::where('id', $role_model_id)->increment('like');
+            //         break;
+            //     case 'Unlike':
+            //         RoleModel::where('id', $role_model_id)->decrement('like');
+            //         break;
           
-        }
+        // }
 
-        broadcast(new RoleModelReacted($role_model_id,$action))->toOthers;
-    //    $rm=RoleModel::find($role_model_id);
-    //     $rm->likes+=1;
+        // broadcast(new RoleModelReacted($role_model_id,$action))->toOthers;
+       $rm=RoleModel::find($role_model_id);
+        $rm->likes+=1;
+        $rm->save();
+
+    return response()->json(['is_liked'=>1],200);
     }
 
 

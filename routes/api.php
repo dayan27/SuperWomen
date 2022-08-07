@@ -13,7 +13,6 @@ use App\Http\Controllers\Admin\RoleModelController;
 use App\Http\Controllers\Admin\RoleModelTranslationController as AdminRoleModelTranslationController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContentWriterController;
-use App\Http\Controllers\DashboardControler;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FieldController;
@@ -72,7 +71,6 @@ use Illuminate\Support\Facades\Route;
 
         //-------start role_model related---------
 
-        Route::apiResource('/role_models',RoleModelController::class);
         Route::apiResource('/role_model_translations',AdminRoleModelTranslationController::class);
 
 
@@ -82,11 +80,14 @@ use Illuminate\Support\Facades\Route;
         Route::apiResource('/blogs',BlogController::class);
         Route::apiResource('/blog_translations',BlogTranslationController::class);
 
+    Route::apiResource('/role_models',RoleModelController::class);
 
 
         // end blog related
        // Route::apiResource('/users',UserController::class);
     });
+
+
     //=================== end auth route  ========
 
     Route::post('/content_image',[RoleModelController::class,'contentImageUpload']);
@@ -96,7 +97,7 @@ use Illuminate\Support\Facades\Route;
     Route::delete('/delete_image/{id}',[RoleModelController::class,'deleteImage']);
     Route::post('/update_images/{id}',[RoleModelController::class,'updateImage']);
 
-    Route::get('/dashboard',[DashboardControler::class,'getData']);
+    //Route::get('/dashboard',[DashboardController::class,'getData']);
 
     ////
     Route::post('/blog_content_image',[BlogController::class,'contentImageUpload']);
@@ -129,7 +130,7 @@ use Illuminate\Support\Facades\Route;
 
             Route::apiResource('/employees',EmployeeController::class);
 
-            Route::apiResource('/partners',PartnerController::class);
+           // Route::apiResource('/partners',PartnerController::class);
 
 
 

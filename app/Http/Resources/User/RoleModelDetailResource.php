@@ -3,6 +3,7 @@
 namespace App\Http\Resources\User;
 
 use App\Http\Resources\Admin\RoleModelImageResource;
+use App\Models\RoleModelLike;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 
@@ -31,8 +32,10 @@ class RoleModelDetailResource extends JsonResource
      
            //'cc'=>$this->comments,
             'comments'=>CommentResource::collection($this->comments), 
+            'is_liked'=>$request->isLegal ? (RoleModelLike::where('user_id',$request->isLegal)
+            ->where('role_model_id',$this->id)->first() ?1:0) : 0,
 
-            
+
             //'is_verified'=>$this->is_verified,
             'created_at'=>$this->created_at,
             // return [

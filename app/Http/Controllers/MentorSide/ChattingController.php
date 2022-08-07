@@ -4,6 +4,7 @@ namespace App\Http\Controllers\MentorSide;
 use App\Http\Controllers\Controller;
 
 use App\Events\AdminNotification;
+use App\Events\MentorSendMessage;
 use App\Events\MessagePublished;
 use App\Http\Resources\Mentor\MenteeChatResource;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class ChattingController extends Controller
         $data['mentor_id']=$request->user()->id;
         $message= Message::create($data);
        // event(new AdminNotification());
-        event(new MessagePublished($message));
+        event(new MentorSendMessage($message));
         return $message;
     }
 

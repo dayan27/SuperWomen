@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 
@@ -30,4 +31,13 @@ Broadcast::channel('online', function ($user) {
     if (auth()->check()) {
         return $user->toArray();
     }
+});
+
+
+Broadcast::channel('get_mentor_message.{user_id}', function ($user, $user_id) {
+    return $user->id === $user_id;
+});
+
+Broadcast::channel('get_user_message.{mentor_id}', function ($mentor, $mentor_id) {
+    return $mentor_id === $mentor->id;
 });
