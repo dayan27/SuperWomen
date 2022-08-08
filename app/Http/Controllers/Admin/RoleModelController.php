@@ -135,7 +135,8 @@ class RoleModelController extends Controller
 
         //audio file saving 
 
-        if($request->has('audio_path')){
+        if($request->audio_path){
+            // return 'a';
             $audio=$request->file('audio_path');
             $name = Str::random(5).time().'.'.$audio->extension();
             $audio->move(public_path().'/rolemodelaudios/', $name);
@@ -156,7 +157,7 @@ class RoleModelController extends Controller
             DB::commit();
 
             //retriving audio path
-            $model->audio_path =asset('/rolemodelimages').'/'.$model->audio_path;
+            $model->audio_path =asset('/rolemodelaudios').'/'.$model->audio_path;
          return response()->json($model,201);
         }else{
         return response()->json('error while uploading..',401);
