@@ -4,6 +4,7 @@ namespace App\Http\Controllers\UserSide;
 
 use App\Events\AdminNotification;
 use App\Events\MessagePublished;
+use App\Events\UserSendMessage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
@@ -27,8 +28,9 @@ class ChattingController extends Controller
        // event(new AdminNotification());
         event(new MessagePublished($message));
         //broadcast(new MessagePublished($message))->toOthers();
+        event(new UserSendMessage($message));
 
-        return 'success';
+        return response()->json($message,200);
     }
 
 
@@ -44,5 +46,28 @@ class ChattingController extends Controller
                         //   event(new MessagePublished($this->getMessages($request)));
 
         return $messages;
+    }
+
+    public function deleteMessage(Request $request,$id){
+
+        Message::find($id)->delete();
+                          
+                        //   event(new MessagePublished($this->getMessages($request)));
+
+       return response()->json('deleted successfully',200);
+
+    }
+
+    public function editMessage(Request $request,$id){
+
+       $mes= Message::find($id);
+       $mes->message=$request->message;
+       $mes->updated_at=now();
+       $mes->save();
+
+       event(new UserSendMessage($mes));
+                 
+       return response()->json($mes,200);
+
     }
 }

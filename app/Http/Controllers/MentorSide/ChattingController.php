@@ -19,7 +19,7 @@ class ChattingController extends Controller
         $data['user_id']=$request->user_id;
         $data['mentor_id']=$request->user()->id;
         $message= Message::create($data);
-       // event(new AdminNotification());
+       // event(new MessagePublished($message));
         event(new MentorSendMessage($message));
         return $message;
     }

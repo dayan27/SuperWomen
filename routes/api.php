@@ -28,6 +28,7 @@ use App\Models\RoleModelTranslation;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -153,3 +154,4 @@ use Illuminate\Support\Facades\Route;
                   // Route::post('/verify_reset_otp/{token}', [UserLoginController::class, 'checkResetOtp']);
                //   Route::post('/subscribe', [SubscriptionEmailController::class, 'subscribe_email']);
 
+               Broadcast::routes(['middleware' => ['auth:sanctum']]);

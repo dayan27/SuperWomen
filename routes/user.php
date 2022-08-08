@@ -43,7 +43,9 @@ use Illuminate\Support\Facades\Route;
         Route::post('/change_phone',[UserLoginController ::class,'changePhoneNumber']);
         Route::post('/send_message',[ChattingController ::class,'sendMessage']);
         Route::get('/messages',[ChattingController ::class,'getMessages']);
-
+        Route::delete('/message/{id}',[ChattingController ::class,'deleteMessage']);
+        Route::put('/message/{id}',[ChattingController ::class,'editMessage']);
+        
 
     
         Route::get('/disconnect_mentor',[AccountController ::class,'DisconnectMentor']);
@@ -84,7 +86,7 @@ Route::get('/mentors',[MentorControler ::class,'getMentors']);
     Route::get('/get_recent_role_models', [RoleModelController::class, 'getRecentRoleModels']);
     Route::get('/get_role_models', [RoleModelController::class, 'getRoleModels']);
     Route::get('/get_detail_role_models/{id}', [RoleModelController::class, 'getRoleModelDetail']);   
-     Route::get('/get_related_role_models/{id}', [RoleModelController::class, 'getRelatedRoleModels']);   
+    Route::get('/get_related_role_models/{id}', [RoleModelController::class, 'getRelatedRoleModels']);   
 
 
      Route::fallback(function ()

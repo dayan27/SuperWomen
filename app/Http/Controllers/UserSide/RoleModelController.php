@@ -81,9 +81,9 @@ class RoleModelController extends Controller
        $rmc->content=$request->comment;
        $rmc->save();
        $profile_picture =$user->profile_picture ? asset('/profilepictures').'/'.$user->profile_picture: null;
-       broadcast(new RoleModelCommented($role_model_id,$profile_picture,$rmc->content))->toOthers;
+     //  broadcast(new RoleModelCommented($role_model_id,$profile_picture,$rmc->content))->toOthers;
 
-       return ['id'=>$rmc->id,'profile_picture'=>$profile_picture,'comment'=>$rmc->content];
+       return ['id'=>$rmc->id,'profile_image'=>$profile_picture,'content'=>$rmc->content];
     }
 
 
@@ -109,7 +109,7 @@ class RoleModelController extends Controller
 
         // broadcast(new RoleModelReacted($role_model_id,$action))->toOthers;
        $rm=RoleModel::find($role_model_id);
-        $rm->likes+=1;
+        $rm->like+=1;
         $rm->save();
 
     return response()->json(['is_liked'=>1],200);

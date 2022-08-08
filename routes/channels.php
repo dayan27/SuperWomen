@@ -35,6 +35,7 @@ Broadcast::channel('online', function ($user) {
 
 
 Broadcast::channel('get_mentor_message.{user_id}', function ($user, $user_id) {
+   return true;
     return $user->id === $user_id;
 });
 
