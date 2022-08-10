@@ -3,6 +3,7 @@
        /////////User Side Routes
                   //.....User Account related
 
+use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\UserAccount\UserForgotPasswordController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\UserAccount\AccountController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\UserSide\ChattingController;
 use App\Http\Controllers\UserSide\MentorControler;
 use App\Http\Controllers\UserSide\RequestController;
 use App\Http\Controllers\UserSide\RoleModelController;
+use App\Http\Resources\User\BlogResource;
 use App\Models\EducationLevel;
 use Illuminate\Support\Facades\Route;
 
@@ -88,6 +90,7 @@ Route::get('/mentors',[MentorControler ::class,'getMentors']);
     Route::get('/get_role_models', [RoleModelController::class, 'getRoleModels']);
     Route::get('/get_detail_role_models/{id}', [RoleModelController::class, 'getRoleModelDetail']);   
     Route::get('/get_related_role_models/{id}', [RoleModelController::class, 'getRelatedRoleModels']);   
+    Route::get('/get_detail_blog/{id}', [UserSideBlogController::class, 'getBlogDetail']);   
 
 
      Route::fallback(function ()

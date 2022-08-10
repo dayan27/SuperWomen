@@ -157,7 +157,7 @@ class RoleModelController extends Controller
             DB::commit();
 
             //retriving audio path
-            $model->audio_path =asset('/rolemodelaudios').'/'.$model->audio_path;
+            $model->audio_path = $model->audio_path? asset('/rolemodelaudios').'/'.$model->audio_path: null;
          return response()->json($model,201);
         }else{
         return response()->json('error while uploading..',401);
