@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\UserSide;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\BlogDetailResource;
+use App\Http\Resources\User\BlogDetailResource as UserBlogDetailResource;
 use App\Http\Resources\User\BlogListResource;
 use App\Http\Resources\User\BlogResource;
 use App\Models\Blog;
@@ -22,6 +24,18 @@ class BlogController extends Controller
         $blog= Blog::all();
         return  BlogResource::collection($blog);  
     }
+     /**
+     * get detail of blog
+     * 
+     */
+    public function getBlogDetail($id){
+        
+
+         $blog= Blog::find($id);
+       
+        //return $roleModel->comments;
+       return new UserBlogDetailResource($blog);
+   }
 
     public function addComment(){
 
