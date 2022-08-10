@@ -82,6 +82,7 @@ Route::get('/mentors',[MentorControler ::class,'getMentors']);
     //Dayan user's side
     Route::get('/get_blogs', [UserSideBlogController::class, 'getBlogs']);
     Route::get('/get_recent_blogs', [UserSideBlogController::class, 'getRecentBlogs']);
+    Route::get('/get_detail_blogs/{id}', [UserSideBlogController::class, 'getBlogDetail']);   
 
     Route::get('/get_recent_role_models', [RoleModelController::class, 'getRecentRoleModels']);
     Route::get('/get_role_models', [RoleModelController::class, 'getRoleModels']);

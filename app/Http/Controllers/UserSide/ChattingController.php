@@ -26,7 +26,7 @@ class ChattingController extends Controller
         $message->message=$request->message;
         $message->save();
        // event(new AdminNotification());
-        event(new MessagePublished($message));
+       // event(new MessagePublished($message));
         //broadcast(new MessagePublished($message))->toOthers();
         event(new UserSendMessage($message));
 
