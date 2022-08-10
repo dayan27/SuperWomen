@@ -91,7 +91,7 @@ Route::get('/mentors',[MentorControler ::class,'getMentors']);
     Route::get('/get_detail_role_models/{id}', [RoleModelController::class, 'getRoleModelDetail']);   
     Route::get('/get_related_role_models/{id}', [RoleModelController::class, 'getRelatedRoleModels']);   
     Route::get('/get_detail_blog/{id}', [UserSideBlogController::class, 'getBlogDetail']);   
-
+    Route::get('/get_related_blogs/{id}', [UserSideBlogController::class, 'getRelatedBlog']);   
 
      Route::fallback(function ()
 {
