@@ -3,6 +3,7 @@
 namespace App\Http\Resources\User;
 
 use App\Http\Resources\Admin\BlogImageResource;
+use App\Models\BlogLike;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 
@@ -33,8 +34,8 @@ class BlogDetailResource extends JsonResource
             'fields'=>$this->fields,
 
            // 'blog_field' 
-            //'is_liked'=>$request->isLegal ? (RoleModelLike::where('user_id',$request->isLegal)
-           // ->where('role_model_id',$this->id)->first() ?1:0) : 0,
+            'is_liked'=>$request->isLegal ? ( BlogLike::where('user_id',$request->isLegal)
+           ->where('blog_id',$this->id)->first() ?1:0) : 0,
 
             'created_at'=>$this->created_at,
          
