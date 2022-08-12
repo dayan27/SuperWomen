@@ -22,7 +22,7 @@ class Mentor extends Model
         'bio',
         'field_id',
         'contact_id',
-        'city',
+        'profile_picture',
         'intereset',
         'password',
         'date_of_birth'

@@ -50,24 +50,34 @@ class ChattingController extends Controller
 
     public function deleteMessage(Request $request,$id){
 
-        Message::find($id)->delete();
-                          
-                        //   event(new MessagePublished($this->getMessages($request)));
-
-       return response()->json('deleted successfully',200);
+        $message= Message::find($id);
+                       
+        if($message->sender == 'user'){
+            $message->delete();
+            return response()->json('deleted successfully',200);
+ 
+        }else{
+         return response()->json('U have no permission to delete this messgae',403);
+   
+        }
 
     }
 
     public function editMessage(Request $request,$id){
 
-       $mes= Message::find($id);
-       $mes->message=$request->message;
-       $mes->updated_at=now();
-       $mes->save();
+        $mes= Message::find($id);
 
-       event(new UserSendMessage($mes));
-                 
-       return response()->json($mes,200);
+       if($mes->sender == 'user'){
+        $mes->message=$request->message;
+        $mes->updated_at=now();
+        $mes->save();    
+        event(new UserSendMessage($mes));
+  
+        return response()->json($mes,200);
 
+       }else{
+         return response()->json('U have no permission to edit this messgae',403);
+
+        }
     }
 }

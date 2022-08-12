@@ -15,7 +15,9 @@ class ExperianceController extends Controller
      */
     public function index()
     {
-        return Experiance::where('mentor_id',1)->get();
+        $mentor=request()->user();
+
+        return Experiance::where('mentor_id',$mentor->id)->get();
     }
 
     /**
@@ -28,9 +30,9 @@ class ExperianceController extends Controller
     {
         $mentor=$request->user();
         $data=$request->all();
-        $data['mentor_id']=1;
-        Experiance::create($data);
-        return response()->json('succsses',201);
+        $data['mentor_id']=$mentor->id;
+        $exp= Experiance::create($data);
+        return response()->json($exp,201);
     }
 
     /**
@@ -54,6 +56,8 @@ class ExperianceController extends Controller
     public function update(Request $request, $id)
     {
        $experiannce= Experiance::find($id)->update($request->all());
+       return response()->json($experiannce,200);
+
     }
 
     /**
@@ -65,5 +69,7 @@ class ExperianceController extends Controller
     public function destroy($id)
     {
         Experiance::find($id)->delete();
+        return response()->json('deleted successfully',200);
+
     }
 }

@@ -106,5 +106,12 @@ class MentorController extends Controller
                       ->with('mentor')
                        ->get();
     }
+
+    public function changeMentorStatus(Request $request,$id){
+
+        $mentor=Mentor::find($id);
+        $mentor->is_active=$request->status;
+
+    }
     
 }

@@ -25,24 +25,28 @@ class MentorRegistrationController extends Controller
         $data=$request->all();
         $data['password']=Hash::make($request->last_name.'1234');
         $data['date_of_birth']=date('Y-m-d',strtotime($request->date_of_birth));
-        $user= Mentor::create($data);
+        $data['profile_picture']='default.jpg';
+        
+        $mentor= Mentor::create($data);
        
-        return response()->json('Registered !!!! waite while admin contact u',201);
 
-        // $otp=rand(100000,999999);
+        $otp=rand(100000,999999);
 
-        // $user->otp=$otp;
-        // $user->save();
-        // $success= $this->sendResetToken($otp,$user->phone_number);
-        //  if($success){
-        //      return response()->json('otp sent',201);
-        //  }else{
-        //     return response()->json($success,200);
+        $mentor->verification_code=$otp;
+        $mentor->save();
 
-        //  }
+        
+
+        $success= $this->sendResetToken($otp,$mentor->phone_number);
+        if($success == 'sent'){
+            return response()->json('Registered !!!!verify ur phone otp sent',201);
+        }else{
+           return response()->json($success,200);
+
+        }
     }
 
-    public function addMentorExperiance(Request $request, $mentor_id){
+    public function addMentorExperiance(Request $request){
 
         $mentor=$request->user();
         $data=$request->all();

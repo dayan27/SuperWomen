@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Admin;
 
 use App\Http\Resources\User\ExperianceResource;
+use App\Http\Resources\User\VisiblityResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MentorResource extends JsonResource
@@ -24,6 +25,8 @@ class MentorResource extends JsonResource
             'followers'=>$this->users()->count(),
             'profile_picture'=>  $this->profile_picture ? asset('/profilepictures').'/'.$this->profile_picture: null,
             'is_active'=>$this->is_active,
+            'is_accepted'=>$this->is_accepted,
+            'availablites'=>VisiblityResource::collection($this->availabilities),
             'created_at'=>$this->created_at,
         ];
     }

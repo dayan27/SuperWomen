@@ -22,7 +22,7 @@ class BlogDetailResource extends JsonResource
            // 'related_role_model'=>'hii',
            // DB::table('blog_field')->where('field_id',$this->id)->get(),
 
-            'image'=> BlogImageResource::collection($this->images) ?? null,
+            'image'=> new BlogImageResource($this->images->first()) ?? null,
             'blog_title'=>$this->translate(request('lang'))->title ?? $this->translate()->blog_title,
             'blog_intro'=>$this->translate(request('lang'))->intro ?? $this->translate()->blog_intro,
             'blog_content'=>$this->translate(request('lang'))->content ?? $this->translate()->blog_content,

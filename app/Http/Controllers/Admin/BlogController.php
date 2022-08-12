@@ -138,8 +138,8 @@ class BlogController extends Controller
             $upload= $iu->blogMultipleImageUpload($request->images,$blog->id);
             if (count($upload) > 0) {
 
-                $request->user()->notify(new BlogAdded($blog));
-                event(new AdminNotification($request->user()->notifications));
+             //   $request->user()->notify(new BlogAdded($blog));
+             //   event(new AdminNotification($request->user()->notifications));
                 DB::commit();
             return response()->json($blog,201);
             }else{
