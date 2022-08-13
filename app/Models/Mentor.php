@@ -46,7 +46,7 @@ class Mentor extends Model
         return $this->hasMany(User::class);
     }
     public function user_requests(){
-        return $this->belongsToMany(User::class,'requests');
+        return $this->belongsToMany(User::class,'requests')->withPivot('id','state','request_message');
     }
 
     public function tags(){

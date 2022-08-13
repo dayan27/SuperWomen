@@ -38,7 +38,8 @@ class BlogDetailResource extends JsonResource
            ->where('blog_id',$this->id)->first() ?1:0) : 0,
 
             'created_at'=>$this->created_at,
-         
+            'time_to_read'=>$this->time_take_to_read,
+
         ];
     }
 }

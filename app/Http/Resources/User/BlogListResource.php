@@ -24,7 +24,7 @@ class BlogListResource extends JsonResource
             'view'=>$this->view,
             'share'=>$this->share,
             'like'=>$this->like,
-            'comment'=>$this->comments()->count(),
+            'comment'=>count($this->comments),
             //'is_verified'=>$this->is_verified,
             'time_take_to_read'=>$this->time_take_to_read,
             'created_at'=>$this->created_at,

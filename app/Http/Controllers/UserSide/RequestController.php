@@ -10,7 +10,13 @@ class RequestController extends Controller
 {
     public function sendRequest(Request $request,$mentor_id){
 
+
         $user=$request->user();
+
+        if($user->mentor_id){
+            return response()->json('More than one mentor is no allowed ',400);
+
+        }
         $men_req=new MentorRequest();
         $men_req->user_id=$user->id;
         $men_req->mentor_id=$mentor_id;

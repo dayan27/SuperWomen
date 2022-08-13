@@ -61,7 +61,10 @@ use Illuminate\Support\Facades\Route;
 
 
         Route::post('/add_comment/{id}', [RoleModelController::class, 'addComment']);
-        Route::post('/add_like/{id}', [RoleModelController::class, 'addLike']);
+        Route::post('/add_like/{id}', [RoleModelController::class, 'addLike']); 
+       
+        Route::post('/add_blog_comment/{id}', [UserSideBlogController::class, 'addComment']);
+        Route::post('/add_blog_like/{id}', [UserSideBlogController::class, 'addLike']);
 });
 
 Route::get('/mentors',[MentorControler ::class,'getMentors']);

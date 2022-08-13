@@ -13,6 +13,12 @@ class RequestController extends Controller
 
         $mentor=$request->user();
         $men_req= MentorRequest::find($req_id);
+
+
+        if($men_req->state !='opened'){
+            return response()->json('User alreay has mentor',400);
+
+        }
         $men_req->state='accepted';
         $men_req->save();
         $user=User::find($men_req->user_id);
