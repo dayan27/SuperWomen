@@ -22,7 +22,7 @@ class Mentor extends Model
         'bio',
         'field_id',
         'contact_id',
-        'city',
+        'profile_picture',
         'intereset',
         'password',
         'date_of_birth'
@@ -46,7 +46,7 @@ class Mentor extends Model
         return $this->hasMany(User::class);
     }
     public function user_requests(){
-        return $this->belongsToMany(User::class,'requests');
+        return $this->belongsToMany(User::class,'requests')->withPivot('id','state','request_message');
     }
 
     public function tags(){

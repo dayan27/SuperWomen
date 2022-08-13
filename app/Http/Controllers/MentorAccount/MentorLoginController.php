@@ -37,21 +37,35 @@ class MentorLoginController extends Controller
                 ]
                ,404 );
         }
-        if(!$mentor->is_active){
+
+        if(!$mentor->is_verified){
+            return response()->json('U are not Verified',404);
+
+        }
+
+        if(!$mentor->is_accepted){
             return response()->json('U are not approved',404);
 
         }
+
+        if(!$mentor->is_active){
+            return response()->json('U are Blocked',404);
+
+        }
+
+
+
        $check=Hash::check($request->password, $mentor->password);
        if(! $check){
-           return response()->json('incorrect credential',401);
+           return response()->json('incorrect credential',404);
        }
 
         $token=$mentor->createToken('auth_token')->plainTextToken;
-      //  $mentor->profile_picture=asset('/profilepictures').'/'.$mentor->profile_picture;
+       $mentor->profile_picture=$mentor->profile_picture ? asset('/profilepictures').'/'.$mentor->profile_picture :null;
        // return response()->json($Manager,200);
         return response()->json([
             'access_token'=>$token,
-            'user'=>$mentor,
+            'mentor'=>$mentor,
         ],200);
 
      }
@@ -92,7 +106,7 @@ class MentorLoginController extends Controller
             
 
             $success= $this->sendResetToken($otp,$mentor->phone_number);
-            if($success){
+            if($success == 'sent'){
                 return response()->json('otp sent',201);
             }else{
                return response()->json($success,200);

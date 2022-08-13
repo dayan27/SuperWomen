@@ -1,0 +1,3 @@
+mentor table add is_accepted column
+                  verification_code
+                  is_verified

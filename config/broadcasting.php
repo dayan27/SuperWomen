@@ -40,8 +40,8 @@ return [
                 'encrypted' => true,
                 // 'tls'=>false,
                 //'host' => '127.0.0.1',
-                //'host' => '192.168.0.4',
-                //'port' => 6001,
+                'host' => '192.168.0.6',
+                'port' => 6001,
                 //'scheme' => 'http'
                 'scheme'=>'http'
 

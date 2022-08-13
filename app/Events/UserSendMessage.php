@@ -32,7 +32,7 @@ class UserSendMessage implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('get_user_message.'.$this->message->mentor_id);
+        return new PrivateChannel('get_user_message.'.$this->message->mentor_id);
     }
 
     public function broadcastAs()

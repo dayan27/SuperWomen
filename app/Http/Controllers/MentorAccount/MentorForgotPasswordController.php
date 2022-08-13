@@ -44,12 +44,13 @@ class MentorForgotPasswordController extends Controller
             $tokenData = DB::table('user_password_resets')
             ->where('phone_number', $request->phone_number)->first();
 
-            if( $this->sendResetToken($tokenData->token,$request->phone_number)){
-               return response()->json('reset code sent',200);
-            }
-            else {
-                    return response()->json('reset code not sent',404);
-                 }
+            $success=$this->sendResetToken($tokenData->token,$request->phone_number);
+                if($success == 'sent'){
+                    return response()->json('otp sent',201);
+                }else{
+                   return response()->json($success,200);
+       
+                }
     }
 
     public function verifyResetOtp(Request $request,$token){
@@ -89,6 +90,8 @@ class MentorForgotPasswordController extends Controller
             $password = $request->password;
         // Validate the token
             $tokenData = DB::table('user_password_resets')->where('token', $token)->first();
+            if (!$tokenData )
+            return response()->json('not valid token',201);
 
             $time_to_expire= \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',\Carbon\Carbon::now() )->diffInMinutes($tokenData->created_at);
             
@@ -96,10 +99,6 @@ class MentorForgotPasswordController extends Controller
                 return response()->json('expired token',201);
 
             }
-        // Redirect the user back to the password reset request form if the token is invalid
-            if (!$tokenData )
-            //&& ($tokenData->phone_number != $request->phone_number)
-            return response()->json('not valid token',201);
 
             $user = User::where('phone_number', $tokenData->phone_number)->first();
         // Redirect the user back if the email is invalid

@@ -60,7 +60,10 @@ use Illuminate\Support\Facades\Route;
 
 
         Route::post('/add_comment/{id}', [RoleModelController::class, 'addComment']);
-        Route::post('/add_like/{id}', [RoleModelController::class, 'addLike']);
+        Route::post('/add_like/{id}', [RoleModelController::class, 'addLike']); 
+       
+        Route::post('/add_blog_comment/{id}', [UserSideBlogController::class, 'addComment']);
+        Route::post('/add_blog_like/{id}', [UserSideBlogController::class, 'addLike']);
 });
 
 Route::get('/mentors',[MentorControler ::class,'getMentors']);
@@ -83,6 +86,7 @@ Route::get('/mentors',[MentorControler ::class,'getMentors']);
     //Dayan user's side
     Route::get('/get_blogs', [UserSideBlogController::class, 'getBlogs']);
     Route::get('/get_recent_blogs', [UserSideBlogController::class, 'getRecentBlogs']);
+    Route::get('/get_detail_blogs/{id}', [UserSideBlogController::class, 'getBlogDetail']);   
 
     Route::get('/get_recent_role_models', [RoleModelController::class, 'getRecentRoleModels']);
     Route::get('/get_role_models', [RoleModelController::class, 'getRoleModels']);

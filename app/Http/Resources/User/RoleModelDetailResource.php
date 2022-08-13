@@ -27,7 +27,7 @@ class RoleModelDetailResource extends JsonResource
             'share'=>$this->share,
             'like'=>$this->like,
             'comment'=>$this->comments()->count(),
-            'audio_path'=>asset('/rolemodelaudio').'/'.$this->audio_path,
+            'audio_path'=>asset('/rolemodelaudios').'/'.$this->audio_path,
         //    'related_role_model'=>DB::table('blog_field')->where('field_id',$this->id)->get(),
      
            //'cc'=>$this->comments,

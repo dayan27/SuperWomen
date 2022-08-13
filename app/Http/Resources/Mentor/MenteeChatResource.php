@@ -15,10 +15,12 @@ class MenteeChatResource extends JsonResource
     public function toArray($request)
     {
         return [
+
+            'id'=>$this->id,
             'first_name'=>$this->first_name,
             'last_name'=>$this->last_name,
-            'profile_picture'=>asset('/profilepictures').'/'.$this->profile_picture,
-            'messages'=>MessageResource::collection($this->messages),
+            'profile_picture'=>$this->profile_picture ? asset('/profilepictures').'/'.$this->profile_picture : null,
+            'message'=>new MessageResource($this->messages()->latest()->first()),
         
         ];
     }

@@ -10,7 +10,7 @@ class AccountController extends Controller
 {
     public function myMentor(Request $request){
 
-       return  new MyMentorResource($request->user()->mentor);
+       return $request->user()->mentor? new MyMentorResource($request->user()->mentor) :null;
     }
 
     public function myInterests(Request $request){
@@ -19,7 +19,9 @@ class AccountController extends Controller
     }
 
     public function disconnectMentor(){
-        request()->user()->mentor_id=null;
+        $user=request()->user();
+         $user->mentor_id=null;
+         $user->save();
         return response()->json('disconnected',200);
     }
 

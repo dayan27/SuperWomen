@@ -17,8 +17,9 @@ class RequestResource extends JsonResource
         return [
             //'request_message'=>$this->request_message,
             'first_name'=>$this->first_name,
+            'id'=>$this->pivot->id,
             'last_name'=>$this->last_name,
-            'profile_picture'=>asset('/profilepictures').'/'.$this->profile_picture,
+            'profile_picture'=>$this->profile_picture ? asset('/profilepictures').'/'.$this->profile_picture :null,
             'education_level'=>$this->education_level,
             'state'=>$this->pivot->state,
             'request_message'=>$this->pivot->request_message,

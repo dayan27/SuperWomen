@@ -97,17 +97,7 @@ class RoleModelController extends Controller
             $rmlike->user_id=$user->id;
             $rmlike->save();
 
-            // switch ($action) {
-            //     case 'Like':
-            //         RoleModel::where('id', $role_model_id)->increment('like');
-            //         break;
-            //     case 'Unlike':
-            //         RoleModel::where('id', $role_model_id)->decrement('like');
-            //         break;
-          
-        // }
 
-        // broadcast(new RoleModelReacted($role_model_id,$action))->toOthers;
        $rm=RoleModel::find($role_model_id);
         $rm->like+=1;
         $rm->save();

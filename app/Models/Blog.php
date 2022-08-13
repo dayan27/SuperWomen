@@ -38,7 +38,7 @@ class Blog extends Model  implements TranslatableContract
     }
 
     public function comments(){
-        return $this->hasMany(BlogComment::class);
+        return $this->belongsToMany(User::class,'blog_comments')->withPivot('content');
     }
 
     public function employee(){

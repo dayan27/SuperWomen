@@ -90,10 +90,11 @@ class UserLoginController extends Controller
             
 
             $success= $this->sendResetToken($otp,$user->phone_number);
-            if($success){
+         
+            if($success == 'sent'){
                 return response()->json('otp sent',201);
             }else{
-               return response()->json($success,200);
+               return response()->json($success,401);
    
             }
         }

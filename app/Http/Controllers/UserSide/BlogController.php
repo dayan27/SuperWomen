@@ -9,6 +9,8 @@ use App\Http\Resources\User\BlogListResource;
 use App\Http\Resources\User\BlogResource;
 use App\Http\Resources\User\RelatedBlogResource;
 use App\Models\Blog;
+use App\Models\BlogComment;
+use App\Models\BlogLike;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
@@ -21,10 +23,7 @@ class BlogController extends Controller
         return BlogListResource::collection($query->paginate($per_page));
 
     }
-    public function getRecentBlogs(){
-        $blog= Blog::all();
-        return  BlogResource::collection($blog);  
-    }
+
      /**
      * get detail of blog
      * 
@@ -36,6 +35,9 @@ class BlogController extends Controller
        return new UserBlogDetailResource($blog);
    }
 
+    public function getRecentBlogs(){
+        return BlogResource::collection(Blog::latest()->take(20)->get());
+    }
    public function getRelatedBlog($id){
         
         $blog=Blog::find($id);
@@ -51,11 +53,36 @@ class BlogController extends Controller
     
 }
 
-    public function addComment(){
+public function addComment(Request $request,$blog_id){
 
-    }
-
-    public function addReply(){
-
-    }
+        $user=$request->user();
+        $bc= new BlogComment();
+        $bc->blog_id=$blog_id;
+        $bc->user_id=$user->id;
+        $bc->content=$request->comment;
+        $bc->save();
+        $profile_picture =$user->profile_picture ? asset('/profilepictures').'/'.$user->profile_picture: null;
+      //  broadcast(new RoleModelCommented($blog_id,$profile_picture,$bc->content))->toOthers;
+ 
+        return ['id'=>$bc->id,'profile_image'=>$profile_picture,'content'=>$bc->content];
+     }
+ 
+ 
+     public function addLike(Request $request,$blog_id){
+       
+        
+          //   $action = $request->get('action');
+             $user=$request->user();
+             $blike= new BlogLike();
+             $blike->blog_id=$blog_id;
+             $blike->user_id=$user->id;
+             $blike->save();
+ 
+ 
+            $blog=Blog::find($blog_id);
+            $blog->like+=1;
+            $blog->save();
+    
+     return response()->json(['is_liked'=>1],200);
+     }
 }
