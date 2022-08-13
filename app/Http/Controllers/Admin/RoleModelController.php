@@ -146,6 +146,16 @@ class RoleModelController extends Controller
             $model->audio_path = $name;
             $model->save();
         }
+    
+      // saving a card image for rolemodel
+        if($request->file($request->card_image)){
+            $file=$request->card_image;
+            $name = Str::random(5).time().'.'.$file->extension();
+            $file->move(public_path().'/rolemodelcardimages/', $name);
+            $model->card_image = $name;
+            $model->save();
+        }
+
   
       //calling image upload method from php class
 

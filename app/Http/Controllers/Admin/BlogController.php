@@ -18,6 +18,8 @@ use App\ReusedModule\ImageUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
 
 
 class BlogController extends Controller 
@@ -129,6 +131,16 @@ class BlogController extends Controller
             }
             $blog->tags()->attach($tag_ids); //attaching blog with tags
             $blog->fields()->attach($request->interests);
+
+            //saving blogcard 
+            if($request->file($request->card_image)){
+                $file=$request->card_image;
+                $name = Str::random(5).time().'.'.$file->extension();
+                $file->move(public_path().'/blogcardimages/', $name);
+                $blog->card_image = $name;
+                $blog->save();
+            }
+    
 
             //saving blog images
 
