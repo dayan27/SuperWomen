@@ -19,7 +19,7 @@ class BlogDetailResource extends JsonResource
             'blog_title'=>$this->blog_title,
             'blog_intro'=>$this->blog_intro,
             'blog_content'=>$this->blog_content,
-           'images'=> BlogImageResource::collection($this->blog->images->first()) ?? null,
+           'images'=> BlogImageResource::collection($this->blog->images) ?? null,
            'view'=>$this->blog->view,
            'share'=>$this->blog->share,
             'like'=>$this->blog->like,

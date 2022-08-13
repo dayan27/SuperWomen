@@ -1,6 +1,5 @@
 <?php
-
-       /////////User Side Routes
+     /////////User Side Routes
                   //.....User Account related
 
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
