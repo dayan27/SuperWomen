@@ -18,6 +18,7 @@ class BlogResource extends JsonResource
         return [
             
             'image'=>new BlogImageResource($this->images()->inRandomOrder()->first()) ?? null,
+            'card_image'=>asset('/blogcardimages').'/'.$this->card_image,
             'view'=>$this->view,
             'share'=>$this->share,
             'like'=>$this->like,

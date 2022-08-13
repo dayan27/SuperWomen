@@ -18,6 +18,7 @@ class RelatedBlogResource extends JsonResource
         return [
             'id'=>$this->id,
             'image'=>new BlogImageResource($this->images()->inRandomOrder()->first()) ?? null,
+            'card_image'=>asset('/blogcardimages').'/'.$this->card_image,
             'intro'=>$this->translate(request('lang'))->blog_intro ?? $this->translate()->blog_intro,
             'created_at'=>$this->created_at,
         ];
