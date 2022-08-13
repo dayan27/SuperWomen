@@ -133,7 +133,7 @@ class BlogController extends Controller
             $blog->fields()->attach($request->interests);
 
             //saving blogcard 
-            if($request->file($request->card_image)){
+            if($request->card_image){
                 $file=$request->card_image;
                 $name = Str::random(5).time().'.'.$file->extension();
                 $file->move(public_path().'/blogcardimages/', $name);

@@ -148,7 +148,7 @@ class RoleModelController extends Controller
         }
     
       // saving a card image for rolemodel
-        if($request->file($request->card_image)){
+        if($request->card_image){
             $file=$request->card_image;
             $name = Str::random(5).time().'.'.$file->extension();
             $file->move(public_path().'/rolemodelcardimages/', $name);
