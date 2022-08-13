@@ -19,7 +19,7 @@ class BlogController extends Controller
     public function getBlogs(){
      
         $per_page=request()->per_page;
-        $query= Blog::where('is_verified',1)->query();
+        $query= Blog::where('is_verified',1);
         return BlogListResource::collection($query->paginate($per_page));
 
     }

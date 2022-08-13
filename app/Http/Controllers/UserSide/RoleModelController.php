@@ -39,7 +39,7 @@ class RoleModelController extends Controller
     // }
 
     public function getRecentRoleModels(){
-        return RoleModelResource::collection(RoleModel::latest()->take(20)->get());
+        return RoleModelResource::collection(RoleModel::where('is_verified',1)->latest()->take(20)->get());
     }
 
         /**
@@ -49,7 +49,7 @@ class RoleModelController extends Controller
         //$roleModel= RoleModel::all();
        // return   RoleModelResource::collection($blog);
         $per_page=request()->per_page;
-        $query= RoleModel::where('is_verified',1)->query();
+        $query= RoleModel::where('is_verified',1);
        return RoleModelListResource::collection($query->paginate($per_page));
 
     }
