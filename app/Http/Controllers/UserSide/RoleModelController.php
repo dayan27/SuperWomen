@@ -49,7 +49,7 @@ class RoleModelController extends Controller
         //$roleModel= RoleModel::all();
        // return   RoleModelResource::collection($blog);
         $per_page=request()->per_page;
-        $query= RoleModel::query();
+        $query= RoleModel::where('is_verified',1)->query();
        return RoleModelListResource::collection($query->paginate($per_page));
 
     }
@@ -114,7 +114,7 @@ class RoleModelController extends Controller
         $roleModels=collect();
 
         foreach ($fiels as $field) {
-          $roleModels= $roleModels->concat( $field->role_models()->where('role_models.id','!=',$rm_id)->get() )->unique();
+          $roleModels= $roleModels->concat( $field->role_models()->where('is_verified',1)->where('role_models.id','!=',$rm_id)->get() )->unique();
         }
         return RelatedRoleModelResource::collection( $roleModels->values());
     }

@@ -19,7 +19,7 @@ class BlogController extends Controller
     public function getBlogs(){
      
         $per_page=request()->per_page;
-        $query= Blog::query();
+        $query= Blog::where('is_verified',1)->query();
         return BlogListResource::collection($query->paginate($per_page));
 
     }
@@ -36,7 +36,7 @@ class BlogController extends Controller
    }
 
     public function getRecentBlogs(){
-        return BlogResource::collection(Blog::latest()->take(20)->get());
+        return BlogResource::collection(Blog::where('is_verified',1)->latest()->take(20)->get());
     }
    public function getRelatedBlog($id){
         
@@ -46,7 +46,7 @@ class BlogController extends Controller
         $blogs=collect();
 
         foreach ($fiels as $field) {
-          $blogs= $blogs->concat( $field->blogs()->where('blogs.id','!=',$id)->get())->unique();
+          $blogs= $blogs->concat( $field->blogs()->where('is_verified',1)->where('blogs.id','!=',$id)->get())->unique();
         }
        // return $blog;
         return RelatedBlogResource::collection( $blogs->values());
