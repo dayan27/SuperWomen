@@ -24,9 +24,8 @@ class MentorControler extends Controller
                  ->orWhere('last_name','LIKE','%'.request('search').'%');
            })
            ->when(filled('filter'),function($query){
-             $query = $query->whereHas('fields', function (Builder $query) {
-                 $query->where('fields.id', '=', request('filter'));
-             });
+                 $query->where('mentors.field_id', '=', request('filter'));
+             
          });
          return MyMentorResource::collection($query->paginate()); 
 

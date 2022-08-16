@@ -18,25 +18,6 @@ use Illuminate\Http\Request;
 
 class RoleModelController extends Controller
 {
-    // public function getRoleModels(){
-    //     $query= RoleModel::query();
-
-    //            $query=$query->when(filled('search'),function($query){
-                          
-    //               $query->where('title','LIKE','%'.request('search').'%')
-    //                     ->orWhere('content','LIKE','%'.request('search').'%');
-    //               })
-    //               ->when(filled('filter'),function($query){
-    //                 $query = $query->whereHas('fields', function (Builder $query) {
-    //                     $query->where('fields.id', '=', request('filter'));
-    //                 });
-    //             });
-
-    //             //
-            
-    //             return RoleModelResource::collection($query->latest()->paginate()); 
-
-    // }
 
     public function getRecentRoleModels(){
         return RoleModelResource::collection(RoleModel::where('is_verified',1)->latest()->take(20)->get());

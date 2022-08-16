@@ -22,16 +22,16 @@ class MentorController extends Controller
 
         $per_page=request('per_page');
         $query=Mentor::where('is_accepted',1);
-
+        if(request('filter')){
+            $query=$query->where('field_id','=', request('filter'));
+        }
         $query=$query->when(filled('search'),function($query){
                           
-          return $query->where('first_name','LIKE','%'.request('search').'%')
+           $query->where('first_name','LIKE','%'.request('search').'%')
            ->orWhere('last_name','LIKE','%'.request('search').'%');
      });
 
-    if(request('filter')){
-        $query=$query->where('field_id','=', request('filter'))->get();
-    }
+  
         return MentorResource::collection($query->where('is_accepted',1)->paginate(10));
     }
 

@@ -21,7 +21,7 @@ class LoginController extends Controller
         ]);
 
         $user=Employee::where('email',$request->email)
-       // ->where('is_active',1)
+        ->where('is_active',1)
         ->first();
         if (!$user ) {
             return response()->json([

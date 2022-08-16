@@ -15,11 +15,6 @@ class ChattingController extends Controller
 {
     public function sendMessage(Request $request){
 
-        // $data=$request->all();
-        // $data['sender']='mentor';
-        // $data['user_id']=$request->user_id;
-        // $data['mentor_id']=$request->user()->id;
-        // $message= Message::create($data);
 
         $message= new Message;
         $message->sender='mentor';
@@ -38,6 +33,7 @@ class ChattingController extends Controller
 
         Message::where('user_id',$user_id)
                          ->where('mentor_id',$request->user()->id)
+                         ->where('sender','user')
                          ->update(['seen'=>1]);
                          
         $messages=Message::where('user_id',$user_id)

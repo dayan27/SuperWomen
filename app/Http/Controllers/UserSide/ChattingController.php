@@ -80,4 +80,15 @@ class ChattingController extends Controller
 
         }
     }
+
+    public function setMessageSeen(Request $request){
+
+        $user= $request->user();
+        Message::where('user_id',$user->id)
+        ->where('mentor_id',$user->mentor_id)
+        ->where('sender','mentor')
+        ->update(['seen'=>1]);
+        return response()->json('succsess',200);
+
+    }
 }

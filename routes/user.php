@@ -41,8 +41,9 @@ use Illuminate\Support\Facades\Route;
         Route::get('/messages',[ChattingController ::class,'getMessages']);
         Route::delete('/message/{id}',[ChattingController ::class,'deleteMessage']);
         Route::put('/message/{id}',[ChattingController ::class,'editMessage']);
+        Route::get('/set_messages_seen',[ChattingController ::class,'setMessageSeen']);
         
-
+        
     
         Route::get('/disconnect_mentor',[AccountController ::class,'DisconnectMentor']);
 

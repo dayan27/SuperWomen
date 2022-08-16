@@ -102,9 +102,10 @@ class UserLoginController extends Controller
 
 
         public function getLoginUser(){
-            //return Hash::make('12345678');
-            //$data='helloplease work  hard';
+          
+            
             $user=request()->user();
+            $user->message_no=$user->messages()->wherePivot('seen',0)->wherePivot('sender','mentor')->count();
             $user->profile_picture=$user->profile_picture ? asset('/profilepictures').'/'.$user->profile_picture :null;
 
             if($user->mentor_id){

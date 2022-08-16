@@ -38,10 +38,10 @@ class MentorLoginController extends Controller
                ,404 );
         }
 
-        if(!$mentor->is_verified){
-            return response()->json('U are not Verified',404);
+        // if(!$mentor->is_verified){
+        //     return response()->json('U are not Verified',404);
 
-        }
+        // }
 
         if(!$mentor->is_accepted){
             return response()->json('U are not approved',404);
