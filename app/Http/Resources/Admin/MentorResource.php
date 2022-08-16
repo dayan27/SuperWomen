@@ -32,7 +32,7 @@ class MentorResource extends JsonResource
             'created_at'=>$this->created_at,
             'date_of_birth'=>$this->date_of_birth,
             'bio'=>$this->bio,
-            'location'=>'Bahir dar',
+            'location'=>$this->location,
         ];
     }
 }

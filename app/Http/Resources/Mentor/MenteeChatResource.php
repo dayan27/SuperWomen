@@ -20,8 +20,8 @@ class MenteeChatResource extends JsonResource
             'first_name'=>$this->first_name,
             'last_name'=>$this->last_name,
             'profile_picture'=>$this->profile_picture ? asset('/profilepictures').'/'.$this->profile_picture : null,
-            'message'=>new MessageResource($this->messages()->latest()->first()),
-        
+            'message'=>new MessageResource($this->messages()->orderByDesc('messages.created_at')->first()),
+             'no'=>$this->messages()->wherePivot('seen',0)->count()
         ];
     }
 }

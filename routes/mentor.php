@@ -32,7 +32,9 @@ use Illuminate\Support\Facades\Route;
             $user=request()->user();
             $user->profile_picture= $user->profile_picture ? asset('/profilepictures').'/'.$user->profile_picture :null;
             $user->no_of_mentee = $user->users()->count();
-            $exp=$user->experiances()->where('is_current',1)->first();
+            $exp=$user->experiances()
+            //->where('is_current',1)
+            ->first();
             $user->experiance = $exp ? new ExperianceResource($exp) : null ;
            
             return $user;

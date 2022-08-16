@@ -76,7 +76,7 @@ class User extends Authenticatable
     }
 
     public function messages(){
-        return $this->belongsToMany(Mentor::class,'messages')->withPivot(['message','user_id','mentor_id']);
+        return $this->belongsToMany(Mentor::class,'messages')->withPivot(['message','user_id','mentor_id','seen','created_at']);
     }
 
 }

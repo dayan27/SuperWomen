@@ -5,6 +5,7 @@ namespace App\Http\Controllers\UserAccount;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\Models\Manager;
+use App\Models\Mentor;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -100,6 +101,22 @@ class UserLoginController extends Controller
         }
 
 
-  
+        public function getLoginUser(){
+            //return Hash::make('12345678');
+            //$data='helloplease work  hard';
+            $user=request()->user();
+            $user->profile_picture=$user->profile_picture ? asset('/profilepictures').'/'.$user->profile_picture :null;
+
+            if($user->mentor_id){
+               $mentor=Mentor::find($user->mentor_id)->first();
+                       $user->mentor_first_name=$mentor->first_name;
+                       $user->mentor_last_name=$mentor->last_name;
+            }else{
+                $user->mentor_first_name=null;
+                $user->mentor_last_name=null;                
+            }
+           
+            return $user;
+        }
     }
   

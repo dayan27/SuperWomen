@@ -36,6 +36,10 @@ class ChattingController extends Controller
 
         $per_page=$request->per_page ?? 10;
 
+        Message::where('user_id',$user_id)
+                         ->where('mentor_id',$request->user()->id)
+                         ->update(['seen'=>1]);
+                         
         $messages=Message::where('user_id',$user_id)
                          ->where('mentor_id',$request->user()->id)
                          ->orderByDesc('created_at')

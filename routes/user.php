@@ -10,6 +10,7 @@ use App\Http\Controllers\UserAccount\SubscriptionEmailController;
 use App\Http\Controllers\UserAccount\UserLoginController;
 use App\Http\Controllers\UserAccount\UserRegistrationController;
 use App\Http\Controllers\UserAccount\UserVerificationController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserSide\BlogController as UserSideBlogController;
 use App\Http\Controllers\UserSide\ChattingController;
 use App\Http\Controllers\UserSide\MentorControler;
@@ -31,23 +32,7 @@ use Illuminate\Support\Facades\Route;
   
     Route::middleware(['auth:sanctum'])->group(function () {
 
-        Route::get('/user', function () {
-            //return Hash::make('12345678');
-            //$data='helloplease work  hard';
-            $user=request()->user();
-            $user->profile_picture=$user->profile_picture ? asset('/profilepictures').'/'.$user->profile_picture :null;
-           
-            if($user->mentor_id){
-               $mentor=Mentor::find($user->mentor_id)->first();
-                       $user->mentor_first_name=$mentor->first_name;
-                       $user->mentor_last_name=$mentor->last_name;
-            }else{
-                $user->mentor_first_name=null;
-                $user->mentor_last_name=null;                
-            }
-           
-            return $user;
-        });
+        Route::get('/user',[UserLoginController::class,'getLoginUser']);
         Route::post('/logout',[UserLoginController::class,'logout']);
         Route::post('/set_interest', [UserRegistrationController::class, 'addUserInterest']);
         Route::post('/update_profile', [UserRegistrationController::class, 'updateProfile']);

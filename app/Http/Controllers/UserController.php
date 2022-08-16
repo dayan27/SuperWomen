@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mentor;
 use App\Models\request as ModelsRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -98,4 +99,8 @@ class UserController extends Controller
 
        return response()->json($user->is_active,200);
     }
+
+
+
+
 }

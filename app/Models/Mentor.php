@@ -64,7 +64,7 @@ class Mentor extends Authenticatable implements MustVerifyEmail
     }
 
     public function messages(){
-        return $this->belongsToMany(User::class,'messages')->withPivot(['message','user_id','mentor_id']);
+        return $this->belongsToMany(User::class,'messages')->withPivot(['message','user_id','mentor_id','seen','created_at']);
     }
 
     public function experiances(){
