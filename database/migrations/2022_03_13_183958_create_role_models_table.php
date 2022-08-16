@@ -24,7 +24,7 @@ class CreateRoleModelsTable extends Migration
             $table->integer("view")->default(0);
             $table->string("video")->nullable();
             $table->string('audio_path')->nullable();
-            $table->string('card_image');
+            $table->string('card_image')->nullable();
 
             // $table->date('posted_date');
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();

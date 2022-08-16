@@ -22,9 +22,10 @@ class CreateMentorsTable extends Migration
             $table->string('password')->nullable();
             $table->text('bio')->nullable();
             $table->date('date_of_birth');
-
-            // $table->foreignId('field_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('contact_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('location');
+            
+             $table->foreignId('field_id');
+            // $table->foreignId('contact_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->boolean('is_active')->default(0);
             $table->string('profile_picture')->nullable();
             $table->boolean('is_accepted');

@@ -46,8 +46,9 @@ use Illuminate\Support\Facades\Route;
         Route::post('/change_profile/{id}',[EmployeeController::class,'changeProfilePicture']);
 
         Route::get('/mark_all_as_read',[NotificationController::class,'markAllAsRead']);
+        Route::get('/mark_all_as_seen',[NotificationController::class,'markAllAsSeen']);
         Route::get('/mark_as_read/{id}',[NotificationController::class,'markOneAsRead']);
-
+        
         Route::get('/admin_notifications',function(Request $request){
             // foreach($request->user()->notifications as $not){
 
@@ -125,7 +126,9 @@ use Illuminate\Support\Facades\Route;
             Route::apiResource('/contacts',ContactController::class);
             Route::apiResource('/fields',FieldController::class);
             Route::apiResource('/mentors',MentorController::class);
-            Route::get('/mentor_requests',[MentorController::class,'getMentorRquests']);
+            Route::get('/mentor_requests',[MentorController::class,'getMentorRequests']);
+            Route::post('/accept_mentor_request/{id}',[MentorController::class,'acceptMentorRequest']);
+            Route::post('/change_mentor_status/{id}',[MentorController::class,'changeMentorStatus']);
 
             Route::apiResource('/tags',TagController::class);
 

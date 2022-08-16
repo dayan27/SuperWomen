@@ -16,9 +16,10 @@ class MentorRequest extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public $mentor;
+    public function __construct($mentor)
     {
-        //
+        $this->mentor=$mentor;
     }
 
     /**
@@ -29,7 +30,7 @@ class MentorRequest extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -54,8 +55,15 @@ class MentorRequest extends Notification
      */
     public function toArray($notifiable)
     {
-        return [
-            //
-        ];
+
+
+        return[
+            'user'=>$this->mentor->first_name .' '.$this->mentor->last_name,
+            'type'=>"mentor",
+            'title'=>"New Mentor Registerd",
+            "id"=>$this->mentor->id,
+            "profile"=>$this->mentor->profile_picture ? asset('/profilepictures').'/'.$this->mentor->profile_picture : null,
+            'seen'=>0
+            ];
     }
 }

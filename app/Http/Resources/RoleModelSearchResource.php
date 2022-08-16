@@ -18,6 +18,8 @@ class RoleModelSearchResource extends JsonResource
         return [
             'id'=>$this->id,
             'image'=>new RoleModelImageResource($this->role_model->images()->inRandomOrder()->first()) ?? null,
+            'card_image'=> $this->card_image ? asset('/rolemodelcardimages').'/'.$this->card_image :null,
+
             'view'=>$this->role_model->view,
             'share'=>$this->role_model->share,
             'like'=>$this->role_model->like,

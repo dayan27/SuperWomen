@@ -23,7 +23,7 @@ class CreateBlogsTable extends Migration
             $table->integer("time_take_to_read");
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->boolean('is_verified')->default(0);
-            $table->string('card_image');
+            $table->string('card_image')->nullable();
 
             $table->timestamps();
         });

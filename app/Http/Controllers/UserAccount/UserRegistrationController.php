@@ -29,24 +29,7 @@ class UserRegistrationController extends Controller
         $user->otp=$otp;
         $user->save();
     
-        // $response = Http::get('https://sms.hahucloud.com/api/create/contact', [
-        //     'key' => '0ad9035adfad0313a213ebb3ab4c7e64ab399a8c',
-        //     'phone' => $user->phone_number ,
-        //     'group' => '68',
-        //     'name'=>$user->first_name
-        // ]);
-        //         return $response;
-        $permited_phone=substr($user->phone_number,1);
-
-    //     $response = Http::get('https://sms.hahucloud.com/api/send', [
-    //         'key' => '0ad9035adfad0313a213ebb3ab4c7e64ab399a8c',
-    //         'phone' =>  $permited_phone,
-    //         'message' => 'Ur Otp '.$otp,
-    //         'device'=>'145'
-    //     ]);
-
-    //    return $response;
-
+ 
         $success= $this->sendResetToken($otp,$user->phone_number);
          if($success == 'sent'){
              return response()->json('otp sent',201);
@@ -68,7 +51,7 @@ class UserRegistrationController extends Controller
 
         $user=$request->user();
         $user->update($request->except('profile_picture'));
-       //$user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
+       $user->profile_picture= $user->profile_picture ? asset('/profilepictures').'/'.$user->profile_picture :null;
 
         return $user;
     }

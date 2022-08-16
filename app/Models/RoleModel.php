@@ -20,6 +20,7 @@ class RoleModel extends Model implements TranslatableContract
         'employee_id',
         'video',
         'time_take_to_read',
+        'card_image'
     ];
 
 

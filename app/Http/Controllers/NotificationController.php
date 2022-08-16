@@ -39,7 +39,8 @@ class NotificationController extends Controller
         $notifications=  $emp->notifications;
 
         foreach($notifications as $not){
-            $not->seen=1;
+            $not->updated_at=null;
+            $not->save();
         }
 
 

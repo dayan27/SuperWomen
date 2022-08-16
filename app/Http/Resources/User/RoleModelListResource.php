@@ -18,7 +18,7 @@ class RoleModelListResource extends JsonResource
          return [
             'id'=>$this->id,
             'image'=>new RoleModelImageResource($this->images()->inRandomOrder()->first()) ?? null,
-            'card_image'=>asset('/blogcardimages').'/'.$this->card_image,
+            'card_image'=>asset('/rolemodelcardimages').'/'.$this->card_image,
 
             'intro'=>$this->translate(request('lang'))->intro ?? $this->translate()->intro,
             'title'=>$this->translate(request('lang'))->title ?? $this->translate()->intro,

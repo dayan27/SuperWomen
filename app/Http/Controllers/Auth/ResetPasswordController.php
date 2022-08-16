@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Employee;
 use App\Notifications\SuccessEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,7 @@ class ResetPasswordController extends Controller
             //Validate input
             $validator = Validator::make($request->all(), [
                // 'email' => 'required|email|exists:admins,email',
-                'password' => 'required',
+               // 'password' => 'required',
                // 'token' => 'required'
             ]);
 
@@ -32,13 +33,13 @@ class ResetPasswordController extends Controller
             if (!$tokenData)
             return view('auth.passwords.email');
 
-            $user = Admin::where('email', $tokenData->email)->first();
+            $user = Employee::where('email', $tokenData->email)->first();
         // Redirect the user back if the email is invalid
             if (!$user)
             return response()->json('not valid user',401);
             //Hash and update the new password
             $user->password = Hash::make($password);
-            $user->update(); //or $user->save();
+            $user->save(); //or $user->save();
 
             //login the user immediately they change password successfully
             //Auth::login($user);
@@ -48,29 +49,15 @@ class ResetPasswordController extends Controller
             ->delete();
 
             //Send Email Reset Success Email
-            if ($this->sendSuccessEmail($tokenData->email)) {
+            // if ($this->sendSuccessEmail($tokenData->email)) {
 
                 $token=$user->createToken('auth_token')->plainTextToken;
                 return response()->json([
                     'access_token'=>$token,
-                    'user'=>$user->load('role'),
+                   'user'=>$user,
                 ],200);
-               // return response()->json('successfuly reset ur password',200);
-            } else {
-                return response()->json('try again',401);
-            }
 
 
 }
-  private function sendSuccessEmail($email){
 
-     try {
-        $user = Admin::where('email', $email)->first();
-        $user->notify(new SuccessEmail());
-        return true;
-
-     } catch (\Throwable $th) {
-        return false;
-     }
-  }
 }

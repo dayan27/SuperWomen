@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Employee;
 use App\Traits\ApiMessage;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
@@ -26,12 +27,12 @@ class EmailVerificationController extends Controller
 
     public function verify(Request $request)
     {
-        if (!$request->hasValidSignature(false)) {
+        if (!$request->hasValidSignature(true)) {
             return response()->json(["msg" => "Invalid/Expired url provided."], 401);
         }
 
-        //  return $request->route('id');
-        $user= Admin::find($request->id);
+         // return $request->id;
+        $user= Employee::find($request->id);
 
         if(! $user){
             return response()->json(["msg" => "no id provided."], 401);
@@ -47,7 +48,7 @@ class EmailVerificationController extends Controller
 
 
         if ($user->hasVerifiedEmail()) {
-            return redirect(url(env('FRONTEND_URL')).'/login');
+            return redirect(url(env('FRONTEND_URL').'/login'));
 
             // return $this->sendError('Already Verified','');
 
@@ -72,7 +73,7 @@ class EmailVerificationController extends Controller
       //  return  response()->json('verified',200) ;
 
         // return request()->wantsJson() ? response()->json() :
-        return redirect(url(env('FRONTEND_URL')).'/login');
+        return redirect(url(env('FRONTEND_URL').'/login'));
 
     }
 

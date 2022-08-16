@@ -33,7 +33,7 @@ class ForgotPasswordController extends Controller
             if ($this->sendResetEmail($request->email, $tokenData->token)) {
                 return response()->json('link sent');
             } else {
-                    return response()->json('link not sent');
+                    return response()->json('link not sent',400);
                    }
     }
 
@@ -51,5 +51,6 @@ class ForgotPasswordController extends Controller
             } catch (\Exception $e) {
                 return false;
             }
+
         }
 }

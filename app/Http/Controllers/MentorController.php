@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Admin\MentorResource;
 use App\Models\Mentor;
 use App\Models\MentorRequest;
+use App\Models\request as ModelsRequest;
+use App\Notifications\MentorAcceptance;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -17,100 +19,52 @@ class MentorController extends Controller
      */
     public function index()
     {
-        $query=Mentor::query();
 
-        $query=$query->when(request('search'),function($query){
+        $per_page=request('per_page');
+        $query=Mentor::where('is_accepted',1);
+
+        $query=$query->when(filled('search'),function($query){
                           
-            $query->where('first_name','LIKE','%'.request('search').'%')
+          return $query->where('first_name','LIKE','%'.request('search').'%')
            ->orWhere('last_name','LIKE','%'.request('search').'%');
-     })  ->when(request('filter'),function($query){
-              
-        $query = $query->whereHas('fields', function (Builder $q) {
-            $q->where('fields.id', '=', request('filter'));
-        });
-    });
-        return MentorResource::collection(Mentor::paginate(15));
+     });
+
+    if(request('filter')){
+        $query=$query->where('field_id','=', request('filter'))->get();
+    }
+        return MentorResource::collection($query->where('is_accepted',1)->paginate(10));
     }
 
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'first_name'=>'required',
-            'last_name'=>'required',
-            'phone_no'=>'required',
-            'biography'=>'required',
-
-         ]);
-         return Mentor::create($request->all());
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Mentor  $mentor
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Mentor $mentor)
-    {
-        return $mentor;
-    }
-
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Mentor  $mentor
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Mentor $mentor)
-    {
-
-        // $request->validate([
-        //     'first_name'=>'required',
-        //     'last_name'=>'required',
-        //     'phone_no'=>'required',
-        //     'biography'=>'required',
-        //     'biography'=>'required',
-
-
-
-
-        //  ]);
-         return $mentor->update($request->all());
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Mentor  $mentor
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Mentor $mentor)
     {
         $mentor->delete();
     }
 
-    public function getMentorRquests(){
+    public function acceptMentorRequest($id){
 
-       return MentorRequest::where('is_accepeted',0)
-                      ->with('mentor')
-                       ->get();
+       $mentor= Mentor::find($id);
+       
+       $mentor->is_accepted=1;
+       $mentor->save();
+      // $mentor->notify(new MentorAcceptance());
+        return response()->json($mentor->is_accepted,200);
+      
     }
 
     public function changeMentorStatus(Request $request,$id){
 
         $mentor=Mentor::find($id);
         $mentor->is_active=$request->status;
+        $mentor->save();
+        return response()->json($mentor->is_active,200);
+
+
+    }
+
+    public function getMentorRequests(){
+       $mentors= Mentor::where('is_accepted',0)->get();
+       return MentorResource::collection($mentors);
 
     }
     

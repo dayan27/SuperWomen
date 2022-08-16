@@ -9,6 +9,7 @@ use App\Http\Controllers\MentorSide\AvailabilityController;
 use App\Http\Controllers\MentorSide\ChattingController;
 use App\Http\Controllers\MentorSide\ExperianceController;
 use App\Http\Controllers\MentorSide\RequestController;
+use App\Http\Resources\User\ExperianceResource;
 use App\Models\EducationLevel;
 use Illuminate\Support\Facades\Hash;
 
@@ -30,7 +31,10 @@ use Illuminate\Support\Facades\Route;
             //$data='helloplease work  hard';
             $user=request()->user();
             $user->profile_picture= $user->profile_picture ? asset('/profilepictures').'/'.$user->profile_picture :null;
-        
+            $user->no_of_mentee = $user->users()->count();
+            $exp=$user->experiances()->where('is_current',1)->first();
+            $user->experiance = $exp ? new ExperianceResource($exp) : null ;
+           
             return $user;
         });
 
@@ -59,4 +63,5 @@ use Illuminate\Support\Facades\Route;
     Route::post('/verify_reset/{token}', [UserForgotPasswordController::class, 'verifyResetOtp']);
     Route::post('/reset/{token}',[UserForgotPasswordController::class,'resetPassword']);
 
+    Route::post('/verify_phone', [MentorVerificationController::class, 'verifyPhone']);
 

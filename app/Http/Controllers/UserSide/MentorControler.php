@@ -16,7 +16,7 @@ class MentorControler extends Controller
     public function getMentors(){
 
 
-        $query= Mentor::query();
+        $query= Mentor::where('is_accepted',1)->where('is_active',1);
 
         $query=$query->when(filled('search'),function($query){
                    

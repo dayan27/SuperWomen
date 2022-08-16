@@ -11,13 +11,13 @@ class RoleModelAdded extends Notification
 {
     use Queueable;
 
-    public RoleModel $roleModel;
+    public  $roleModel;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(RoleModel $roleModel)
+    public function __construct( $roleModel)
     {
         $this->roleModel=$roleModel;
     }
@@ -55,8 +55,14 @@ class RoleModelAdded extends Notification
      */
     public function toArray($notifiable)
     {
-        return [
-            'roleModel'=>$this->roleModel,
-        ];
+        $user=request()->user();
+        return[
+            'user'=>$user->first_name.' ' . $user->first_name,
+            "profile"=>$user->profile_picture ? asset('/profilepictures').'/'.$user->profile_picture : null,
+             'type'=>"rolemodel",
+            'title'=>"New Role Model Created",
+             "id"=>$this->roleModel->id,
+             'seen'=>0
+            ];
     }
 }

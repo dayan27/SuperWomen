@@ -27,7 +27,8 @@ class MyMentorResource extends JsonResource
              'availablites'=>$this->when($request->is('user/*'), function() { 
              return  VisiblityResource::collection($this->availabilities) ;
             }),
-                        
+            'bio'=>$this->bio,
+         
 
             
         ];

@@ -99,10 +99,10 @@ class MentorLoginController extends Controller
       
             $otp=rand(100000,999999);
             $mentor->phone_number=$request->new_phone_number;
-            $mentor->otp=$otp;
+            $mentor->verification_code=$otp;
             $mentor->save();
             // Revoke all tokens...
-            $mentor->tokens()->delete();
+          //  $mentor->tokens()->delete();
             
 
             $success= $this->sendResetToken($otp,$mentor->phone_number);

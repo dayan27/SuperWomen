@@ -45,6 +45,8 @@ class EmployeeController extends Controller
         $data['password']=Hash::make($request->last_name.'1234');
         $data['role']='writer';
         $emp= Employee::create($data);
+        $emp->sendEmailVerificationNotification();
+
         return response()->json($emp,201);
     }
 

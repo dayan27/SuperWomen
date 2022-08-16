@@ -19,7 +19,6 @@ class RoleModelDetailResource extends JsonResource
             'title'=>$this->title,
             'content'=>$this->content,
             'intro'=>$this->intro,
-
              'images'=> RoleModelImageResource::collection($this->role_model->images) ?? null,
              'view'=>$this->role_model->view,
             'share'=>$this->role_model->share,

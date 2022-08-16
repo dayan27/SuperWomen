@@ -28,8 +28,12 @@ class AvailabilityController extends Controller
         $mentor=$request->user();
         $data=$request->all();
         $data['mentor_id']=1;
-        Availability::create($data);
-        return response()->json('succsses',201);
+
+        $data['to']=date('h:i:s',strtotime($request->to));
+        $data['from']=date('h:i:s',strtotime($request->from));
+
+        $av= Availability::create($data);
+        return response()->json($av,201);
     }
 
     /**
@@ -64,5 +68,7 @@ class AvailabilityController extends Controller
     public function destroy($id)
     {
         Availability::find($id)->delete();
+        return response()->json('success',200);
+
     }
 }

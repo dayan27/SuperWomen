@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Events\AdminNotification;
+use App\Events\BlogAddedEvent;
 use App\Http\Resources\Admin\RoleModel as AdminRoleModel;
 use App\Http\Resources\Admin\RoleModelDetailResource;
 use App\Http\Resources\Admin\RoleModelResource;
@@ -114,6 +115,17 @@ class RoleModelController extends Controller
         // $data['employee_id']=1;
       //  $data['posted_date']=date('Y-m-d',strtotime($request->posted_date));
 
+      // saving a card image for rolemodel
+      if($request->card_image){
+        $file=$request->card_image;
+        $name = Str::random(5).time().'.'.$file->extension();
+        $file->move(public_path().'/rolemodelcardimages/', $name);
+       // $model->card_image = $name;
+       // $model->save();
+    }
+
+    $data['card_image']=$name;
+
         $model=RoleModel::create($data);
         $tags=$request->tags;
         $tag_ids=[];
@@ -147,27 +159,32 @@ class RoleModelController extends Controller
             $model->save();
         }
     
-      // saving a card image for rolemodel
-        if($request->file($request->card_image)){
-            $file=$request->card_image;
-            $name = Str::random(5).time().'.'.$file->extension();
-            $file->move(public_path().'/rolemodelcardimages/', $name);
-            $model->card_image = $name;
-            $model->save();
-        }
 
   
       //calling image upload method from php class
+        $model->audio_path = $model->audio_path? asset('/rolemodelaudios').'/'.$model->audio_path: null;
 
         $iu=new ImageUpload();
         $upload= $iu->multipleImageUpload($request->images,$model->id);
         if (count($upload) > 0) {
 
-            $request->user()->notify(new RoleModelAdded($model));
+            if($request->user()->role != 'admin'){
+            $admin=Employee::where('role','admin')->first();
+            $admin->notify(new RoleModelAdded($model));
+            }
+            $e_data=
+             [
+                'user'=>request()->user()->first_name.' ' . request()->user()->first_name,
+                'type'=>"rolemodel",
+                'title'=>"New Role Model Created",
+                 "id"=>$model->id,
+                 'seen'=>0
+            ];
+
+           // event(new BlogAddedEvent($e_data));
             DB::commit();
 
             //retriving audio path
-            $model->audio_path = $model->audio_path? asset('/rolemodelaudios').'/'.$model->audio_path: null;
          return response()->json($model,201);
         }else{
         return response()->json('error while uploading..',401);

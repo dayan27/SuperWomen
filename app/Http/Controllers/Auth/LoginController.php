@@ -20,17 +20,28 @@ class LoginController extends Controller
 
         ]);
 
-        $user=Employee::where('email',$request->email)->first();
-        if (! $user ) {
+        $user=Employee::where('email',$request->email)
+       // ->where('is_active',1)
+        ->first();
+        if (!$user ) {
             return response()->json([
                 'message'=>' incorrect email and password',
                 ]
                ,404 );
         }
+
+        // if ($user->email_verified_at == null) {
+        //     $user->sendEmailVerificationNotification();
+            
+        //     return response()->json([
+        //         'message'=>' Please Verify Ur Email Verification Link Sent to ur email',
+        //         ]
+        //        ,400 );
+        // }
         $check=Hash::check($request->password, $user->password);
         if (! $check ) {
             return response()->json([
-                'message'=>' incorrect  and password',
+                'message'=>' incorrect  password',
                 ]
                ,404 );
         }

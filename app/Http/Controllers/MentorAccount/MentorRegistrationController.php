@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\MentorAccount;
 
+use App\Events\BlogAddedEvent;
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 use App\Models\Experiance;
 use App\Models\Mentor;
 use App\Models\User;
+use App\Notifications\toAdmin\BlogAdded;
+use App\Notifications\toAdmin\MentorRequest;
 use App\Traits\SendToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -29,21 +33,21 @@ class MentorRegistrationController extends Controller
         
         $mentor= Mentor::create($data);
        
+        $admin=Employee::where('role','admin')->first();
+        $admin->notify(new MentorRequest($mentor));
 
-        $otp=rand(100000,999999);
+       $e_data=
+       [
+       'user'=>$mentor->first_name .$mentor->last_name,
+       'type'=>"mentor",
+       'title'=>"New Mentor Registerd",
+       "id"=>$mentor->id,
+       "profile"=>$mentor->profile_picture ? asset('/profilepictures').'/'.$mentor->profile_picture : null,
+       'seen'=>0
+       ];
+            event(new BlogAddedEvent($e_data));
 
-        $mentor->verification_code=$otp;
-        $mentor->save();
 
-        
-
-        $success= $this->sendResetToken($otp,$mentor->phone_number);
-        if($success == 'sent'){
-            return response()->json('Registered !!!!verify ur phone otp sent',201);
-        }else{
-           return response()->json($success,200);
-
-        }
     }
 
     public function addMentorExperiance(Request $request){
@@ -62,4 +66,6 @@ class MentorRegistrationController extends Controller
         $mentor->update($request->all());
         return $mentor;
     }
+
+    
 }

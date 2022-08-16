@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Events\AdminNotification;
+use App\Events\BlogAddedEvent;
 use App\Http\Resources\Admin\BlogDetailResource;
 use App\Http\Resources\Admin\BlogResource;
 use App\Http\Resources\BlogSearchResource;
 use App\Models\Blog;
 use App\Models\BlogImage;
 use App\Models\BlogTranslation;
+use App\Models\Employee;
 use App\Models\request as ModelsRequest;
 use App\Models\RoleModel;
 use App\Models\Tag;
@@ -133,7 +135,7 @@ class BlogController extends Controller
             $blog->fields()->attach($request->interests);
 
             //saving blogcard 
-            if($request->file($request->card_image)){
+            if($request->card_image){
                 $file=$request->card_image;
                 $name = Str::random(5).time().'.'.$file->extension();
                 $file->move(public_path().'/blogcardimages/', $name);
@@ -150,8 +152,21 @@ class BlogController extends Controller
             $upload= $iu->blogMultipleImageUpload($request->images,$blog->id);
             if (count($upload) > 0) {
 
-             //   $request->user()->notify(new BlogAdded($blog));
-             //   event(new AdminNotification($request->user()->notifications));
+                if($request->user()->role != 'admin'){
+                $admin=Employee::where('role','admin')->first();
+                $admin->notify(new BlogAdded($blog));
+                }
+
+               $e_data= 
+               [
+                'user'=>request()->user()->first_name.' ' . request()->user()->first_name,
+                'type'=>"blog",
+                'title'=>"New Blog Created",
+                 "id"=>$blog->id,
+                 'seen'=>0
+              ];
+
+                event(new BlogAddedEvent($e_data));
                 DB::commit();
             return response()->json($blog,201);
             }else{

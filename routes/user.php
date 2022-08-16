@@ -17,6 +17,7 @@ use App\Http\Controllers\UserSide\RequestController;
 use App\Http\Controllers\UserSide\RoleModelController;
 use App\Http\Resources\User\BlogResource;
 use App\Models\EducationLevel;
+use App\Models\Mentor;
 use Illuminate\Support\Facades\Route;
 
 
@@ -34,8 +35,17 @@ use Illuminate\Support\Facades\Route;
             //return Hash::make('12345678');
             //$data='helloplease work  hard';
             $user=request()->user();
-            $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
-
+            $user->profile_picture=$user->profile_picture ? asset('/profilepictures').'/'.$user->profile_picture :null;
+           
+            if($user->mentor_id){
+               $mentor=Mentor::find($user->mentor_id)->first();
+                       $user->mentor_first_name=$mentor->first_name;
+                       $user->mentor_last_name=$mentor->last_name;
+            }else{
+                $user->mentor_first_name=null;
+                $user->mentor_last_name=null;                
+            }
+           
             return $user;
         });
         Route::post('/logout',[UserLoginController::class,'logout']);
