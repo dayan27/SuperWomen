@@ -19,7 +19,7 @@ class RoleModelListResource extends JsonResource
          return [
             'id'=>$this->id,
             'image'=>new RoleModelImageResource($this->images()->inRandomOrder()->first()) ?? null,
-            'card_image'=>asset('/rolemodelcardimages').'/'.$this->card_image,
+            'card_image'=>$this->card_image ? asset('/rolemodelcardimages').'/'.$this->card_image :null,
 
             'intro'=>$this->translate(request('lang'))->intro ?? $this->translate()->intro,
             'title'=>$this->translate(request('lang'))->title ?? $this->translate()->intro,
@@ -30,6 +30,7 @@ class RoleModelListResource extends JsonResource
             'is_liked'=>$request->isLegal ? (RoleModelLike::where('user_id',$request->isLegal)
             ->where('role_model_id',$this->id)->first() ?1:0) : 0,
             'created_at'=>$this->created_at,
+            'is_featured'=>$this->is_featured ?? null,
         ];
     }
 }

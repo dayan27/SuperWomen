@@ -11,6 +11,7 @@ use App\Http\Resources\User\RelatedBlogResource;
 use App\Models\Blog;
 use App\Models\BlogComment;
 use App\Models\BlogLike;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
@@ -20,6 +21,12 @@ class BlogController extends Controller
      
         $per_page=request()->per_page;
         $query= Blog::where('is_verified',1);
+
+          $query->when(request('filter'),function($query){
+           $query = $query->whereHas('fields', function (Builder $query) {
+               $query->where('fields.id', '=', request('filter'));
+           });
+        });
         return BlogListResource::collection($query->paginate($per_page));
 
     }

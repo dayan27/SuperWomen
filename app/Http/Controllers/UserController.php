@@ -30,7 +30,14 @@ class UserController extends Controller
                  $q->where('fields.id', '=', request('filter'));
              });
          });
-         return $query->with('education_level','fields','mentor')->paginate(); 
+         $users= $query->with('education_level','fields','mentor')->paginate(); 
+
+         $users->map(function($user){
+           return $user->profile_picture = $user->profile_picture ? asset('/profilepictures').'/'.$user->profile_picture: null;
+
+         });
+
+         return $users;
 
     }
 

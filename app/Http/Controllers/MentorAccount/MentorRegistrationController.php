@@ -45,8 +45,9 @@ class MentorRegistrationController extends Controller
        "profile"=>$mentor->profile_picture ? asset('/profilepictures').'/'.$mentor->profile_picture : null,
        'seen'=>0
        ];
-            event(new BlogAddedEvent($e_data));
+           // event(new BlogAddedEvent($e_data));
 
+           return response()->json('succsses',201);
 
     }
 

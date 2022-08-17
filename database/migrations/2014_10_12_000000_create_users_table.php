@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->nullable()->unique();
-            $table->string('phone_no')->unique();
+            $table->string('phone_number')->unique();
             $table->text('bio')->nullable();
             $table->date('date_of_birth');
             //when user register for the first time they have to verify their phone no

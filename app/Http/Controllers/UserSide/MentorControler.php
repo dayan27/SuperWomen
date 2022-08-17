@@ -16,17 +16,17 @@ class MentorControler extends Controller
     public function getMentors(){
 
 
-        $query= Mentor::where('is_accepted',1)->where('is_active',1);
+        $query= Mentor::query();
+        
+        $query=$query->where('is_accepted',1)->where('is_active',1);
 
-        $query=$query->when(filled('search'),function($query){
-                   
-           $query->where('first_name','LIKE','%'.request('search').'%')
-                 ->orWhere('last_name','LIKE','%'.request('search').'%');
-           })
-           ->when(filled('filter'),function($query){
-                 $query->where('mentors.field_id', '=', request('filter'));
+        $query=$query
+           ->when(request('filter'),function(Builder $query){
+                 $query->where('field_id', '=', request('filter'));
              
          });
+
+         
          return MyMentorResource::collection($query->paginate()); 
 
     }

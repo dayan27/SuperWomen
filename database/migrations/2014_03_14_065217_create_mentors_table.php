@@ -26,10 +26,10 @@ class CreateMentorsTable extends Migration
             
              $table->foreignId('field_id');
             // $table->foreignId('contact_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->boolean('is_active')->default(0);
+            $table->boolean('is_active')->default(1);
             $table->string('profile_picture')->nullable();
-            $table->boolean('is_accepted');
-            $table->boolean('is_verified');
+            $table->boolean('is_accepted')->default(0);
+            $table->boolean('is_verified')->default(1);
             $table->string('verification_code')->nullable();
 
             $table->timestamps();

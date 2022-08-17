@@ -20,6 +20,9 @@ class RoleModelDetailResource extends JsonResource
             'content'=>$this->content,
             'intro'=>$this->intro,
              'images'=> RoleModelImageResource::collection($this->role_model->images) ?? null,
+             'card_image'=> $this->role_model->card_image ? asset('/rolemodelcardimages').'/'.$this->role_model->card_image :null,
+             'audio_path'=>$this->role_model->audio_path ? asset('/rolemodelaudios').'/'.$this->role_model->audio_path : null,
+
              'view'=>$this->role_model->view,
             'share'=>$this->role_model->share,
             'like'=>$this->role_model->like,

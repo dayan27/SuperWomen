@@ -162,7 +162,8 @@ class RoleModelController extends Controller
 
   
       //calling image upload method from php class
-        $model->audio_path = $model->audio_path? asset('/rolemodelaudios').'/'.$model->audio_path: null;
+      $model->audio_path = $model->audio_path? asset('/rolemodelaudios').'/'.$model->audio_path: null;
+      $model->card_image = $model->card_image? asset('/rolemodelcardimages').'/'.$model->card_image: null;
 
         $iu=new ImageUpload();
         $upload= $iu->multipleImageUpload($request->images,$model->id);
@@ -287,10 +288,8 @@ class RoleModelController extends Controller
         $image=RoleModelImage::find($id);
         $path= public_path().'/rolemodelimages/';
 
-     //   return $path.$image->path;
         if($image->path && file_exists($path.$image->path)){
-         // return true;
-             //Storage::delete('images/'.$image->path);
+        
              unlink($path.$image->path);
         }
 
@@ -312,7 +311,63 @@ class RoleModelController extends Controller
 
     }
 
+    public function updateAudio(Request $request, $id){
+       
+        $model=RoleModel::find($id);
+        if($request->audio_path){
 
+
+            $path= public_path().'/rolemodelaudios/';
+
+            if($model->audio_path && file_exists($path.$model->audio_path)){
+            
+                 unlink($path.$model->audio_path);
+            }
+    
+
+            $audio=$request->file('audio_path');
+            $name = Str::random(5).time().'.'.$audio->extension();
+            $audio->move(public_path().'/rolemodelaudios/', $name);
+           
+            //$image->refresh();
+            //$img['id'] = $image->id;
+            $model->audio_path = $name;
+            $model->save();
+
+        }
+            return response()->json('success',200);
+
+    }
+
+
+    public function updateCardImage(Request $request, $id){
+       
+        $model=RoleModel::find($id);
+
+        if($request->card_image){
+
+            $path= public_path().'/rolemodelcardimages/';
+
+            if($model->card_image && file_exists($path.$model->card_image)){
+            
+                 unlink($path.$model->card_image);
+            }
+
+            $file=$request->card_image;
+            $name = Str::random(5).time().'.'.$file->extension();
+            $file->move(public_path().'/rolemodelcardimages/', $name);
+            $model->card_image = $name;
+            $model->save();
+        }
+
+        $card_image = $model->card_image? asset('/rolemodelcardimages').'/'.$model->card_image: null;
+
+            return response()->json($card_image,200);
+
+    }
+
+
+    
     public function verify($id){
 
         $rm=RoleModel::find($id);

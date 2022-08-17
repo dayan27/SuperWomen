@@ -98,6 +98,8 @@ use Illuminate\Support\Facades\Route;
 
     Route::delete('/delete_image/{id}',[RoleModelController::class,'deleteImage']);
     Route::post('/update_images/{id}',[RoleModelController::class,'updateImage']);
+    Route::post('/update_audio/{id}',[RoleModelController::class,'updateAudio']);
+    Route::post('/update_card_image/{id}',[RoleModelController::class,'updateCardImage']);
 
     //Route::get('/dashboard',[DashboardController::class,'getData']);
 

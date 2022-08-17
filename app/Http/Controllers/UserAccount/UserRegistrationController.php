@@ -28,9 +28,7 @@ class UserRegistrationController extends Controller
 
         $user->otp=$otp;
         $user->save();
-        //////////shoud be removed after testing
-        return response()->json('otp sent',201);
-
+     
         $success= $this->sendResetToken($otp,$user->phone_number);
          if($success == 'sent'){
              return response()->json('otp sent',201);

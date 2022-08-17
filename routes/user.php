@@ -19,6 +19,7 @@ use App\Http\Controllers\UserSide\RoleModelController;
 use App\Http\Resources\User\BlogResource;
 use App\Models\EducationLevel;
 use App\Models\Mentor;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 
@@ -73,7 +74,7 @@ Route::get('/mentors',[MentorControler ::class,'getMentors']);
 
 
     Route::get('/education_levels', function () {
-        //return Hash::make('12345678');
+        return Hash::make('12345678');
         //$data='helloplease work  hard';
         return EducationLevel::all(['id','level']);
     });

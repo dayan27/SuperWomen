@@ -27,10 +27,11 @@ class RoleModelController extends Controller
      * return a role model data for a home page
      */
     public function getRoleModels(){
-        //$roleModel= RoleModel::all();
-       // return   RoleModelResource::collection($blog);
+
         $per_page=request()->per_page;
         $query= RoleModel::where('is_verified',1);
+
+        
        return RoleModelListResource::collection($query->paginate($per_page));
 
     }
